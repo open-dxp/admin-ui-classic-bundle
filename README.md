@@ -1,10 +1,19 @@
-# Pimcore Admin Classic Bundle
+# OpenDXP Admin Classic Bundle
 
-The Admin Classic Bundle provides a Backend UI for Pimcore.
+The Admin Classic Bundle provides a Backend UI for OpenDXP.
 It is based on the [ExtJS](https://www.sencha.com/products/extjs/) framework.
 
-The Admin Bundle is a core bundle of Pimcore and is shipped with every Pimcore installation. 
-Therefore, it is not necessary to install it separately.
+***
+
+## Disclaimer
+
+> The open future of Pimcore CE. A community-driven fork based on Pimcore Community Edition (GPLv3), created to keep Open Source open  
+> Original credits: [Pimcore GmbH](https://pimcore.com)
+
+OpenDXP Admin Classic Bundle is an independent, community-maintained fork of Pimcore Admin Classic Bundle.
+It is not affiliated with or endorsed by Pimcore GmbH.
+
+***
 
 ## Provided Functionality in a Nutshell
 - Documents: Content Management System for managing and editing content for your website.
@@ -17,13 +26,12 @@ Therefore, it is not necessary to install it separately.
 - Workflows: Create and manage workflows for your data.
 And much more ...
 
-
 ## Working With Admin Interface
 
 Following topics are short-cuts into the documentation for admin interface:
 
 - [Getting Started](https://github.com/open-dxp/opendxp/blob/1.x/doc/01_Getting_Started/06_Create_a_First_Project.md)
-- [User & Roles](https://github.com/open-dxp/opendxp/blob/1.x/doc/22_Administration_of_Pimcore/07_Users_and_Roles.md)
+- [User & Roles](https://github.com/open-dxp/opendxp/blob/1.x/doc/22_Administration_of_OpenDxp/07_Users_and_Roles.md)
 - [Deeplinks](https://github.com/open-dxp/opendxp/blob/1.x/doc/20_Extending_OpenDxp/23_Deeplinks_into_Admin_Interface.md)
 - [Admin Translations](https://github.com/open-dxp/opendxp/blob/1.x/doc/06_Multi_Language_i18n/07_Admin_Translations.md)
 - [Extending Admin UI](https://github.com/open-dxp/opendxp/blob/1.x/doc/20_Extending_OpenDxp/13_Bundle_Developers_Guide/06_Event_Listener_UI.md)
