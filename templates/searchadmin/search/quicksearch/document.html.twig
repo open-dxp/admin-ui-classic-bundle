@@ -1,0 +1,18 @@
+{# @var $element \OpenDxp\Model\Document\Page #}
+{% set previewImage = null %}
+{% if element is instanceof('\\OpenDxp\\Model\\Document\\Page') and config['documents']['generate_preview'] == true %}
+    {% set thumbnailFile = element.getPreviewImageFilesystemPath() %}
+    {% if opendxp_file_exists(thumbnailFile) %}
+        {% set previewImage = path(' opendxp_admin_page_display_preview_image', {'id': element.id }) %}
+    {% endif %}
+{% endif %}
+
+{% if previewImage != null %}
+    <div class="full-preview">
+        <img src="{{ previewImage }}" onload="this.parentNode.className += ' complete';">
+        {% include '@OpenDxpAdmin/searchadmin/search/quicksearch/info_table.html.twig' with {'element': element} %}
+    </div>
+{% else %}
+    <div class="mega-icon {{ iconCls }}"></div>
+    {% include '@OpenDxpAdmin/searchadmin/search/quicksearch/info_table.html.twig' with {'element': element} %}
+{% endif %}

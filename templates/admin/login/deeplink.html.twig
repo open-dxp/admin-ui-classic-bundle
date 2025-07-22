@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/bundles/opendxpadmin/js/opendxp/common.js"></script>
+        <script src="/bundles/opendxpadmin/js/opendxp/functions.js"></script>
+        <script src="/bundles/opendxpadmin/js/opendxp/helpers.js"></script>
+        <script {{ opendxp_csp.getNonceHtmlAttribute()|raw }}>
+            {% if tab %}
+                opendxp.helpers.clearOpenTab();
+                opendxp.helpers.rememberOpenTab("{{ tab }}", true);
+            {% endif %}
+            window.location.href = "{{ redirect | raw }}";
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

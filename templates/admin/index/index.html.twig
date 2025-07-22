@@ -1,0 +1,675 @@
+{% set language = app.request.locale %}
+{# @var \OpenDxp\Security\User\User #}
+{% set userProxy = app.user %}
+{% set user = userProxy.user %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+
+    <link rel="icon" type="image/png" href="/bundles/opendxpadmin/img/favicon/favicon-32x32.png"/>
+    <meta name="google" value="notranslate">
+
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+
+        #opendxp_loading {
+            margin: 0 auto;
+            width: 300px;
+            padding: 300px 0 0 0;
+            text-align: center;
+        }
+
+        .spinner {
+            margin: 100px auto 0;
+            width: 70px;
+            text-align: center;
+        }
+
+        .spinner > div {
+            width: 18px;
+            height: 18px;
+            background-color: #3d3d3d;
+
+            border-radius: 100%;
+            display: inline-block;
+            -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+            animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+        }
+
+        .spinner .bounce1 {
+            -webkit-animation-delay: -0.32s;
+            animation-delay: -0.32s;
+        }
+
+        .spinner .bounce2 {
+            -webkit-animation-delay: -0.16s;
+            animation-delay: -0.16s;
+        }
+
+        @-webkit-keyframes sk-bouncedelay {
+            0%, 80%, 100% {
+                -webkit-transform: scale(0)
+            }
+            40% {
+                -webkit-transform: scale(1.0)
+            }
+        }
+
+        @keyframes sk-bouncedelay {
+            0%, 80%, 100% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+            40% {
+                -webkit-transform: scale(1.0);
+                transform: scale(1.0);
+            }
+        }
+
+        #opendxp_panel_tabs-body {
+            background-image: url({{ path('opendxp_settings_display_custom_logo') }});
+            {% if adminSettings['branding']['color_admin_interface_background']|default(null) is not null %}
+                background-color: {{ adminSettings['branding']['color_admin_interface_background'] }};
+            {% endif %}
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 500px auto;
+        }
+    </style>
+
+    <title>{{ settings.hostname }} :: OpenDXP</title>
+
+    <script {{ opendxp_csp.getNonceHtmlAttribute()|raw }}>
+        var opendxp = {}; // namespace
+
+        // hide symfony toolbar by default
+        var symfonyToolbarKey = 'symfony/profiler/toolbar/displayState';
+        if(!window.localStorage.getItem(symfonyToolbarKey)) {
+            window.localStorage.setItem(symfonyToolbarKey, 'none');
+        }
+    </script>
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}" {{ opendxp_csp.getNonceHtmlAttribute()|raw }}></script>
+    <script src="{{ path('fos_js_routing_js', {'callback' : 'fos.Router.setData'}) }}" {{ opendxp_csp.getNonceHtmlAttribute()|raw }}></script>
+
+    {{ encore_entry_script_tags('admin', null, 'opendxpAdmin') }}
+    {{ encore_entry_link_tags('admin', null, 'opendxpAdmin') }}
+</head>
+
+<body class="opendxp_version_1" data-app-env="{{ app.environment }}">
+
+<div id="opendxp_loading">
+    <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+{% set runtimePerspective = perspectiveConfig.getRuntimePerspective(user) %}
+
+<div id="opendxp_sidebar">
+    <div id="opendxp_navigation" style="display:none;">
+        <ul id="opendxp_navigation_ul"></ul>
+    </div>
+
+    <div id="opendxp_status"></div>
+
+    {% block notification %}
+        <div id="opendxp_notification" data-menu-tooltip="{{ "notifications"|trans([],'admin') }}" class="opendxp_icon_comments">
+            <img src="/bundles/opendxpadmin/img/material-icons/outline-sms-24px.svg">
+            <span id="notification_value" style="display:none;"></span>
+        </div>
+    {% endblock %}
+
+
+    {% block avatar %}
+        <div id="opendxp_avatar" style="display:none;">
+            <img src="{{ path('opendxp_admin_user_getimage') }}" data-menu-tooltip="{{ user.name }} | {{ 'my_profile'|trans([],'admin') }}"/>
+        </div>
+    {% endblock %}
+
+    {% block logout %}
+        <form id="opendxp_logout_form" method="post" action="{{ path('opendxp_admin_logout') }}">
+            <input type="hidden" name="csrfToken" value="{{ opendxp_csrf.getCsrfToken(app.request.session) }}">
+
+            <a id="opendxp_logout" data-menu-tooltip="{{ "logout"|trans([],'admin') }}" href="#" style="display: none">
+                <img src="/bundles/opendxpadmin/img/material-icons/outline-logout-24px.svg">
+            </a>
+        </form>
+    {% endblock %}
+
+    <div id="opendxp_signet" data-menu-tooltip="{{'OpenDXP Core Version ' ~ settings.version }}" style="text-indent: -10000px">
+        BE RESPECTFUL AND HONOR OUR WORK FOR FREE & OPEN SOURCE SOFTWARE BY NOT REMOVING OUR LOGO.
+        WE OFFER YOU THE POSSIBILITY TO ADDITIONALLY ADD YOUR OWN LOGO IN OPENDXP'S SYSTEM SETTINGS. THANK YOU!
+    </div>
+</div>
+
+<div id="opendxp_tooltip" style="display: none;"></div>
+<div id="opendxp_quicksearch"></div>
+
+{# define stylesheets #}
+
+{% block stylesheets %}
+
+    {% set styles = [
+        path('opendxp_admin_misc_admincss'),
+        "/bundles/opendxpadmin/css/icons.css",
+        "/bundles/opendxpadmin/extjs/css/OpenDxpApp-all_1.css",
+        "/bundles/opendxpadmin/extjs/css/OpenDxpApp-all_2.css",
+        "/bundles/opendxpadmin/css/admin.css"
+    ] %}
+
+    <!-- stylesheets -->
+    <style type="text/css">
+        {#
+         # use @import here, because if IE9 CSS file limitations (31 files)
+         # see also: http://blogs.telerik.com/blogs/posts/10-05-03/internet-explorer-css-limits.aspx
+         # @import bypasses this problem in an elegant way
+        #}
+        {% for style in styles %}
+            @import url("{{ style }}?_dc={{ settings.build }}");
+        {% endfor %}
+    </style>
+
+{% endblock %}
+
+{# define scripts #}
+
+{% set debugSuffix = '' %}
+{% if settings.disableMinifyJs %}
+    {% set debugSuffix = "-debug" %}
+{% endif %}
+
+{# SCRIPT LIBRARIES #}
+
+{% set scriptLibs = [
+    "lib/class.js",
+    "../extjs/js/ext-all" ~ debugSuffix ~ ".js",
+    "lib/ext-plugins/portlet/PortalDropZone.js",
+    "lib/ext-plugins/portlet/Portlet.js",
+    "lib/ext-plugins/portlet/PortalColumn.js",
+    "lib/ext-plugins/portlet/PortalPanel.js",
+    "lib/ext-plugins/DragDropTag.js",
+    "../build/admin/ace-builds/src-min-noconflict/ace.js",
+    "../build/admin/ace-builds/src-min-noconflict/ext-modelist.js"
+] %}
+{% if opendxp_file_exists(constant('OPENDXP_WEB_ROOT') ~ '/bundles/opendxpadmin/js/lib/ext-locale/locale-' ~ language ~ '.js') %}
+    {% set scriptLibs = scriptLibs|merge(['lib/ext-locale/locale-' ~ language ~ '.js']) %}
+{% endif %}
+
+{# OPENDXP SCRIPTS #}
+
+{% set scripts = [
+
+
+    "opendxp/functions.js",
+    "opendxp/common.js",
+    "opendxp/elementservice.js",
+    "opendxp/helpers.js",
+    "opendxp/error.js",
+    "opendxp/events.js",
+    "opendxp/iconlibrary.js",
+    "opendxp/treenodelocator.js",
+    "opendxp/helpers/generic-grid.js",
+    "opendxp/helpers/quantityValue.js",
+    "opendxp/overrides.js",
+
+    "opendxp/perspective.js",
+    "opendxp/user.js",
+    "opendxp/localeDateTime.js",
+
+    "opendxp/tool/paralleljobs.js",
+    "opendxp/tool/genericiframewindow.js",
+
+
+    "opendxp/settings/user/panels/abstract.js",
+    "opendxp/settings/user/panel.js",
+
+    "opendxp/settings/user/usertab.js",
+    "opendxp/settings/user/editorSettings.js",
+    "opendxp/settings/user/websiteTranslationSettings.js",
+    "opendxp/settings/user/role/panel.js",
+    "opendxp/settings/user/role/tab.js",
+    "opendxp/settings/user/user/objectrelations.js",
+    "opendxp/settings/user/user/settings.js",
+    "opendxp/settings/user/user/keyBindings.js",
+    "opendxp/settings/user/workspaces.js",
+    "opendxp/settings/user/workspace/asset.js",
+    "opendxp/settings/user/workspace/document.js",
+    "opendxp/settings/user/workspace/object.js",
+    "opendxp/settings/user/workspace/customlayouts.js",
+    "opendxp/settings/user/workspace/language.js",
+    "opendxp/settings/user/workspace/special.js",
+    "opendxp/settings/user/role/settings.js",
+    "opendxp/settings/profile/panel.js",
+    "opendxp/settings/profile/twoFactorSettings.js",
+    "opendxp/settings/thumbnail/item.js",
+    "opendxp/settings/thumbnail/panel.js",
+    "opendxp/settings/videothumbnail/item.js",
+    "opendxp/settings/videothumbnail/panel.js",
+    "opendxp/settings/translation.js",
+    "opendxp/settings/translationEditor.js",
+    "opendxp/settings/translation/translationmerger.js",
+    "opendxp/settings/translation/translationSettingsTab.js",
+    "opendxp/settings/metadata/predefined.js",
+    "opendxp/settings/properties/predefined.js",
+    "opendxp/settings/docTypes.js",
+    "opendxp/settings/system.js",
+    "opendxp/settings/systemAppearance.js",
+    "opendxp/settings/website.js",
+
+    "opendxp/settings/recyclebin.js",
+    "opendxp/settings/maintenance.js",
+    "opendxp/settings/email/log.js",
+    "opendxp/settings/email/blocklist.js",
+
+    "opendxp/settings/gdpr/gdprPanel.js",
+    "opendxp/settings/gdpr/dataproviders/assets.js",
+    "opendxp/settings/gdpr/dataproviders/dataObjects.js",
+    "opendxp/settings/gdpr/dataproviders/sentMail.js",
+    "opendxp/settings/gdpr/dataproviders/opendxpUsers.js",
+
+    "opendxp/element/applicationLoggerPanelFacade.js",
+    "opendxp/element/customReportsPanelFacade.js",
+    "opendxp/element/selector/searchFacade.js",
+
+    "opendxp/element/abstract.js",
+    "opendxp/element/abstractPreview.js",
+    "opendxp/element/properties.js",
+    "opendxp/element/scheduler.js",
+    "opendxp/element/dependencies.js",
+    "opendxp/element/metainfo.js",
+    "opendxp/element/history.js",
+    "opendxp/element/notes.js",
+    "opendxp/element/note_details.js",
+    "opendxp/element/workflows.js",
+    "opendxp/element/tag/imagecropper.js",
+    "opendxp/element/tag/imagehotspotmarkereditor.js",
+    "opendxp/element/replace_assignments.js",
+    "opendxp/element/permissionchecker.js",
+    "opendxp/element/gridexport/abstract.js",
+    "opendxp/element/helpers/gridColumnConfig.js",
+    "opendxp/element/helpers/gridConfigDialog.js",
+    "opendxp/element/helpers/gridCellEditor.js",
+    "opendxp/element/helpers/gridTabAbstract.js",
+    "opendxp/object/helpers/grid.js",
+    "opendxp/object/helpers/gridConfigDialog.js",
+    "opendxp/object/helpers/classTree.js",
+    "opendxp/object/helpers/gridTabAbstract.js",
+    "opendxp/object/helpers/metadataMultiselectEditor.js",
+    "opendxp/object/helpers/customLayoutEditor.js",
+    "opendxp/object/helpers/optionEditor.js",
+    "opendxp/object/helpers/imageGalleryDropZone.js",
+    "opendxp/object/helpers/imageGalleryPanel.js",
+    "opendxp/object/helpers/selectField.js",
+    "opendxp/object/helpers/reservedWords.js",
+    "opendxp/element/tag/configuration.js",
+    "opendxp/element/tag/assignment.js",
+    "opendxp/element/tag/tree.js",
+    "opendxp/asset/helpers/metadataTree.js",
+    "opendxp/asset/helpers/gridConfigDialog.js",
+    "opendxp/asset/helpers/gridTabAbstract.js",
+    "opendxp/asset/helpers/grid.js",
+
+
+    "opendxp/document/properties.js",
+    "opendxp/document/document.js",
+    "opendxp/document/page_snippet.js",
+    "opendxp/document/edit.js",
+    "opendxp/document/versions.js",
+    "opendxp/document/settings_abstract.js",
+    "opendxp/document/pages/settings.js",
+    "opendxp/document/pages/preview.js",
+    "opendxp/document/snippets/settings.js",
+    "opendxp/document/emails/settings.js",
+    "opendxp/document/link.js",
+    "opendxp/document/hardlink.js",
+    "opendxp/document/folder.js",
+    "opendxp/document/tree.js",
+    "opendxp/document/snippet.js",
+    "opendxp/document/email.js",
+    "opendxp/document/page.js",
+    "opendxp/document/document_language_overview.js",
+    "opendxp/document/customviews/tree.js",
+
+    "opendxp/asset/metadata/data/data.js",
+    "opendxp/asset/metadata/data/input.js",
+    "opendxp/asset/metadata/data/textarea.js",
+    "opendxp/asset/metadata/data/asset.js",
+    "opendxp/asset/metadata/data/document.js",
+    "opendxp/asset/metadata/data/object.js",
+    "opendxp/asset/metadata/data/date.js",
+    "opendxp/asset/metadata/data/checkbox.js",
+    "opendxp/asset/metadata/data/select.js",
+
+    "opendxp/asset/metadata/tags/abstract.js",
+    "opendxp/asset/metadata/tags/checkbox.js",
+    "opendxp/asset/metadata/tags/date.js",
+    "opendxp/asset/metadata/tags/input.js",
+    "opendxp/asset/metadata/tags/manyToOneRelation.js",
+    "opendxp/asset/metadata/tags/asset.js",
+    "opendxp/asset/metadata/tags/document.js",
+    "opendxp/asset/metadata/tags/object.js",
+    "opendxp/asset/metadata/tags/select.js",
+    "opendxp/asset/metadata/tags/textarea.js",
+    "opendxp/asset/asset.js",
+    "opendxp/asset/unknown.js",
+    "opendxp/asset/embedded_meta_data.js",
+    "opendxp/asset/image.js",
+    "opendxp/asset/document.js",
+    "opendxp/asset/archive.js",
+    "opendxp/asset/video.js",
+    "opendxp/asset/audio.js",
+    "opendxp/asset/text.js",
+    "opendxp/asset/folder.js",
+    "opendxp/asset/listfolder.js",
+    "opendxp/asset/versions.js",
+    "opendxp/asset/metadata/dataProvider.js",
+    "opendxp/asset/metadata/grid.js",
+    "opendxp/asset/metadata/editor.js",
+    "opendxp/asset/tree.js",
+    "opendxp/asset/customviews/tree.js",
+    "opendxp/asset/gridexport/csv.js",
+    "opendxp/asset/gridexport/xlsx.js",
+
+    "opendxp/object/helpers/edit.js",
+    "opendxp/object/helpers/layout.js",
+    "opendxp/object/classes/class.js",
+    "opendxp/object/class.js",
+    "opendxp/object/bulk-base.js",
+    "opendxp/object/bulk-export.js",
+    "opendxp/object/bulk-import.js",
+    "opendxp/object/classes/data/data.js",
+    "opendxp/object/classes/data/block.js",
+    "opendxp/object/classes/data/classificationstore.js",
+    "opendxp/object/classes/data/rgbaColor.js",
+    "opendxp/object/classes/data/date.js",
+    "opendxp/object/classes/data/datetime.js",
+    "opendxp/object/classes/data/dateRange.js",
+    "opendxp/object/classes/data/encryptedField.js",
+    "opendxp/object/classes/data/time.js",
+    "opendxp/object/classes/data/manyToOneRelation.js",
+    "opendxp/object/classes/data/image.js",
+    "opendxp/object/classes/data/externalImage.js",
+    "opendxp/object/classes/data/hotspotimage.js",
+    "opendxp/object/classes/data/imagegallery.js",
+    "opendxp/object/classes/data/video.js",
+    "opendxp/object/classes/data/input.js",
+    "opendxp/object/classes/data/numeric.js",
+    "opendxp/object/classes/data/numericRange.js",
+    "opendxp/object/classes/data/manyToManyObjectRelation.js",
+    "opendxp/object/classes/data/advancedManyToManyRelation.js",
+    "opendxp/object/classes/data/advancedManyToManyObjectRelation.js",
+    "opendxp/object/classes/data/reverseObjectRelation.js",
+    "opendxp/object/classes/data/booleanSelect.js",
+    "opendxp/object/classes/data/select.js",
+    "opendxp/object/classes/data/urlSlug.js",
+    "opendxp/object/classes/data/user.js",
+    "opendxp/object/classes/data/textarea.js",
+    "opendxp/object/classes/data/wysiwyg.js",
+    "opendxp/object/classes/data/checkbox.js",
+    "opendxp/object/classes/data/consent.js",
+    "opendxp/object/classes/data/slider.js",
+    "opendxp/object/classes/data/manyToManyRelation.js",
+    "opendxp/object/classes/data/table.js",
+    "opendxp/object/classes/data/structuredTable.js",
+    "opendxp/object/classes/data/country.js",
+    "opendxp/object/classes/data/geo/abstract.js",
+    "opendxp/object/classes/data/geopoint.js",
+    "opendxp/object/classes/data/geobounds.js",
+    "opendxp/object/classes/data/geopolygon.js",
+    "opendxp/object/classes/data/geopolyline.js",
+    "opendxp/object/classes/data/language.js",
+    "opendxp/object/classes/data/password.js",
+    "opendxp/object/classes/data/multiselect.js",
+    "opendxp/object/classes/data/link.js",
+    "opendxp/object/classes/data/fieldcollections.js",
+    "opendxp/object/classes/data/objectbricks.js",
+    "opendxp/object/classes/data/localizedfields.js",
+    "opendxp/object/classes/data/countrymultiselect.js",
+    "opendxp/object/classes/data/languagemultiselect.js",
+    "opendxp/object/classes/data/firstname.js",
+    "opendxp/object/classes/data/lastname.js",
+    "opendxp/object/classes/data/email.js",
+    "opendxp/object/classes/data/gender.js",
+    "opendxp/object/classes/data/quantityValue.js",
+    "opendxp/object/classes/data/inputQuantityValue.js",
+    "opendxp/object/classes/data/quantityValueRange.js",
+    "opendxp/object/classes/data/calculatedValue.js",
+    "opendxp/object/classes/layout/layout.js",
+    "opendxp/object/classes/layout/accordion.js",
+    "opendxp/object/classes/layout/fieldset.js",
+    "opendxp/object/classes/layout/fieldcontainer.js",
+    "opendxp/object/classes/layout/panel.js",
+    "opendxp/object/classes/layout/region.js",
+    "opendxp/object/classes/layout/tabpanel.js",
+    "opendxp/object/classes/layout/iframe.js",
+    "opendxp/object/fieldlookup/filterdialog.js",
+    "opendxp/object/fieldlookup/helper.js",
+    "opendxp/object/classes/layout/text.js",
+    "opendxp/object/fieldcollection.js",
+    "opendxp/object/fieldcollections/field.js",
+    "opendxp/object/gridcolumn/Abstract.js",
+    "opendxp/object/gridcolumn/operator/IsEqual.js",
+    "opendxp/object/gridcolumn/operator/Text.js",
+    "opendxp/object/gridcolumn/operator/Anonymizer.js",
+    "opendxp/object/gridcolumn/operator/AnyGetter.js",
+    "opendxp/object/gridcolumn/operator/AssetMetadataGetter.js",
+    "opendxp/object/gridcolumn/operator/Arithmetic.js",
+    "opendxp/object/gridcolumn/operator/Boolean.js",
+    "opendxp/object/gridcolumn/operator/BooleanFormatter.js",
+    "opendxp/object/gridcolumn/operator/CaseConverter.js",
+    "opendxp/object/gridcolumn/operator/CharCounter.js",
+    "opendxp/object/gridcolumn/operator/Concatenator.js",
+    "opendxp/object/gridcolumn/operator/DateFormatter.js",
+    "opendxp/object/gridcolumn/operator/ElementCounter.js",
+    "opendxp/object/gridcolumn/operator/Iterator.js",
+    "opendxp/object/gridcolumn/operator/JSON.js",
+    "opendxp/object/gridcolumn/operator/LocaleSwitcher.js",
+    "opendxp/object/gridcolumn/operator/Merge.js",
+    "opendxp/object/gridcolumn/operator/ObjectFieldGetter.js",
+    "opendxp/object/gridcolumn/operator/PHP.js",
+    "opendxp/object/gridcolumn/operator/PHPCode.js",
+    "opendxp/object/gridcolumn/operator/Base64.js",
+    "opendxp/object/gridcolumn/operator/TranslateValue.js",
+    "opendxp/object/gridcolumn/operator/PropertyGetter.js",
+    "opendxp/object/gridcolumn/operator/RequiredBy.js",
+    "opendxp/object/gridcolumn/operator/StringContains.js",
+    "opendxp/object/gridcolumn/operator/StringReplace.js",
+    "opendxp/object/gridcolumn/operator/Substring.js",
+    "opendxp/object/gridcolumn/operator/LFExpander.js",
+    "opendxp/object/gridcolumn/operator/Trimmer.js",
+    "opendxp/object/gridcolumn/operator/Alias.js",
+    "opendxp/object/gridcolumn/operator/WorkflowState.js",
+    "opendxp/object/gridcolumn/value/DefaultValue.js",
+    "opendxp/object/gridcolumn/operator/GeopointRenderer.js",
+    "opendxp/object/gridcolumn/operator/ImageRenderer.js",
+    "opendxp/object/gridcolumn/operator/HotspotimageRenderer.js",
+    "opendxp/object/importcolumn/Abstract.js",
+    "opendxp/object/importcolumn/operator/Base64.js",
+    "opendxp/object/importcolumn/operator/Ignore.js",
+    "opendxp/object/importcolumn/operator/Iterator.js",
+    "opendxp/object/importcolumn/operator/LocaleSwitcher.js",
+    "opendxp/object/importcolumn/operator/ObjectBrickSetter.js",
+    "opendxp/object/importcolumn/operator/PHPCode.js",
+    "opendxp/object/importcolumn/operator/Published.js",
+    "opendxp/object/importcolumn/operator/Splitter.js",
+    "opendxp/object/importcolumn/operator/Unserialize.js",
+    "opendxp/object/importcolumn/value/DefaultValue.js",
+    "opendxp/object/objectbrick.js",
+    "opendxp/object/objectbricks/field.js",
+    "opendxp/object/selectoptions.js",
+    "opendxp/object/selectoptionsitems/definition.js",
+    "opendxp/object/tags/abstract.js",
+    "opendxp/object/tags/abstractRelations.js",
+    "opendxp/object/tags/block.js",
+    "opendxp/object/tags/rgbaColor.js",
+    "opendxp/object/tags/date.js",
+    "opendxp/object/tags/datetime.js",
+    "opendxp/object/tags/dateRange.js",
+    "opendxp/object/tags/time.js",
+    "opendxp/object/tags/manyToOneRelation.js",
+    "opendxp/object/tags/image.js",
+    "opendxp/object/tags/encryptedField.js",
+    "opendxp/object/tags/externalImage.js",
+    "opendxp/object/tags/hotspotimage.js",
+    "opendxp/object/tags/imagegallery.js",
+    "opendxp/object/tags/video.js",
+    "opendxp/object/tags/input.js",
+    "opendxp/object/tags/classificationstore.js",
+    "opendxp/object/tags/numeric.js",
+    "opendxp/object/tags/numericRange.js",
+    "opendxp/object/tags/manyToManyObjectRelation.js",
+    "opendxp/object/tags/advancedManyToManyRelation.js",
+    "opendxp/object/gridcolumn/operator/FieldCollectionGetter.js",
+    "opendxp/object/tags/advancedManyToManyObjectRelation.js",
+    "opendxp/object/tags/reverseObjectRelation.js",
+    "opendxp/object/tags/urlSlug.js",
+    "opendxp/object/tags/booleanSelect.js",
+    "opendxp/object/tags/select.js",
+    "opendxp/object/tags/user.js",
+    "opendxp/object/tags/checkbox.js",
+    "opendxp/object/tags/consent.js",
+    "opendxp/object/tags/textarea.js",
+    "opendxp/object/tags/wysiwyg.js",
+    "opendxp/object/tags/slider.js",
+    "opendxp/object/tags/manyToManyRelation.js",
+    "opendxp/object/tags/table.js",
+    "opendxp/object/tags/structuredTable.js",
+    "opendxp/object/tags/country.js",
+    "opendxp/object/tags/geo/abstract.js",
+    "opendxp/object/tags/geobounds.js",
+    "opendxp/object/tags/geopoint.js",
+    "opendxp/object/tags/geopolygon.js",
+    "opendxp/object/tags/geopolyline.js",
+    "opendxp/object/tags/language.js",
+    "opendxp/object/tags/password.js",
+    "opendxp/object/tags/multiselect.js",
+    "opendxp/object/tags/link.js",
+    "opendxp/object/tags/fieldcollections.js",
+    "opendxp/object/tags/localizedfields.js",
+    "opendxp/object/tags/countrymultiselect.js",
+    "opendxp/object/tags/languagemultiselect.js",
+    "opendxp/object/tags/objectbricks.js",
+    "opendxp/object/tags/firstname.js",
+    "opendxp/object/tags/lastname.js",
+    "opendxp/object/tags/email.js",
+    "opendxp/object/tags/gender.js",
+    "opendxp/object/tags/quantityValue.js",
+    "opendxp/object/tags/quantityValueRange.js",
+    "opendxp/object/tags/inputQuantityValue.js",
+    "opendxp/object/tags/calculatedValue.js",
+    "opendxp/object/preview.js",
+    "opendxp/object/versions.js",
+    "opendxp/object/variantsTab.js",
+    "opendxp/object/folder/search.js",
+    "opendxp/object/edit.js",
+    "opendxp/object/abstract.js",
+    "opendxp/object/object.js",
+    "opendxp/object/folder.js",
+    "opendxp/object/variant.js",
+    "opendxp/object/tree.js",
+    "opendxp/object/layout/iframe.js",
+    "opendxp/object/customviews/tree.js",
+    "opendxp/object/quantityvalue/unitsettings.js",
+    "opendxp/object/gridexport/csv.js",
+    "opendxp/object/gridexport/xlsx.js",
+
+    "opendxp/layout/portal.js",
+    "opendxp/layout/portlets/abstract.js",
+    "opendxp/layout/portlets/modifiedDocuments.js",
+    "opendxp/layout/portlets/modifiedObjects.js",
+    "opendxp/layout/portlets/modifiedAssets.js",
+    "opendxp/layout/portlets/modificationStatistic.js",
+
+    "opendxp/layout/menu.js",
+    "opendxp/layout/toolbar.js",
+    "opendxp/layout/treepanelmanager.js",
+    "opendxp/document/seemode.js",
+
+    "opendxp/object/classificationstore/groupsPanel.js",
+    "opendxp/object/classificationstore/propertiesPanel.js",
+    "opendxp/object/classificationstore/collectionsPanel.js",
+    "opendxp/object/classificationstore/keyDefinitionWindow.js",
+    "opendxp/object/classificationstore/keySelectionWindow.js",
+    "opendxp/object/classificationstore/relationSelectionWindow.js",
+    "opendxp/object/classificationstore/storeConfiguration.js",
+    "opendxp/object/classificationstore/storeTree.js",
+    "opendxp/object/classificationstore/columnConfigDialog.js",
+
+
+    "opendxp/workflow/transitionPanel.js",
+    "opendxp/workflow/transitions.js",
+    "opendxp/workflow/transitions.js",
+
+
+    "opendxp/colorpicker-overrides.js",
+
+
+    "opendxp/notification/helper.js",
+    "opendxp/notification/panel.js",
+    "opendxp/notification/modal.js",
+]
+%}
+
+<!-- some javascript -->
+{# opendxp constants #}
+<script {{ opendxp_csp.getNonceHtmlAttribute()|raw }}>
+    opendxp.settings = {{(settings|json_encode(constant('JSON_PRETTY_PRINT'))|raw)}};
+</script>
+
+<script src="{{ path('opendxp_admin_misc_jsontranslationssystem', {'language': language, '_dc': settings.build }) }}" {{ opendxp_csp.getNonceHtmlAttribute()|raw }}></script>
+<script src="{{ path('opendxp_admin_user_getcurrentuser', {'_dc': settings.build }) }}" {{ opendxp_csp.getNonceHtmlAttribute()|raw }}></script>
+<script src="{{ path('opendxp_admin_misc_availablelanguages', {'_dc': settings.build }) }}" {{ opendxp_csp.getNonceHtmlAttribute()|raw }}></script>
+
+<!-- library scripts -->
+{% for scriptUrl in scriptLibs %}
+    <script src="/bundles/opendxpadmin/js/{{ scriptUrl }}?_dc={{ settings.build }}" {{ opendxp_csp.getNonceHtmlAttribute()|raw }}></script>
+{% endfor %}
+
+<!-- internal scripts -->
+{% if settings.disableMinifyJs %}
+    {% for scriptUrl in scripts %}
+        <script src="/bundles/opendxpadmin/js/{{ scriptUrl }}?_dc={{ settings.build }}"></script>
+    {% endfor %}
+{% else %}
+    {{ opendxp_minimize_scripts(scripts)|raw }}
+{% endif %}
+
+{# load plugin scripts #}
+
+{# // only add the timestamp if the devmode is not activated, otherwise it is very hard to develop and debug plugins,
+ # // because the filename changes on every reload and therefore breakpoints, ... are resetted on every reload
+#}
+
+{% set pluginDcValue = "now"|date('U') %}
+{% if settings.disableMinifyJs %}
+    {% set pluginDcValue = 1 %}
+{% endif %}
+
+<!-- bundle scripts -->
+{% if settings.disableMinifyJs %}
+    {% for pluginJsPath in pluginJsPaths %}
+        <script src="{{ pluginJsPath }}?_dc={{ pluginDcValue }}" {{ opendxp_csp.getNonceHtmlAttribute()|raw }}></script>
+    {% endfor %}
+{% else %}
+    {{ opendxp_minimize_scripts(pluginJsPaths)|raw }}
+{% endif %}
+
+{% for pluginCssPath in pluginCssPaths %}
+    <link rel="stylesheet" type="text/css" href="{{ pluginCssPath }}?_dc={{ pluginDcValue }}"/>
+{% endfor %}
+
+{#  MUST BE THE LAST LINE  #}
+<script src="/bundles/opendxpadmin/js/opendxp/startup.js?_dc={{ settings.build }}" {{ opendxp_csp.getNonceHtmlAttribute()|raw }}></script>
+</body>
+</html>

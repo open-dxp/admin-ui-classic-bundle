@@ -1,0 +1,22 @@
+{# @var $element \OpenDxp\Model\Asset\Image|\OpenDxp\Model\Asset\Document|\OpenDxp\Model\Asset\Video #}
+{% set previewImage = null %}
+{% set params = { 'id': element.id, 'treepreview': true } %}
+
+{% if element is instanceof('\\OpenDxp\\Model\\Asset\\Image') %}
+    {% set previewImage = path('opendxp_admin_asset_getimagethumbnail', params) %}
+{% elseif element is instanceof('\\OpenDxp\\Model\\Asset\\Video') and opendxp_video_is_available() %}
+    {% set previewImage = path('opendxp_admin_asset_getvideothumbnail', params) %}
+{% elseif element is instanceof('\\OpenDxp\\Model\\Asset\\Document') and opendxp_document_is_available() %}
+    {% set previewImage = path('opendxp_admin_asset_getdocumentthumbnail', params) %}
+{% endif %}
+
+{% if previewImage is defined %}
+    <div class="full-preview">
+        <img src="{{ previewImage }}" onload="this.parentNode.className += ' complete';">
+        {% include '@OpenDxpAdmin/searchadmin/search/quicksearch/info_table.html.twig' with {'element': element} %}
+    </div>
+{% else %}
+    <div class="mega-icon {{ iconCls }}"></div>
+    {% include '@OpenDxpAdmin/searchadmin/search/quicksearch/info_table.html.twig' with {'element': element} %}
+{% endif %}
+

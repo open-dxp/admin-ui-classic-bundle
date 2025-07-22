@@ -181,7 +181,7 @@
     font-size: 0;
     cursor: pointer;
     background-color: #0B4559;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiBmaWxsPSJub25lIi8+PGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjAiIGZpbGw9IiNFNmZmMmIiIC8+PC9zdmc+);
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMSIgaGVpZ2h0PSIyMS45Ij4NCiAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgaWQ9IlN2Z2pzU3ZnMTAwNyIgd2lkdGg9IjIxIiBoZWlnaHQ9IjIxLjkiDQogICAgICAgICB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyMSAyMS45Ij4NCiAgICAgICAgPHBhdGggZD0iTTIuNzA1IDEwLjk1YzAtNC43IDMuMjA3LTguMTMgNy43OTUtOC4xM3M3Ljc5NSAzLjQzIDcuNzk1IDguMTNjMCA0LjctMy4yMDcgOC4xMy03Ljc5NSA4LjEzcy03Ljc5NS0zLjQzMS03Ljc5NS04LjEzem0xMy4zNCAwYzAtMy41MTktMi4xMzgtNi4wNTgtNS41NDUtNi4wNThTNC45NTQgNy40MyA0Ljk1NCAxMC45NWMwIDMuNTE5IDIuMTM4IDYuMDU4IDUuNTQ2IDYuMDU4IDMuNDA4IDAgNS41NDUtMi41MzkgNS41NDUtNi4wNTh6Ig0KICAgICAgICAgICAgICBzdHlsZT0iZmlsbDojNzljMzAwO3N0cm9rZS13aWR0aDowO2ZpbGwtb3BhY2l0eToxIi8+DQogICAgPC9zdmc+DQo8L3N2Zz4=);
     background-repeat: no-repeat;
     background-size: 40px 40px;
     background-position: 10px 4px;
@@ -2310,7 +2310,7 @@ ul.leaflet-draw-actions.leaflet-draw-actions-top.leaflet-draw-actions-bottom li:
     position: absolute;
     width: 60px;
     height: 48px;
-    background: #279F4F;
+    background: #79c300;
     bottom: 144px;
     display: none;
 }

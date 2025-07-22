@@ -63,20 +63,20 @@ a, a:hover, a:visited, a:active {
     margin-bottom: 10px;
     width: 100%;
     padding: 10px;
-    border-radius: 2px;
+    border-radius: 8px;
     border:0;
     outline: none;
     line-height: 20px;
 }
 
 #content button {
-    background: #0B4559;
+    background: #79c300;
     color: #fff;
     margin-bottom: 10px;
     width: 100%;
     padding: 10px;
     text-transform: uppercase;
-    border-radius: 2px;
+    border-radius: 8px;
     border:0;
     font-weight: bold;
     cursor: pointer;
