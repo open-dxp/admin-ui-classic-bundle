@@ -1,0 +1,697 @@
+/**
+ * OpenDXP
+ *
+ * This source file is licensed under the GNU General Public License version 3 (GPLv3).
+ *
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) Pimcore GmbH (https://pimcore.com)
+ * @copyright  Modification Copyright (c) OpenDXP (https://www.opendxp.ch)
+ * @license    https://www.gnu.org/licenses/gpl-3.0.html  GNU General Public License version 3 (GPLv3)
+ */
+
+@import 'ext-modifications.css';
+@import 'icons.css';
+
+
+.cke {
+    /* needs to go over the ExtJS panels */
+    z-index: 100200 !important;
+}
+
+.cke * {
+    box-sizing: content-box !important;
+    -moz-box-sizing: content-box !important;
+    -ms-box-sizing: content-box !important;
+    -webkit-box-sizing: content-box !important;
+}
+
+.cke_dialog_container {
+    z-index: 100300 !important;
+}
+
+.cke_toolgroup, .cke_combo_button {
+    border-bottom: 0 !important;
+}
+
+.cke-code-editor textarea {
+    font-family: "courier new", courier !important;
+}
+
+input.cke_dialog_ui_input_tel {
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 2px inset;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(174, 179, 185) rgb(201, 204, 207) rgb(201, 204, 207);
+    border-image: initial;
+    padding: 4px 6px;
+    outline: 0px;
+    border-radius: 3px;
+}
+
+.opendxp_editable_image {
+    position: relative;
+}
+
+.opendxp_editable_image img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.opendxp_editable_image_alt {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+}
+
+.opendxp_block_buttons {
+	padding: 10px 0 5px 0;
+    opacity: .3;
+}
+
+.opendxp_block_entry_over .opendxp_block_buttons, .opendxp_block_entry_over {
+    opacity: 1;
+}
+
+.opendxp_area_buttons {
+    position: absolute;
+    left: -40px;
+    top:-8px;
+    width: 25px;
+    z-index: 1000;
+    display: none;
+}
+
+.opendxp_area_buttons.fixed {
+    display: block;
+}
+
+.opendxp_area_buttons.fixed.top {
+    position: relative;
+    top: 0;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.opendxp_area_buttons.fixed.top:after {
+    top: 49px;
+}
+
+.opendxp_area_buttons.right {
+    right: 10px;
+    left: auto;
+}
+
+.opendxp_area_buttons.top {
+    width: 100%;
+    left: 0;
+    top: -40px;
+    padding-bottom: 15px;
+}
+
+.opendxp_area_buttons_inner{
+    height: 34px;
+    display: flex;
+    background: #3c3f41;
+    border-left: 1px solid #000;
+}
+
+.opendxp_area_buttons.right .opendxp_area_buttons_inner,
+.opendxp_area_buttons.left .opendxp_area_buttons_inner {
+    height: auto;
+    flex-direction: column;
+}
+
+.opendxp_area_buttons:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 100%;
+    width: 0;
+    height: 0;
+    border-right: 8px solid #000000;
+    border-top: 0px solid transparent;
+    border-bottom: 8px solid transparent;
+
+    left: 100%;
+    border-left: 5px solid #000000;
+    border-right: 0px solid #000000;
+}
+
+.opendxp_area_buttons.left:after {
+    left: 34px;
+}
+
+.opendxp_area_buttons.right:after {
+    left: -5px;
+    border-left: 0px solid #000000;
+    border-right: 5px solid #000000;
+}
+
+.opendxp_area_buttons.top:after {
+    left: 0px;
+    top: 34px;
+    border-left: 0px solid transparent;
+    border-right: 8px solid transparent;
+
+    border-bottom: 0px solid #000000;
+    border-top: 5px solid #000000;
+}
+
+.opendxp_block_buttons .x-form-trigger-default,
+.opendxp_area_buttons .x-form-trigger-default{
+    line-height: 24px;
+    width:22px;
+}
+
+.opendxp_block_buttons .x-form-field,
+.opendxp_area_buttons .x-form-field {
+    padding: 1px 4px;
+    min-height: 30px;
+}
+
+.opendxp_block_buttons .x-btn {
+    background: #f6f6f6;
+    border-color: #e4e4e4;
+    border-left: 0;
+}
+
+.opendxp_block_buttons .x-btn-over,
+.opendxp_block_buttons .x-btn-focus.x-btn-default-small,
+.opendxp_block_buttons .x-btn-pressed.x-btn-default-small
+{
+    background-color: #ececec;
+    border-color: #e4e4e4;
+    border-left: 0;
+}
+
+.opendxp_area_buttons .x-btn {
+    padding: 4px;
+    border-left: 0;
+}
+
+.opendxp_block_plus,
+.opendxp_block_plus_up,
+.opendxp_block_minus,
+.opendxp_block_up,
+.opendxp_block_down,
+.opendxp_block_amount,
+.opendxp_block_type,
+.opendxp_block_options {
+    float: left;
+}
+
+.opendxp_area_buttons .opendxp_block_plus,
+.opendxp_area_buttons .opendxp_block_plus_up,
+.opendxp_area_buttons .opendxp_block_minus,
+.opendxp_area_buttons .opendxp_block_up,
+.opendxp_area_buttons .opendxp_block_down,
+.opendxp_area_buttons .opendxp_block_amount,
+.opendxp_area_buttons .opendxp_block_type,
+.opendxp_area_buttons .opendxp_block_options,
+.opendxp_area_buttons .opendxp_block_visibility {
+    float: none;
+}
+
+.opendxp_area_buttons.top .opendxp_block_plus,
+.opendxp_area_buttons.top .opendxp_block_plus_up,
+.opendxp_area_buttons.top .opendxp_block_minus,
+.opendxp_area_buttons.top .opendxp_block_up,
+.opendxp_area_buttons.top .opendxp_block_down,
+.opendxp_area_buttons.top .opendxp_block_amount,
+.opendxp_area_buttons.top .opendxp_block_type,
+.opendxp_area_buttons.top .opendxp_block_options,
+.opendxp_area_buttons.top .opendxp_block_visibility {
+    float: left;
+}
+
+.opendxp_block_clear {
+	clear: both;
+}
+
+.opendxp_block_label {
+    display: none;
+}
+
+.opendxp_area_buttons.top .opendxp_block_label {
+    display: inline-block;
+    float: left;
+    color: #ccc;
+    line-height: 38px;
+    font-size: 10px;
+    padding-left: 10px;
+
+    /* Hide overflowing text where surrounding area is too narrow to display it */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.opendxp_block_button_plus,
+.opendxp_block_button_minus,
+.opendxp_block_button_up,
+.opendxp_block_button_down,
+.opendxp_block_button_type {
+	display: inline-block !important;
+}
+
+.opendxp_block_button_plus button,
+.opendxp_block_button_minus button,
+.opendxp_block_button_up button,
+.opendxp_block_button_down button {
+	width: 16px;
+}
+
+.opendxp_block_entry {
+	clear:both;
+}
+
+.opendxp_area_entry {
+    position: relative;
+}
+
+.opendxp_block_amount {
+    /*width: 40px;*/
+}
+
+.opendxp_block_type,
+.opendxp_block_type button {
+    cursor:default !important;
+}
+
+.opendxp_block_button_type,
+.opendxp_block_button_type button {
+    cursor: move !important;
+}
+
+
+.opendxp_editable_areablock_dropzones_active.opendxp_editable_areablock > .opendxp_area_dropzone {
+    visibility: visible;
+}
+
+.opendxp_area_dropzone {
+    height: 20px;
+    background: #fff;
+    border:2px dashed #000;
+    clear:both;
+    visibility: hidden;
+    margin: 5px 0;
+}
+
+.opendxp_area_dropzone_hover {
+    background: #dedede;
+}
+
+.opendxp_wysiwyg_mask {
+	position: absolute;
+	z-index: 9997;
+	background: #ff6600;
+	/* beacause of IE */
+	-moz-opacity: 0;
+    -webkit-opacity: 0;
+	opacity: 0;
+	filter: Alpha(opacity=0);
+}
+
+/* default styles for wysiwyg (overwrite ExtJS reset CSS) */
+.opendxp_editable_wysiwyg {
+    position:relative;
+}
+
+.opendxp_iframe_mask {
+	position: absolute;
+	z-index: 9996;
+}
+
+.opendxp_editable_link {
+	position: relative;
+	padding: 0 30px 0 0;
+}
+
+.opendxp_editable_link .opendxp_edit_link_button {
+	position: absolute;
+    right: -7px;
+    top: -7px;
+}
+
+.opendxp_editable_link .opendxp_open_link_button {
+    position: absolute;
+    right: -38px;
+    top: -7px;
+}
+
+
+.opendxp_editable_link .x-btn-default-small {
+    padding: 3px;
+}
+
+.opendxp_editable_snippet_empty {
+	border: 1px solid #d0d0d0 !important;
+	background:url(/bundles/opendxpadmin/img/flat-color-icons/target.svg) center center/45px no-repeat #f9fbfb !important;
+}
+
+.opendxp_editable_image_empty {
+	border: 1px solid #d0d0d0 !important;
+	background:url(/bundles/opendxpadmin/img/flat-color-icons/drop-target-upload.svg) center center/80px no-repeat #f9fbfb !important;
+    min-height: 50px;
+}
+
+.opendxp_editable_image_no_upload_empty {
+    border: 1px solid #d0d0d0 !important;
+    background:url(/bundles/opendxpadmin/img/flat-color-icons/target.svg) center center/45px no-repeat #f9fbfb !important;
+    min-height: 50px;
+}
+
+.opendxp_editable_video_empty {
+	border: 1px solid #d0d0d0 !important;
+    background:url(/bundles/opendxpadmin/img/flat-color-icons/film_reel.svg) center center/50px no-repeat #f9fbfb !important;
+    cursor: pointer;
+    min-height: 80px;
+}
+
+.opendxp_editable_embed {
+    position: relative;
+}
+
+.opendxp_editable_embed_empty {
+    border: 1px solid #d0d0d0 !important;
+    background:url(/bundles/opendxpadmin/img/flat-color-icons/bricks.svg) center center/50px no-repeat #f9fbfb !important;
+    cursor: pointer;
+    min-height:100px;
+}
+
+.opendxp_editable_relation input{
+	background: url(/bundles/opendxpadmin/img/flat-color-icons/target.svg) right 3px center/24px no-repeat #fff;
+	cursor: default;
+}
+
+.opendxp_editable_droptarget {
+    background: url(/bundles/opendxpadmin/img/flat-color-icons/target.svg) center center/24px no-repeat;
+    position:absolute;
+    width:24px;
+    height:24px;
+    right:5px;
+    top:5px;
+}
+
+.opendxp_editable_droptarget_upload {
+    background: url(/bundles/opendxpadmin/img/flat-color-icons/drop-target-upload.svg) center center/48px no-repeat;
+    position:absolute;
+    width:50px;
+    height:24px;
+    right:0;
+    top:5px;
+}
+
+.opendxp_editable_block .x5-btn {
+    width: auto;
+    clear: none;
+    border-collapse: separate;
+    margin: 0;
+    table-layout: auto;
+}
+
+.opendxp_editable_renderlet {
+    position: relative;
+}
+
+.opendxp_editable_snippet {
+    position: relative;
+}
+
+.opendxp_editable_snippet .x5-panel-body {
+	background:none;
+	overflow:hidden !important;
+}
+
+.opendxp_editable_renderlet .x5-panel-body {
+	overflow:hidden !important;
+	background:none;
+}
+
+.opendxp_editable_table {
+    color: black !important;
+}
+
+.opendxp_droptarget_input  {
+	background: url(/bundles/opendxpadmin/img/flat-color-icons/target.svg) right 2px/20px no-repeat #fff !important;
+	cursor: default;
+}
+
+.opendxp_area_content {
+    position:relative;
+}
+
+.opendxp_area_editmode.opendxp_area_editmode_hidden {
+    position: absolute;
+    top:-2000px;
+    left:-10000px;
+}
+
+.opendxp_area_entry .opendxp_area_edit_button,
+.opendxp_editable_area .opendxp_area_edit_button{
+    position:absolute;
+    width:25px;
+    height:25px;
+    right:5px;
+    top:5px;
+}
+
+.opendxp_area_entry .opendxp_area_dialog,
+.opendxp_editable_area .opendxp_area_dialog {
+    position:relative;
+    float: right;
+    z-index: 10001;
+}
+
+.opendxp_areablock_dialogBox .x-fieldset-body {
+    overflow: visible;
+}
+
+.opendxp_areablock_dialogBox legend {
+    width: auto;
+}
+
+.opendxp_areablock_toolbar {
+    opacity: .9;
+    border-color: #000;
+    overflow-y: auto;
+    max-height: calc(100vh - 15px);
+    color-scheme: dark;
+}
+
+.opendxp_areablock_toolbar.x-layer {
+    position: fixed !important;
+    z-index: 10000 !important;
+}
+
+.opendxp_areablock_toolbar .x-btn-default-small {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    background: #000;
+    border-bottom: 1px solid #ccc;
+}
+
+.opendxp_areablock_toolbar .x-btn-default-small:last-child {
+    border:0;
+}
+
+.opendxp_areablock_toolbar .x-btn-button-center {
+    text-align: left;
+    -webkit-box-pack: left;
+    -ms-flex-pack: left;
+    justify-content: left;
+}
+
+.opendxp_areablock_toolbar .x-btn-wrap-default-small.x-btn-arrow-right:after {
+    content: '\f0da';
+}
+.opendxp_areablock_menu_limit {
+    color: #28a050;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.opendxp_editable_video {
+    position: relative;
+}
+.opendxp_editable_video.x5-masked {
+    min-height: 50px;
+}
+
+.opendxp_video_edit_button {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    z-index: 10001;
+}
+
+.opendxp_image_marker {
+    background: url(/bundles/opendxpadmin/img/icon/marker.png);
+    width: 20px;
+    height: 35px;
+    cursor: pointer;
+    position: absolute;
+}
+
+.opendxp_image_hotspot {
+    cursor: pointer;
+    position: absolute;
+    background: rgba(0, 255, 0, 0.5);
+}
+
+.opendxp_pdf_hotspot {
+    background: rgba(0, 255, 0, 0.5);
+}
+
+.hasMetadata {
+    color: #db1d09;
+}
+
+.opendxp_editable_multihref .x5-panel, .opendxp_editable_table .x5-panel {
+    border:1px solid #000;
+}
+
+.opendxp_editable_select, .opendxp_editable_checkbox {
+    display: inline-block;
+}
+
+.opendxp_editable_checkbox input {
+    margin-right: 5px;
+}
+
+/* support for placeholders */
+.opendxp_editable_input[contenteditable=true][data-placeholder]:empty:before,
+.opendxp_editable_textarea[contenteditable=true][data-placeholder]:empty:before,
+.opendxp_wysiwyg.empty[contenteditable=true][data-placeholder]:before {
+    cursor: text; /* For chrome */
+    content: attr(data-placeholder);
+    display: block; /* For firefox */
+    color:#BABABA;
+}
+
+.opendxp_wysiwyg.empty[contenteditable=true]:before {
+    height: 0; /* For firefox and Edge */
+}
+
+/* text fields: hover, focus, ... states */
+.opendxp_editable_input, .opendxp_editable_wysiwyg, .opendxp_editable_textarea, .opendxp_editable_textarea:focus .opendxp_wysiwyg:focus{
+    outline:0 auto;
+    overflow-y: visible;
+}
+
+.opendxp_editable_input.empty, .opendxp_wysiwyg.empty, .opendxp_editable_textarea.empty{
+    outline: 1px dashed #BABABA;
+}
+
+.editable-error {
+    outline: 2px dashed #ff5500 !important;
+    outline-offset: 5px;
+}
+
+.opendxp_wysiwyg.empty:after {
+    /* this is a firefox fix, to set the hight automatically to the font height, otherwise the height of the input can be 0px */
+    content: "\0000a0";
+}
+
+.opendxp_editable_input:hover, .opendxp_wysiwyg:hover, .opendxp_editable_textarea:hover, .opendxp_editable_snippet:hover, .opendxp_editable_renderlet:hover, .opendxp_editable_inc:hover {
+    outline: 2px dashed #BABABA;
+    outline-offset: 5px;
+}
+
+.opendxp_drag_drop_active .opendxp_editable_input:hover,
+.opendxp_drag_drop_active .opendxp_wysiwyg:hover,
+.opendxp_drag_drop_active .opendxp_editable_textarea:hover,
+.opendxp_drag_drop_active .opendxp_editable_snippet:hover,
+.opendxp_drag_drop_active .opendxp_editable_renderlet:hover,
+.opendxp_drag_drop_active .opendxp_editable_inc:hover {
+    outline:0 auto;
+}
+
+
+.opendxp_areablock_dialogBox .opendxp_editable_input,
+.opendxp_areablock_dialogBox .opendxp_editable_wysiwyg,
+.opendxp_areablock_dialogBox .opendxp_editable_textarea {
+    background-color: #fff;
+}
+
+.opendxp_areablock_dialogBox .opendxp_editable_input:hover,
+.opendxp_areablock_dialogBox .opendxp_wysiwyg:hover,
+.opendxp_areablock_dialogBox .opendxp_editable_textarea:hover,
+.opendxp_areablock_dialogBox .opendxp_editable_snippet:hover,
+.opendxp_areablock_dialogBox .opendxp_editable_renderlet:hover,
+.opendxp_areablock_dialogBox .opendxp_editable_inc:hover,
+.opendxp_areablock_dialogBox .opendxp_editable_input:hover,
+.opendxp_areablock_dialogBox .opendxp_wysiwyg:hover,
+.opendxp_areablock_dialogBox .opendxp_editable_textarea:hover,
+.opendxp_areablock_dialogBox .opendxp_editable_snippet:hover,
+.opendxp_areablock_dialogBox .opendxp_editable_renderlet:hover,
+.opendxp_areablock_dialogBox .opendxp_editable_inc:hover {
+    outline: none;
+}
+
+.opendxp_editable_input:focus, .opendxp_wysiwyg:focus, .opendxp_editable_textarea:focus {
+    outline: none;
+}
+
+.opendxp_editable_textarea {
+    white-space: pre-line;
+    width: 100%;
+}
+
+.opendxp_editable_date input {
+    min-width: 80px;
+    line-height: 24px;
+}
+
+.opendxp_area_hidden .opendxp_area_content {
+    filter: blur(1px);
+    opacity: 0.5;
+}
+
+.opendxp_editable_scheduledblock .x-slider-thumb.selected {
+    background-color: #ffefbb;
+}
+
+.opendxp_editable_scheduledblock .x-slider-thumb {
+    cursor: pointer;
+}
+
+.opendxp_editable_scheduledblock .x-slider-thumb.selected:before {
+    color: #e9d097;
+}
+
+/* ExtJS specific overrides */
+
+.x-btn {
+    text-decoration: none !important;
+}
+
+/* TODO this can't be the right solution. drop down arrow is the same outside editmode but cannot be rendered */
+@font-face {
+    font-family: 'Font Awesome 5 Free Editmode';
+    font-style: normal;
+    /*font-weight: normal;*/
+    src: url('/bundles/opendxpadmin/extjs/font/font-awesome/a-solid-900.eot');
+    src: url('/bundles/opendxpadmin/extjs/font/font-awesome/fonts/fa-solid-900.eot?#iefix') format('embedded-opentype'), url('/bundles/opendxpadmin/extjs/font/fonts/fa-solid-900.woff2') format('woff2'), url('/bundles/opendxpadmin/extjs/font/font-awesome/fonts/fa-solid-900.woff') format('woff'), url('/bundles/opendxpadmin/resources/font-awesome/fonts/fa-solid-900.ttf') format('truetype'), url('/bundles/opendxpadmin/resources/font-awesome/fonts/fa-solid-900.svg#fontawesome') format('svg');
+}
+
+.x-form-trigger-default {
+    font: 16px/30px 'Font Awesome 5 Free Editmode';
+}
+
+.x-dd-drag-ghost {
+    /* do not show drag ghost in editmode, as isn't necessary at all at often has a bad styling */
+    display: none;
+}
+
+.opendxp_cursor_move,
+.opendxp_cursor_move .x-menu-item-text
+{
+    cursor: move;
+}

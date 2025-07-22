@@ -1,0 +1,22 @@
+_opendxp_admin:
+    resource: "../../src/Controller/Admin/"
+    type:     annotation
+    prefix:   /admin
+    options:
+        expose: true
+
+_opendxp_gdpr:
+    resource: "../../src/Controller/GDPR/"
+    type:     annotation
+    prefix:   /admin/gdpr
+    options:
+        expose: true
+
+opendxp_admin_page_display_preview_image:
+    path: /admin/page/display-preview-image
+    defaults: { _controller: OpenDxp\Bundle\AdminBundle\Controller\Admin\Document\PageController::displayPreviewImageAction }
+
+# we need to have this outside of /admin scope, to be reachable publicly
+opendxp_admin_document_document_diff_versions_html:
+    path: /__admin/document/diff-versions-html
+    defaults: { _controller: OpenDxp\Bundle\AdminBundle\Controller\Admin\Document\DocumentController::diffVersionsHtmlAction }

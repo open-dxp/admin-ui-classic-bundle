@@ -1,0 +1,967 @@
+/**
+ * OpenDXP
+ *
+ * This source file is licensed under the GNU General Public License version 3 (GPLv3).
+ *
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) Pimcore GmbH (https://pimcore.com)
+ * @copyright  Modification Copyright (c) OpenDXP (https://www.opendxp.ch)
+ * @license    https://www.gnu.org/licenses/gpl-3.0.html  GNU General Public License version 3 (GPLv3)
+ */
+
+opendxp.registerNS("opendxp.element.helpers.gridColumnConfig");
+/**
+ * @private
+ */
+opendxp.element.helpers.gridColumnConfig = {
+
+    batchJobDelay: 50,
+
+    getSaveAsDialog: function () {
+        var defaultName = new Date();
+
+        var nameField = new Ext.form.TextField({
+            fieldLabel: t('name'),
+            length: 50,
+            allowBlank: false,
+            value: this.settings.gridConfigName ? this.settings.gridConfigName : defaultName,
+            renderer: Ext.util.Format.htmlEncode
+        });
+
+        var descriptionField = new Ext.form.TextArea({
+            fieldLabel: t('description'),
+            // height: 200,
+            value: this.settings.gridConfigDescription
+        });
+
+        var configPanel = new Ext.Panel({
+            layout: "form",
+            bodyStyle: "padding: 10px;",
+            items: [nameField, descriptionField],
+            buttons: [{
+                text: t("save"),
+                iconCls: "opendxp_icon_apply",
+                handler: function () {
+                    this.settings.gridConfigId = null;
+                    this.settings.gridConfigName = nameField.getValue();
+                    this.settings.gridConfigDescription = descriptionField.getValue();
+
+                    opendxp.helpers.saveColumnConfig(this.object.id, this.classId, this.getGridConfig(), this.searchType, this.saveColumnConfigButton,
+                        this.columnConfigurationSavedHandler.bind(this), this.settings, this.gridType);
+                    this.saveWindow.close();
+                }.bind(this)
+            }]
+        });
+
+        this.saveWindow = new Ext.Window({
+            width: 600,
+            height: 300,
+            modal: true,
+            title: t('save_as_copy'),
+            layout: "fit",
+            items: [configPanel]
+        });
+
+        this.saveWindow.show();
+        nameField.focus();
+        nameField.selectText();
+        return this.window;
+    },
+
+    deleteGridConfig: function () {
+
+        Ext.MessageBox.show({
+            title: t('delete'),
+            msg: t('delete_message'),
+            buttons: Ext.Msg.OKCANCEL,
+            icon: Ext.MessageBox.INFO,
+            fn: this.deleteGridConfigConfirmed.bind(this)
+        });
+    },
+
+    deleteGridConfigConfirmed: function (btn) {
+        var route = null;
+
+        if (this.gridType === 'asset') {
+            route = 'opendxp_admin_asset_assethelper_griddeletecolumnconfig';
+        }
+        else if(this.gridType === 'object') {
+            route = 'opendxp_admin_dataobject_dataobjecthelper_griddeletecolumnconfig';
+        }
+        else {
+            throw new Error('Type unknown');
+        }
+
+        if (btn === 'ok') {
+            Ext.Ajax.request({
+                url: Routing.generate(route),
+                method: "DELETE",
+                params: {
+                    id: this.classId,
+                    objectId:
+                    this.object.id,
+                    gridtype: "grid",
+                    gridConfigId: this.settings.gridConfigId,
+                    searchType: this.searchType
+                },
+                success: function (response) {
+
+                    decodedResponse = Ext.decode(response.responseText);
+                    if (!decodedResponse.deleteSuccess) {
+                        opendxp.helpers.showNotification(t("error"), t("error_deleting_item"), "error");
+                    }
+
+                    this.createGrid(false, response);
+                }.bind(this)
+            });
+        }
+    },
+
+    switchToGridConfig: function (menuItem) {
+        var gridConfig = menuItem.gridConfig;
+        this.settings.gridConfigId = gridConfig.id;
+        this.getTableDescription();
+    },
+
+    addGridConfigMenuItems: function(menu, list, onlyConfigs) {
+        for (var i = 0; i < list.length; i++) {
+            var disabled = false;
+            var config = list[i];
+            let text = `<span>${Ext.util.Format.htmlEncode(config["name"])}</span>`;
+            if (config.id == this.settings.gridConfigId) {
+                text = Ext.util.Format.htmlEncode(this.settings.gridConfigName);
+                if (!onlyConfigs) {
+                    text = "<b>" + text + "</b>";
+                    disabled = true;
+                }
+            }
+            var menuConfig = {
+                text: text,
+                disabled: disabled,
+                iconCls: 'opendxp_icon_gridcolumnconfig',
+                gridConfig: config,
+                handler: this.switchToGridConfig.bind(this)
+            };
+            menu.add(menuConfig);
+        }
+    },
+
+    buildColumnConfigMenu: function (onlyConfigs) {
+        var menu = this.columnConfigButton.getMenu();
+        menu.removeAll();
+
+        if (!onlyConfigs) {
+            menu.add({
+                text: t('save_as_copy'),
+                iconCls: "opendxp_icon_save",
+                handler: this.saveConfig.bind(this, true)
+            });
+
+            menu.add({
+                text: t('set_as_favourite'),
+                iconCls: "opendxp_icon_favourite",
+                handler: function () {
+                    opendxp.helpers.markColumnConfigAsFavourite(this.object.id, this.classId, this.settings.gridConfigId, this.searchType, true, this.gridType);
+                }.bind(this)
+            });
+
+            menu.add({
+                text: t('delete'),
+                iconCls: "opendxp_icon_delete",
+                disabled: !this.settings.gridConfigId || this.settings.isShared,
+                handler: this.deleteGridConfig.bind(this)
+            });
+
+            menu.add('-');
+        }
+
+        var disabled = false;
+        var text = t('predefined');
+        if (!this.settings.gridConfigId && !onlyConfigs) {
+            text = "<b>" + text + "</b>";
+            disabled = true;
+
+        }
+
+        menu.add({
+            text: text,
+            iconCls: "opendxp_icon_gridcolumnconfig",
+            disabled: disabled,
+            gridConfig: {
+                id: 0
+            },
+            handler: this.switchToGridConfig.bind(this)
+        });
+
+        if (this.availableConfigs && this.availableConfigs.length > 0) {
+            this.addGridConfigMenuItems(menu, this.availableConfigs, onlyConfigs);
+        }
+
+        if (this.sharedConfigs && this.sharedConfigs.length > 0) {
+            menu.add('-');
+            this.addGridConfigMenuItems(menu, this.sharedConfigs, onlyConfigs);
+        }
+    },
+
+    saveConfig: function (asCopy, context) {
+        if (asCopy) {
+            this.getSaveAsDialog();
+        } else {
+            opendxp.helpers.saveColumnConfig(this.object.id, this.classId, this.getGridConfig(), this.searchType, this.saveColumnConfigButton,
+                this.columnConfigurationSavedHandler.bind(this), this.settings, this.gridType, this.context, this.filter);
+        }
+    },
+
+    filterUpdateFunction: function (grid, toolbarFilterInfo, clearFilterButton) {
+        var filterStringConfig = [];
+        var filterData = grid.getStore().getFilters().items;
+
+        // reset
+        toolbarFilterInfo.setTooltip(" ");
+
+        if (filterData.length > 0) {
+
+            for (var i = 0; i < filterData.length; i++) {
+
+                var operator = filterData[i].getOperator();
+                if (operator == 'lt') {
+                    operator = "&lt;";
+                } else if (operator == 'gt') {
+                    operator = "&gt;";
+                } else if (operator == 'eq') {
+                    operator = "=";
+                }
+
+                var value = filterData[i].getValue();
+
+                if (value instanceof Date) {
+                    value = Ext.Date.format(value, opendxp.globalmanager.get('localeDateTime').getShortDateFormat());
+                }
+
+                if (value && typeof value == "object") {
+                    filterStringConfig.push(filterData[i].getProperty() + " " + operator + " ("
+                        + value.join(" OR ") + ")");
+                } else if (value) {
+                    filterStringConfig.push(filterData[i].getProperty() + " " + operator + " " + value);
+                } else {
+                    filterStringConfig.push(filterData[i].getProperty() + " " + " IS (NULL OR '')");
+                }
+            }
+
+            var filterCondition = filterStringConfig.join(" AND ") + "</b>";
+            toolbarFilterInfo.setTooltip("<b>" + t("filter_condition") + ": " + filterCondition);
+            toolbarFilterInfo.opendxp_filter_condition = filterCondition;
+            toolbarFilterInfo.setHidden(false);
+        }
+        toolbarFilterInfo.setHidden(filterData.length == 0);
+        clearFilterButton.setHidden(filterData.length == 0);
+    },
+
+    updateGridHeaderContextMenu: function (grid) {
+        var columnConfig = new Ext.menu.Item({
+            text: t("grid_options"),
+            iconCls: "opendxp_icon_table_col opendxp_icon_overlay_edit",
+            handler: this.openColumnConfig.bind(this)
+        });
+        var menu = grid.headerCt.getMenu();
+        menu.add(columnConfig);
+        //
+
+        var batchAllMenu = new Ext.menu.Item({
+            text: t("batch_change"),
+            iconCls: "opendxp_icon_table opendxp_icon_overlay_go",
+            handler: function (grid) {
+                var menu = grid.headerCt.getMenu();
+                var column = menu.activeHeader;
+                this.batchPrepare(column, false, false, false);
+            }.bind(this, grid)
+        });
+        menu.add(batchAllMenu);
+
+        var batchSelectedMenu = new Ext.menu.Item({
+            text: t("batch_change_selected"),
+            iconCls: "opendxp_icon_structuredTable opendxp_icon_overlay_go",
+            handler: function (grid) {
+                var menu = grid.headerCt.getMenu();
+                var column = menu.activeHeader;
+                this.batchPrepare(column, true, false, false);
+            }.bind(this, grid)
+        });
+        menu.add(batchSelectedMenu);
+
+        var batchAppendAllMenu = new Ext.menu.Item({
+            text: t("batch_append_all"),
+            iconCls: "opendxp_icon_table opendxp_icon_overlay_go",
+            handler: function (grid) {
+                var menu = grid.headerCt.getMenu();
+                var column = menu.activeHeader;
+                this.batchPrepare(column, false, true, false);
+            }.bind(this, grid)
+        });
+        menu.add(batchAppendAllMenu);
+
+        var batchAppendSelectedMenu = new Ext.menu.Item({
+            text: t("batch_append_selected"),
+            iconCls: "opendxp_icon_structuredTable opendxp_icon_overlay_go",
+            handler: function (grid) {
+                var menu = grid.headerCt.getMenu();
+                var column = menu.activeHeader;
+                this.batchPrepare(column, true, true, false);
+            }.bind(this, grid)
+        });
+        menu.add(batchAppendSelectedMenu);
+
+
+        var batchRemoveAllMenu = new Ext.menu.Item({
+            text: t("batch_remove_all"),
+            iconCls: "opendxp_icon_table opendxp_icon_overlay_go",
+            handler: function (grid) {
+                var menu = grid.headerCt.getMenu();
+                var column = menu.activeHeader;
+                this.batchPrepare(column, false, false, true);
+            }.bind(this, grid)
+        });
+        menu.add(batchRemoveAllMenu);
+
+        var batchRemoveSelectedMenu = new Ext.menu.Item({
+            text: t("batch_remove_selected"),
+            iconCls: "opendxp_icon_structuredTable opendxp_icon_overlay_go",
+            handler: function (grid) {
+                var menu = grid.headerCt.getMenu();
+                var column = menu.activeHeader;
+                this.batchPrepare(column, true, false, true);
+            }.bind(this, grid)
+        });
+        menu.add(batchRemoveSelectedMenu);
+
+        var filterByRelationMenu = new Ext.menu.Item({
+            text: t("filter_by_relation"),
+            iconCls: "opendxp_icon_filter opendxp_icon_overlay_add",
+            handler: function (grid) {
+                var menu = grid.headerCt.getMenu();
+                var column = menu.activeHeader;
+                this.filterPrepare(column);
+            }.bind(this, grid)
+        });
+        menu.add(filterByRelationMenu);
+
+        //
+        menu.on('beforeshow', function (batchAllMenu, batchSelectedMenu, grid) {
+            var menu = grid.headerCt.getMenu();
+            var columnDataIndex = menu.activeHeader.dataIndex;
+
+            if (menu.activeHeader.config && typeof menu.activeHeader.config.getRelationFilter === "function") {
+                filterByRelationMenu.show();
+            } else {
+                filterByRelationMenu.hide();
+            }
+
+            // no batch for system properties
+            if (Ext.Array.contains(this.systemColumns, columnDataIndex) || Ext.Array.contains(this.noBatchColumns, columnDataIndex)) {
+                batchAllMenu.hide();
+                batchSelectedMenu.hide();
+            } else {
+                batchAllMenu.show();
+                batchSelectedMenu.show();
+            }
+
+            if (!Ext.Array.contains(this.systemColumns, columnDataIndex) && Ext.Array.contains(this.batchAppendColumns ? this.batchAppendColumns : [], columnDataIndex)) {
+                batchAppendAllMenu.show();
+                batchAppendSelectedMenu.show();
+            } else {
+                batchAppendAllMenu.hide();
+                batchAppendSelectedMenu.hide();
+            }
+
+            if (!Ext.Array.contains(this.systemColumns,columnDataIndex) && Ext.Array.contains(this.batchRemoveColumns ? this.batchRemoveColumns : [], columnDataIndex)) {
+                batchRemoveAllMenu.show();
+                batchRemoveSelectedMenu.show();
+            } else {
+                batchRemoveAllMenu.hide();
+                batchRemoveSelectedMenu.hide();
+            }
+        }.bind(this, batchAllMenu, batchSelectedMenu, grid));
+    },
+
+    filterPrepare: function (column) {
+        const dataIndexName = column.dataIndex
+        const gridColumns = this.grid.getColumns();
+        let columnIndex = -1;
+        for (let i = 0; i < gridColumns.length; i++) {
+            let dataIndex = gridColumns[i].dataIndex;
+            if (dataIndex == dataIndexName) {
+                columnIndex = i;
+                break;
+            }
+        }
+        if (columnIndex < 0) {
+            return;
+        }
+
+        if (this.systemColumns.indexOf(gridColumns[columnIndex].dataIndex) > -1) {
+            return;
+        }
+
+        const fieldInfo = this.grid.getColumns()[columnIndex].config;
+
+        if (this.objecttype === "object" || this.objecttype === "variant") {
+            if (!fieldInfo.layout || !fieldInfo.layout.layout) {
+                return;
+            }
+
+            const tagType = fieldInfo.layout.type;
+            const editor = new opendxp.object.tags[tagType](null, fieldInfo.layout.layout);
+            editor.setObject(this.object);
+            editor.updateContext({
+                containerType: "filterByRelationWindow"
+            });
+
+            const formPanel = Ext.create('Ext.form.Panel', {
+                xtype: "form",
+                border: false,
+                items: [editor.getLayoutEdit()],
+                bodyStyle: "padding: 10px;",
+                buttons: [
+                    {
+                        text: t("clear_relation_filter"),
+                        iconCls: "opendxp_icon_filter_condition opendxp_icon_overlay_delete",
+                        handler: function () {
+                            this.filterByRelationWindow.close();
+                            this.grid.store.filters.removeByKey("x-gridfilter-"+fieldInfo.dataIndex);
+                        }.bind(this)
+                    },
+                    {
+                        text: t("apply_filter"),
+                        iconCls: "opendxp_icon_filter opendxp_icon_overlay_add",
+                        handler: function () {
+                            if (formPanel.isValid() && typeof fieldInfo.getRelationFilter === "function") {
+                                this.grid.filters.getStore().addFilter(
+                                    fieldInfo.getRelationFilter(fieldInfo.dataIndex, editor)
+                                );
+                                this.filterByRelationWindow.close();
+                            }
+                        }.bind(this)
+                    }
+                ]
+            });
+
+            const title = t("filter_by_relation_field") + " " + fieldInfo.text;
+            let width = 700;
+            if (tagType === 'manyToManyObjectRelation' && fieldInfo.layout.layout.width && fieldInfo.layout.layout.width !== '100%') {
+                width = sumWidths(fieldInfo.layout.layout.width, 25);
+            }
+            this.filterByRelationWindow = new Ext.Window({
+                autoScroll: true,
+                modal: false,
+                title: title,
+                items: [formPanel],
+                bodyStyle: "background: #fff;",
+                width: width,
+                maxHeight: 650
+            });
+            this.filterByRelationWindow.show();
+            this.filterByRelationWindow.updateLayout();
+        }
+    },
+
+    batchPrepare: function (column, onlySelected, append, remove) {
+        var dataIndexName = column.dataIndex
+        var gridColumns = this.grid.getColumns();
+        var columnIndex = -1;
+        for (let i = 0; i < gridColumns.length; i++) {
+            let dataIndex = gridColumns[i].dataIndex;
+            if (dataIndex == dataIndexName) {
+                columnIndex = i;
+                break;
+            }
+        }
+        if (columnIndex < 0) {
+            return;
+        }
+
+        // no batch for system properties
+
+        if (this.systemColumns.indexOf(gridColumns[columnIndex].dataIndex) > -1) {
+            return;
+        }
+
+        var jobs = [];
+        if (onlySelected) {
+            var selectedRows = this.grid.getSelectionModel().getSelection();
+            for (var i = 0; i < selectedRows.length; i++) {
+                jobs.push(selectedRows[i].get("id"));
+            }
+            this.batchOpen(columnIndex, jobs, append, remove, onlySelected);
+
+        } else {
+            let params = this.getGridParams(onlySelected);
+            Ext.Ajax.request({
+                url: this.batchPrepareUrl,
+                params: params,
+                method: 'POST',
+                success: function (columnIndex, response) {
+                    var rdata = Ext.decode(response.responseText);
+                    if (rdata.success && rdata.jobs) {
+                        this.batchOpen(columnIndex, rdata.jobs, append, remove, onlySelected);
+                    }
+
+                }.bind(this, columnIndex)
+            });
+        }
+
+    },
+
+    batchOpen: function (columnIndex, jobs, append, remove, onlySelected) {
+
+        columnIndex = columnIndex - 1;
+
+        var fieldInfo = this.grid.getColumns()[columnIndex + 1].config;
+
+        // HACK: typemapping for published (systemfields) because they have no edit masks, so we use them from the
+        // data-types
+        if (fieldInfo.dataIndex == "published") {
+            fieldInfo.layout = {
+                layout: {
+                    title: t("published"),
+                    name: "published",
+                    hideEmptyButton: true
+                },
+                type: "checkbox"
+            };
+        }
+        // HACK END
+
+        if((this.objecttype === "object") || (this.objecttype === "variant")) {
+            if (!fieldInfo.layout || !fieldInfo.layout.layout) {
+                return;
+            }
+
+            if (fieldInfo.layout.layout.noteditable) {
+                Ext.MessageBox.alert(t('error'), t('this_element_cannot_be_edited'));
+                return;
+            }
+
+            var tagType = fieldInfo.layout.type;
+            var editor = new opendxp.object.tags[tagType](null, fieldInfo.layout.layout);
+            editor.setObject(this.object);
+        } else {
+            let layoutInfo = this.fieldObject[fieldInfo.dataIndex].layout;
+            const tagType = this.fieldObject[fieldInfo.dataIndex].type ?? layout.fieldtype;
+            try {
+                if (typeof opendxp.asset.metadata.tags[tagType].prototype.prepareBatchEditLayout == "function") {
+                    layoutInfo = opendxp.asset.metadata.tags[tagType].prototype.prepareBatchEditLayout(layoutInfo);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+
+            var editor = new opendxp.asset.metadata.tags[tagType](null, layoutInfo);
+            editor.setAsset(this.asset);
+        }
+
+        editor.updateContext({
+            containerType: "batch"
+        });
+
+        var formPanel = Ext.create('Ext.form.Panel', {
+            xtype: "form",
+            border: false,
+            items: [editor.getLayoutEdit()],
+            bodyStyle: "padding: 10px;",
+            buttons: [
+                {
+                    text: t("save"),
+                    handler: function () {
+                        if (formPanel.isValid()) {
+                            if (jobs.length > 25) {
+                                Ext.Msg.confirm("Confirmation", sprintf(t('batch_confirmation'), `<b>${new Intl.NumberFormat(navigator.language).format(jobs.length)}</b>`),
+                                    (btn) => {
+                                        if (btn === "yes") {
+                                            this.batchProcess(jobs, append, remove, editor, fieldInfo, true);
+                                        } else {
+                                            this.batchWin.close()
+                                            return;
+                                        }
+                                    });
+                            } else {
+                                this.batchProcess(jobs, append, remove, editor, fieldInfo, true);
+                            }
+                        }
+                    }.bind(this)
+                }
+            ]
+        });
+        var batchTitle = onlySelected ? "batch_edit_field_selected" : "batch_edit_field";
+        var appendTitle = onlySelected ? "batch_append_selected_to" : "batch_append_to";
+        var removeTitle = onlySelected ? "batch_remove_selected_from" : "batch_remove_from";
+        var title = remove ? t(removeTitle) + " " + fieldInfo.text : (append ? t(appendTitle) + " " + fieldInfo.text : t(batchTitle) + " " + fieldInfo.text);
+        this.batchWin = new Ext.Window({
+            autoScroll: true,
+            modal: false,
+            title: title,
+            items: [formPanel],
+            bodyStyle: "background: #fff;",
+            width: 700,
+            maxHeight: 600
+        });
+        this.batchWin.show();
+        this.batchWin.updateLayout();
+    },
+
+    batchProcess: function (jobs, append,  remove, editor, fieldInfo, initial) {
+        if (initial) {
+            this.batchErrors = [];
+            this.batchJobCurrent = 0;
+
+            var newValue = editor.getValue();
+
+            var valueType = "primitive";
+            if (newValue && typeof newValue == "object") {
+                newValue = Ext.encode(newValue);
+                valueType = "object";
+            }
+
+            this.batchParameters = {
+                name: fieldInfo.dataIndex,
+                value: newValue,
+                valueType: valueType,
+                language: this.gridLanguage
+            };
+
+
+            this.batchWin.close();
+
+            this.batchProgressBar = new Ext.ProgressBar({
+                text: t('initializing'),
+                style: "margin-top: 0px;",
+                width: 500
+            });
+
+            this.cancelBtn = Ext.create('Ext.Button', {
+                scale: 'small',
+                text: t('cancel'),
+                tooltip: t('cancel'),
+                icon : '/bundles/opendxpadmin/img/flat-color-icons/cancel.svg',
+                style: 'margin-left:5px;height:30px',
+                handler: () => {
+                    // Stop the batch processing
+                    this.batchJobCurrent = Infinity;
+                }
+            });
+
+            this.progressPanel = Ext.create('Ext.panel.Panel', {
+                layout: {
+                    type: 'hbox',
+                },
+                items: [
+                    this.batchProgressBar,
+                    this.cancelBtn
+                ],
+            });
+
+            this.batchProgressWin = new Ext.Window({
+                title: t('batch_operation'),
+                items: [this.progressPanel],
+                layout: 'fit',
+                width: 650,
+                bodyStyle: "padding: 10px;",
+                closable: false,
+                plain: true,
+                modal: true
+            });
+
+            this.batchProgressWin.show();
+
+        }
+
+        if (this.batchJobCurrent >= jobs.length) {
+            this.batchProgressWin.close();
+            this.pagingtoolbar.moveFirst();
+            try {
+                var tree = opendxp.globalmanager.get("layout_object_tree").tree;
+                tree.getStore().load({
+                    node: tree.getRootNode()
+                });
+            } catch (e) {
+                console.log(e);
+            }
+
+            // error handling
+            if (this.batchErrors.length > 0) {
+                var jobErrors = [];
+                for (var i = 0; i < this.batchErrors.length; i++) {
+                    jobErrors.push(this.batchErrors[i].job + ' - ' + this.batchErrors[i].error);
+                }
+                Ext.Msg.alert(t("error"), t("error_jobs") + ":<br>" + jobErrors.join("<br>"));
+            }
+
+            // Due to some ExtJS bug, when using a lock, the selection is visually cleared after batch operation
+            // To avoid confusion and disalignment on what we see from what is actually selected, everything is unselected
+            if (this.grid.hasOwnProperty('enableLocking') && this.grid.enableLocking){
+                this.grid.getSelectionModel().deselectAll();
+            }
+
+            return;
+        }
+
+        var status = (this.batchJobCurrent / jobs.length);
+        var percent = Math.ceil(status * 100);
+        this.batchProgressBar.updateProgress(status, percent + "%");
+
+        this.batchParameters.job = jobs[this.batchJobCurrent];
+        if (append) {
+            this.batchParameters.append = 1;
+        }
+        if (remove) {
+            this.batchParameters.remove = 1;
+        }
+
+        Ext.Ajax.request({
+            url: this.batchProcessUrl,
+            method: 'PUT',
+            params: {
+                data: Ext.encode(this.batchParameters)
+            },
+            success: function (jobs, currentJob, response) {
+
+                try {
+                    var rdata = Ext.decode(response.responseText);
+                    if (rdata) {
+                        if (!rdata.success) {
+                            throw "not successful";
+                        }
+                    }
+                } catch (e) {
+                    this.batchErrors.push({
+                        job: currentJob,
+                        error: (typeof(rdata.message) !== "undefined" && rdata.message) ?
+                            rdata.message : 'Not Successful'
+                    });
+                }
+
+                window.setTimeout(function () {
+                    this.batchJobCurrent++;
+                    this.batchProcess(jobs, append, remove);
+                }.bind(this), this.batchJobDelay);
+            }.bind(this, jobs, this.batchParameters.job)
+        });
+    },
+
+    exportPrepare: function (settings, exportType) {
+        let params = this.getGridParams();
+
+        var fields = this.getGridConfig().columns;
+        var fieldKeys = Object.entries(fields).map(([key, value]) => ({ key: key, label: value.fieldConfig?.label || key }));
+        fieldKeys = Ext.encode(fieldKeys);
+        params["fields[]"] = fieldKeys;
+        if (this.context) {
+            params["context"] = Ext.encode(this.context);
+        }
+
+        settings = Ext.encode(settings);
+        params["settings"] = settings;
+        Ext.Ajax.request({
+            method: 'POST',
+            url: this.exportPrepareUrl,
+            params: params,
+            success: function (response) {
+                var rdata = Ext.decode(response.responseText);
+
+                if (rdata.success && rdata.jobs) {
+                    const exportSize = rdata.jobs.reduce((a, b) => a + b.length, 0)
+                    if (exportSize > 25) {
+                        Ext.Msg.confirm("Confirmation", sprintf(t('batch_export_confirmation'), `<b>${new Intl.NumberFormat(navigator.language).format(exportSize)}</b>`),
+                            (btn) => {
+                                if (btn === "yes") {
+                                    this.exportProcess(rdata.jobs, rdata.fileHandle, fieldKeys, true, settings, exportType);
+                                } else {
+                                    return;
+                                }
+                            });
+                    } else {
+                        this.exportProcess(rdata.jobs, rdata.fileHandle, fieldKeys, true, settings, exportType);
+                    }
+                }
+            }.bind(this)
+        });
+    },
+
+    exportProcess: function (jobs, fileHandle, fields, initial, settings, exportType) {
+        if (initial) {
+            this.exportErrors = [];
+            this.exportJobCurrent = 0;
+
+            this.exportParameters = {
+                fileHandle: fileHandle,
+                language: this.gridLanguage,
+                settings: settings
+            };
+            this.exportProgressBar = new Ext.ProgressBar({
+                text: t('initializing'),
+                style: "margin-top: 0px;",
+                width: 500
+            });
+            
+            this.cancelBtn = Ext.create('Ext.Button', {
+                scale: 'small',
+                text: t('cancel'),
+                tooltip: t('cancel'),
+                icon: '/bundles/opendxpadmin/img/flat-color-icons/cancel.svg',
+                style: 'margin-left:5px;height:30px',
+                handler: () => {
+                    // Stop the batch processing
+                    this.exportJobCurrent = Infinity;
+                }
+            });
+
+            this.progressPanel = Ext.create('Ext.panel.Panel', {
+                layout: {
+                    type: 'hbox',
+                },
+                items: [
+                    this.exportProgressBar,
+                    this.cancelBtn
+                ],
+            });
+
+            this.exportProgressWin = new Ext.Window({
+                title: t("export"),
+                items: [this.progressPanel],
+                layout: 'fit',
+                width: 650,
+                bodyStyle: "padding: 10px;",
+                closable: false,
+                plain: true,
+                listeners: opendxp.helpers.getProgressWindowListeners()
+            });
+            this.exportProgressWin.show();
+        }
+
+        if (this.exportJobCurrent >= jobs.length) {
+            this.exportProgressWin.close();
+
+            // error handling
+            if (this.exportErrors.length > 0) {
+                var jobErrors = [];
+                for (var i = 0; i < this.exportErrors.length; i++) {
+                    jobErrors.push(this.exportErrors[i].job);
+                }
+                Ext.Msg.alert(t("error"), t("error_jobs") + ": " + jobErrors.join(","));
+            } else {
+                opendxp.helpers.download(exportType.getDownloadUrl(fileHandle));
+            }
+
+            return;
+        }
+
+        var status = (this.exportJobCurrent / jobs.length);
+        var percent = Math.ceil(status * 100);
+        this.exportProgressBar.updateProgress(status, percent + "%");
+
+        this.exportParameters['ids[]'] = jobs[this.exportJobCurrent];
+        this.exportParameters["fields[]"] = fields;
+        this.exportParameters.classId = this.classId;
+        this.exportParameters.initial = initial ? 1 : 0;
+        this.exportParameters.language = this.gridLanguage;
+        this.exportParameters.context = Ext.encode(this.context);
+        this.exportParameters.userTimezone = getUserTimezone();
+
+        Ext.Ajax.request({
+            url: this.exportProcessUrl,
+            method: 'POST',
+            params: this.exportParameters,
+            success: function (jobs, currentJob, response) {
+
+                try {
+                    var rdata = Ext.decode(response.responseText);
+                    if (rdata) {
+                        if (!rdata.success) {
+                            throw "not successful";
+                        }
+                    }
+                } catch (e) {
+                    this.exportErrors.push({
+                        job: currentJob
+                    });
+                }
+
+                window.setTimeout(function () {
+                    this.exportJobCurrent++;
+                    this.exportProcess(jobs, fileHandle, fields, false, settings, exportType);
+                }.bind(this), this.batchJobDelay);
+            }.bind(this, jobs, jobs[this.exportJobCurrent])
+        });
+    },
+
+    columnConfigurationSavedHandler: function (rdata) {
+        this.settings = rdata.settings;
+        this.availableConfigs = rdata.availableConfigs;
+        this.buildColumnConfigMenu();
+    },
+
+    getGridParams: function (onlySelected) {
+        var filters = "";
+        var condition = "";
+        var searchQuery = this.searchField ? this.searchField.getValue() : "";
+
+        var filterData = this.store.getFilters().items;
+        if (filterData.length > 0) {
+            filters = this.store.getProxy().encodeFilters(filterData);
+        }
+
+        var params = {
+            filter: filters,
+            condition: condition,
+            classId: this.classId,
+            folderId: this.element.id,
+            objecttype: this.objecttype,
+            language: this.gridLanguage,
+            batch: true, // to avoid limit for export
+        };
+
+        if (searchQuery) {
+            params["query"] = searchQuery;
+        }
+
+        if (onlySelected !== false) {
+            //create the ids array which contains chosen rows to export
+            ids = [];
+            var selectedRows = this.grid.getSelectionModel().getSelection();
+            for (var i = 0; i < selectedRows.length; i++) {
+                ids.push(selectedRows[i].data.id);
+            }
+
+            if (ids.length > 0) {
+                params["ids[]"] = ids;
+            }
+        }
+
+        //tags filter
+        if(this.tagsTree) {
+            params["tagIds[]"] = this.tagsTree.getCheckedTagIds();
+
+            if(this.tagsPanel) {
+                params["considerChildTags"] = this.tagsPanel.considerChildTags;
+            }
+        }
+
+        //only direct children filter
+        if (this.checkboxOnlyDirectChildren) {
+            params["only_direct_children"] = this.checkboxOnlyDirectChildren.getValue();
+        }
+
+        //only unreferenced filter
+        if (this.checkboxOnlyUnreferenced) {
+            params["only_unreferenced"] = this.checkboxOnlyUnreferenced.getValue();
+        }
+
+        var fields = this.getGridConfig().columns;
+        var fieldKeys = Object.keys(fields);
+        params["fields[]"] = fieldKeys;
+
+        return params;
+
+    }
+};

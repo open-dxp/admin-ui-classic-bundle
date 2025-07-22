@@ -1,0 +1,10 @@
+{
+  "entrypoints": {
+    "imageEditor": {
+      "js": [
+        "/bundles/opendxpadmin/build/imageEditor/runtime.js",
+        "/bundles/opendxpadmin/build/imageEditor/imageEditor.js"
+      ]
+    }
+  }
+}

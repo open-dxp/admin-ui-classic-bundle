@@ -1,0 +1,257 @@
+/**
+ * OpenDXP
+ *
+ * This source file is licensed under the GNU General Public License version 3 (GPLv3).
+ *
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) Pimcore GmbH (https://pimcore.com)
+ * @copyright  Modification Copyright (c) OpenDXP (https://www.opendxp.ch)
+ * @license    https://www.gnu.org/licenses/gpl-3.0.html  GNU General Public License version 3 (GPLv3)
+ */
+
+opendxp.registerNS("opendxp.object.classes.data.datetime");
+/**
+ * @private
+ */
+opendxp.object.classes.data.datetime = Class.create(opendxp.object.classes.data.data, {
+
+    type:"datetime",
+    /**
+     * define where this datatype is allowed
+     */
+    allowIn:{
+        object:true,
+        objectbrick:true,
+        fieldcollection:true,
+        localizedfield:true,
+        classificationstore : true,
+        block: true,
+        encryptedField: true
+    },
+
+    initialize:function (treeNode, initData) {
+        this.type = "datetime";
+
+        this.initData(initData);
+
+        this.treeNode = treeNode;
+    },
+
+    getGroup:function () {
+        return "date";
+    },
+
+
+    getTypeName:function () {
+        return t("datetime");
+    },
+
+    getIconClass:function () {
+        return "opendxp_icon_datetime";
+    },
+
+    getLayout:function ($super) {
+
+        $super();
+
+        this.specificPanel.removeAll();
+
+        var specificItems = this.getSpecificPanelItems(this.datax);
+        this.specificPanel.add(specificItems);
+
+        return this.layout;
+    },
+
+    getSpecificPanelItems: function (datax, inEncryptedField) {
+        if(this.isInCustomLayoutEditor()) {
+            return [];
+        }
+
+        var specificItems = [];
+
+        var defaultValue = new Ext.form.Hidden({
+            xtype:"hidden",
+            name:"defaultValue",
+            value: datax.defaultValue
+        });
+
+        var date = {
+            cls:"object_field",
+            width:300
+        };
+
+        var time = {
+            format:"H:i",
+            emptyText:"",
+            width:120
+        };
+
+
+        if (datax.defaultValue) {
+            var tmpDate;
+            if(typeof datax.defaultValue === 'object'){
+                tmpDate = datax.defaultValue;
+            } else {
+                tmpDate = new Date(datax.defaultValue * 1000);
+            }
+
+            date.value = tmpDate;
+            time.value = Ext.Date.format(tmpDate, opendxp.globalmanager.get('localeDateTime').getShortTimeFormat());
+        }
+
+        var datefield = new Ext.form.DateField(date);
+        var timefield = new Ext.form.TimeField(time);
+
+        datefield.addListener("change", this.setDefaultValue.bind(this, defaultValue, datefield, timefield));
+        timefield.addListener("change", this.setDefaultValue.bind(this, defaultValue, datefield, timefield));
+
+        if(datax.useCurrentDate){
+            datefield.setDisabled(true);
+            timefield.setDisabled(true);
+        }
+
+        var defaultComponent = new Ext.form.FieldSet({
+            layout: 'hbox',
+            title: t("default_value"),
+            style: "border: none !important",
+            combineErrors:false,
+            items:[datefield, timefield],
+            cls:"object_field"
+        });
+
+        var columnTypeData = [["datetime", "DATETIME"],["bigint(20)", "BIGINT"]];
+
+        // do not check for newly created fields but for existing ones without a respectTimezone value
+        let isRespectTimezone = (datax.respectTimezone !== false && Boolean(datax.name)) || datax.columnType === "bigint(20)";
+
+        var columnTypeField = new Ext.form.ComboBox({
+            name: "columnType",
+            mode: 'local',
+            autoSelect: true,
+            forceSelection: true,
+            editable: false,
+            fieldLabel: t("column_type"),
+            value: datax.columnType != "bigint(20)" && datax.columnType != "datetime" ? 'datetime' : datax.columnType ,
+            readOnly: !isRespectTimezone,
+            store: new Ext.data.ArrayStore({
+                fields: [
+                    'id',
+                    'label'
+                ],
+                data: columnTypeData
+            }),
+            triggerAction: 'all',
+            valueField: 'id',
+            displayField: 'label'
+        });
+
+
+        specificItems = specificItems.concat(
+            [
+                defaultComponent,
+                defaultValue,
+                {
+                    xtype: 'textfield',
+                    width: 600,
+                    fieldLabel: t("default_value_generator"),
+                    labelWidth: 140,
+                    name: 'defaultValueGenerator',
+                    value: datax.defaultValueGenerator
+                },
+                {
+                    xtype:"checkbox",
+                    fieldLabel:t("use_current_date"),
+                    name:"useCurrentDate",
+                    checked:datax.useCurrentDate,
+                    disabled: this.isInCustomLayoutEditor(),
+                    listeners:{
+                        change:this.toggleDefaultDate.bind(this, defaultValue, datefield, timefield)
+                    }
+                },
+                {
+                    xtype:"checkbox",
+                    fieldLabel:t("respect_timezone"),
+                    name:"respectTimezone",
+                    checked:isRespectTimezone,
+                    disabled: this.isInCustomLayoutEditor(),
+                    listeners:{
+                        change:this.toggleColumnType.bind(this, columnTypeField)
+                    }
+                }, {
+                xtype: "displayfield",
+                hideLabel:true,
+                html:'<span class="object_field_setting_warning">' +t('inherited_default_value_warning')+'</span>'
+            },
+                columnTypeField
+            ]);
+
+
+        return specificItems;
+
+    },
+
+    setDefaultValue:function (defaultValue, datefield, timefield) {
+
+        if (datefield.getValue() && typeof datefield.getValue() === 'object') {
+            var dateString = Ext.Date.format(datefield.getValue(), opendxp.globalmanager.get('localeDateTime').getShortDateFormat());
+
+            if (timefield.getValue()) {
+                dateString += " " + Ext.Date.format(timefield.getValue(), opendxp.globalmanager.get('localeDateTime').getShortTimeFormat());
+            } else {
+                dateString += " 00:00";
+            }
+
+            defaultValue.setValue((Ext.Date.parseDate(dateString, "Y-m-d H:i").getTime()) / 1000);
+        } else {
+            datefield.setValue(null);
+            defaultValue.setValue(null);
+        }
+    },
+
+    toggleDefaultDate:function (defaultValue, datefield, timefield, checkbox, checked) {
+            if (checked) {
+                datefield.setValue(null);
+                timefield.setValue(null);
+                defaultValue.setValue(null);
+                datefield.setDisabled(true);
+                timefield.setDisabled(true);
+            } else {
+                datefield.enable();
+                timefield.enable();
+            }
+
+
+    },
+
+    toggleColumnType: function (columnTypeField, checkbox, checked) {
+        if (!checked) {
+            columnTypeField.setValue("datetime");
+        }
+
+        columnTypeField.setReadOnly(!checked);
+    },
+
+    applyData: function ($super) {
+        $super();
+        this.datax.queryColumnType = this.datax.columnType;
+    },
+
+    applySpecialData: function(source) {
+        if (source.datax) {
+            if (!this.datax) {
+                this.datax =  {};
+            }
+            Ext.apply(this.datax,
+                {
+                    defaultValue: source.datax.defaultValue,
+                    useCurrentDate: source.datax.useCurrentDate,
+                    respectTimezone: source.datax.respectTimezone,
+                    defaultValueGenerator: source.datax.defaultValueGenerator,
+                    columnType: source.datax.columnType
+                });
+        }
+    }
+
+});

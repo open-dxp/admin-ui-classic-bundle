@@ -1,0 +1,72 @@
+/**
+ * OpenDXP
+ *
+ * This source file is licensed under the GNU General Public License version 3 (GPLv3).
+ *
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) Pimcore GmbH (https://pimcore.com)
+ * @copyright  Modification Copyright (c) OpenDXP (https://www.opendxp.ch)
+ * @license    https://www.gnu.org/licenses/gpl-3.0.html  GNU General Public License version 3 (GPLv3)
+ */
+
+opendxp.registerNS("opendxp.settings.user.workspace.language");
+
+/**
+ * @private
+ */
+opendxp.settings.user.workspace.language = Class.create({
+
+    initialize: function (type, data) {
+        this.type = type;
+        this.data = data;
+    },
+
+    getLayout: function() {
+        var storeData = [];
+        storeData.push(['default',t('default')]);
+        var nrOfLanguages = opendxp.settings.websiteLanguages.length;
+        for (var i = 0; i < nrOfLanguages; i++) {
+            var language = opendxp.settings.websiteLanguages[i];
+            storeData.push([language, opendxp.available_languages[language]]);
+        }
+
+        var store = Ext.create('Ext.data.ArrayStore', {
+            fields: ['id', 'text'],
+            data: storeData
+        });
+
+
+        var options = {
+            name: "languages",
+            triggerAction: "all",
+            editable: false,
+            store: store,
+            valueField: "id",
+            hideLabel: true,
+            width: 350,
+            height: 480,
+            value: this.data
+
+        };
+
+        this.box = new Ext.ux.form.MultiSelect(options);
+
+        this.window = new Ext.Panel({
+            bodyStyle: "padding: 10px;",
+            items: [this.box]
+        });
+
+        return this.window;
+    },
+
+    getValue: function() {
+        var value = this.box.getValue();
+        return value;
+    },
+
+    getType: function() {
+        return this.type;
+    }
+});

@@ -1,0 +1,80 @@
+/**
+ * OpenDXP
+ *
+ * This source file is licensed under the GNU General Public License version 3 (GPLv3).
+ *
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) Pimcore GmbH (https://pimcore.com)
+ * @copyright  Modification Copyright (c) OpenDXP (https://www.opendxp.ch)
+ * @license    https://www.gnu.org/licenses/gpl-3.0.html  GNU General Public License version 3 (GPLv3)
+ */
+
+opendxp.registerNS("opendxp.layout.portlets.modifiedDocuments");
+/**
+ * @private
+ */
+opendxp.layout.portlets.modifiedDocuments = Class.create(opendxp.layout.portlets.abstract, {
+
+    getType: function () {
+        return "opendxp.layout.portlets.modifiedDocuments";
+    },
+
+    getName: function () {
+        return t("modified_documents");
+    },
+
+    getIcon: function () {
+        return "opendxp_icon_document";
+    },
+
+    getLayout: function (portletId) {
+
+        var store = new Ext.data.Store({
+            autoDestroy: true,
+            proxy: {
+                type: 'ajax',
+                url: Routing.generate('opendxp_admin_portal_portletmodifieddocuments'),
+                reader: {
+                    type: 'json',
+                    rootProperty: 'documents'
+                }
+            },
+            fields: ['id','path',"type",'date']
+        });
+
+        store.load();
+
+        var grid = Ext.create('Ext.grid.Panel', {
+            store: store,
+            columns: [
+                {text: t('path'), sortable: false, dataIndex: 'path', flex: 1},
+                {text: t('date'), width: 150, sortable: false, renderer: function (d) {
+                    var date = new Date(d * 1000);
+                    return Ext.Date.format(date, opendxp.globalmanager.get('localeDateTime').getDateTimeFormat());
+                }, dataIndex: 'date'}
+
+            ],
+            stripeRows: true,
+            autoExpandColumn: 'path'
+        });
+
+        grid.on("rowclick", function(grid, record, tr, rowIndex, e, eOpts ) {
+            var data = grid.getStore().getAt(rowIndex);
+
+            opendxp.helpers.openDocument(data.data.id, data.data.type);
+        });
+
+        this.layout = Ext.create('Portal.view.Portlet', Object.assign(this.getDefaultConfig(), {
+            title: this.getName(),
+            iconCls: this.getIcon(),
+            height: 275,
+            layout: "fit",
+            items: [grid]
+        }));
+
+        this.layout.portletId = portletId;
+        return this.layout;
+    }
+});

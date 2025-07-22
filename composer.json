@@ -1,0 +1,51 @@
+{
+    "name": "open-dxp/admin-ui-classic-bundle",
+    "license": "GPL-3.0+",
+    "type": "opendxp-bundle",
+    "config": {
+        "sort-packages": true,
+        "preferred-install": {
+            "open-dxp/opendxp": "source",
+            "*": "dist"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "require": {
+        "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+        "cbschuld/browser.php": "^1.9.6",
+        "endroid/qr-code": "^4 || ^5.1",
+        "phpoffice/phpspreadsheet": "^2.2 || ^3.3",
+        "open-dxp/opendxp": "^1.0.0",
+        "symfony/webpack-encore-bundle": "^1.17 || ^2.0"
+    },
+    "require-dev": {
+        "codeception/codeception": "^5.0.11",
+        "codeception/module-asserts": "^2.0.1",
+        "codeception/module-symfony": "^3.1.1",
+        "codeception/phpunit-wrapper": "^9",
+        "phpstan/phpstan": "1.10.30",
+        "phpstan/phpstan-symfony": "^1.3.2",
+        "phpunit/phpunit": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenDxp\\Bundle\\AdminBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OpenDxp\\Bundle\\AdminBundle\\Tests\\": "tests"
+        },
+        "files": [
+            "kernel/Kernel.php"
+        ]
+    },
+    "extra": {
+        "opendxp": {
+            "bundles": [
+                "OpenDxp\\Bundle\\AdminBundle\\OpenDxpAdminBundle"
+            ]
+        }
+    }
+}

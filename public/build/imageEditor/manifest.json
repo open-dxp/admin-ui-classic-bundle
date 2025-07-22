@@ -1,0 +1,4 @@
+{
+  "AdminBundle/build/imageEditor.js": "/bundles/opendxpadmin/build/imageEditor/imageEditor.js",
+  "AdminBundle/build/runtime.js": "/bundles/opendxpadmin/build/imageEditor/runtime.js"
+}

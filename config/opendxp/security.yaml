@@ -1,0 +1,4 @@
+security:
+  providers:
+    opendxp_admin:
+      id: OpenDxp\Security\User\UserProvider

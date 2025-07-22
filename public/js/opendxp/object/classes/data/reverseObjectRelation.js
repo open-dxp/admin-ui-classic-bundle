@@ -1,0 +1,254 @@
+/**
+ * OpenDXP
+ *
+ * This source file is licensed under the GNU General Public License version 3 (GPLv3).
+ *
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) Pimcore GmbH (https://pimcore.com)
+ * @copyright  Modification Copyright (c) OpenDXP (https://www.opendxp.ch)
+ * @license    https://www.gnu.org/licenses/gpl-3.0.html  GNU General Public License version 3 (GPLv3)
+ */
+
+opendxp.registerNS("opendxp.object.classes.data.reverseObjectRelation");
+/**
+ * @private
+ */
+opendxp.object.classes.data.reverseObjectRelation = Class.create(opendxp.object.classes.data.data, {
+
+    type: "reverseObjectRelation",
+    /**
+     * define where this datatype is allowed
+     */
+    allowIn: {
+        object: true,
+        objectbrick: false,
+        fieldcollection: false,
+        localizedfield: false,
+        classificationstore : false
+    },
+
+    initialize: function (treeNode, initData) {
+        this.type = "reverseObjectRelation";
+
+        this.initData(initData);
+
+        // overwrite default settings
+        this.availableSettingsFields = ["name","title","tooltip","noteditable","invisible","style", "visibleGridView", "visibleSearch"];
+
+        this.treeNode = treeNode;
+    },
+
+    getGroup: function () {
+        return "relation";
+    },
+
+    getTypeName: function () {
+        return t("reverse_object_relation");
+    },
+
+    getIconClass: function () {
+        return "opendxp_icon_reverseObjectRelation";
+    },
+
+    getLayout: function ($super) {
+
+        $super();
+
+        this.specificPanel.removeAll();
+        this.specificPanel.add([
+            {
+                xtype: "checkbox",
+                boxLabel: t("allow_to_create_new_object"),
+                name: "allowToCreateNewObject",
+                value: this.datax.allowToCreateNewObject
+            },
+            {
+                xtype: "textfield",
+                fieldLabel: t("width"),
+                name: "width",
+                value: this.datax.width
+            },
+            {
+                xtype: "displayfield",
+                hideLabel: true,
+                value: t('width_explanation')
+            },
+            {
+                xtype: "textfield",
+                fieldLabel: t("height"),
+                name: "height",
+                value: this.datax.height
+            },
+            {
+                xtype: "displayfield",
+                hideLabel: true,
+                value: t('height_explanation')
+            }
+        ]);
+
+
+        if(!this.isInCustomLayoutEditor()) {
+            this.specificPanel.add([
+                {
+                    xtype: 'textfield',
+                    width: 600,
+                    fieldLabel: t("path_formatter_service"),
+                    name: 'pathFormatterClass',
+                    value: this.datax.pathFormatterClass
+                }
+            ]);
+
+            this.classCombo = new Ext.form.ComboBox({
+                typeAhead: true,
+                triggerAction: 'all',
+                store: opendxp.globalmanager.get("object_types_store"),
+                valueField: 'text',
+                displayField: 'text',
+                listWidth: 'auto',
+                fieldLabel: t('owner_class'),
+                name: 'ownerClassName',
+                value: this.datax.ownerClassName,
+                forceSelection: true,
+                editable: true,
+                listeners: {
+                    change: function (field, classNamevalue, oldValue) {
+                        this.datax.ownerClassName = classNamevalue;
+                    }.bind(this)
+                }
+            });
+
+
+            this.fieldComboStore = new Ext.data.Store({
+                proxy: {
+                    type: 'ajax',
+                    url: Routing.generate('opendxp_admin_dataobject_dataobjecthelper_gridgetcolumnconfig'),
+                    reader: {
+                        type: 'json',
+                        rootProperty: "availableFields"
+                    },
+                    extraParams: {
+                        types: 'manyToManyObjectRelation,manyToOneRelation',
+                        name: this.datax.ownerClassName
+                    }
+                },
+                fields: ['key', 'label'],
+                autoLoad: false,
+                forceSelection: true
+            });
+
+
+            this.fieldCombo = new Ext.form.ComboBox({
+                fieldLabel: t('owner_field'),
+                value: this.datax.ownerFieldName,
+                store: this.fieldComboStore,
+                listWidth: 'auto',
+                displayField: 'key',
+                valueField: 'key',
+                lastQuery: '',
+                name: 'ownerFieldName',
+                editable: false,
+                listeners: {
+                    focus: function () {
+                        if (this.datax.ownerClassName != null) {
+                            this.fieldCombo.store.load({params: {name: this.datax.ownerClassName}});
+                        }
+                    }.bind(this),
+                    change: function() {
+                        this.fieldSelect.setValue([]);
+                    }.bind(this)
+                }
+            });
+
+            this.specificPanel.add(this.classCombo);
+            this.specificPanel.add(this.fieldCombo);
+
+            this.fieldStore = new Ext.data.Store({
+                proxy: {
+                    type: 'ajax',
+                    url: Routing.generate('opendxp_admin_dataobject_dataobjecthelper_getavailablevisiblefields'),
+                    extraParams: {
+                        // no_brick_columns: "true",
+                        // gridtype: 'all',
+                        classes: [this.datax.ownerClassName]
+                    },
+                    reader: {
+                        type: 'json',
+                        rootProperty: "availableFields"
+                    }
+                },
+                fields: ['key', 'label'],
+                autoLoad: false,
+                forceSelection: true,
+                listeners: {
+                    load: function () {
+                        this.fieldSelect.setValue(this.datax.visibleFields);
+                    }.bind(this)
+
+                }
+            });
+            this.fieldStore.load();
+
+            this.fieldSelect = new Ext.ux.form.MultiSelect({
+                name: "visibleFields",
+                triggerAction: "all",
+                editable: false,
+                fieldLabel: t("objectsMetadata_visible_fields"),
+                store: this.fieldStore,
+                value: this.datax.visibleFields,
+                displayField: "key",
+                valueField: "key",
+                width: 400,
+                height: 300
+            });
+            this.specificPanel.add(this.fieldSelect);
+
+            this.specificPanel.add(new Ext.form.DisplayField({
+                hideLabel: true,
+                value: t('non_owner_description'),
+                cls: "opendxp_extra_label_bottom"
+            }));
+
+            if(this.context == 'class') {
+                this.specificPanel.add({
+                    xtype: "checkbox",
+                    boxLabel: t("enable_admin_async_load"),
+                    name: "optimizedAdminLoading",
+                    value: this.datax.optimizedAdminLoading
+                });
+                this.specificPanel.add({
+                    xtype: "displayfield",
+                    hideLabel: true,
+                    value: t('async_loading_warning_block'),
+                    cls: "opendxp_extra_label_bottom"
+                });}
+        }
+
+        return this.layout;
+    },
+
+    applySpecialData: function(source) {
+        if (source.datax) {
+            if (!this.datax) {
+                this.datax =  {};
+            }
+            Ext.apply(this.datax,
+                {
+                    allowToCreateNewObject: source.datax.allowToCreateNewObject,
+                    remoteOwner: source.datax.remoteOwner,
+                    width: source.datax.width,
+                    height: source.datax.height,
+                    pathFormatterClass: source.datax.pathFormatterClass,
+                    ownerClassName: source.datax.ownerClassName,
+                    ownerFieldName: source.datax.ownerFieldName,
+                    visibleFields: source.datax.visibleFields,
+                    optimizedAdminLoading: source.datax.optimizedAdminLoading,
+                });
+        }
+    }
+
+
+
+});
+

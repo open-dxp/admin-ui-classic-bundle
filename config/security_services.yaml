@@ -1,0 +1,36 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    #
+    # SECURITY
+    #
+
+    # Authenticators for handling admin login and session authentications
+    OpenDxp\Bundle\AdminBundle\Security\Authenticator\AdminTokenAuthenticator:
+        calls:
+            - [ setLogger, [ '@logger' ] ]
+        tags:
+            - { name: monolog.logger, channel: security }
+
+    OpenDxp\Bundle\AdminBundle\Security\CsrfProtectionHandler:
+        public: true
+        arguments:
+            - '%opendxp_admin.csrf_protection.excluded_routes%'
+            - '@twig'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: monolog.logger, channel: security }
+
+    OpenDxp\Bundle\AdminBundle\Security\ContentSecurityPolicyHandler:
+        public: true
+        calls:
+            - [ setLogger, [ '@logger' ] ]
+        tags:
+            - { name: monolog.logger, channel: security }
+
+    opendxp_admin_bundle.content_security_policy_handler:
+        alias: OpenDxp\Bundle\AdminBundle\Security\ContentSecurityPolicyHandler
+        public: true

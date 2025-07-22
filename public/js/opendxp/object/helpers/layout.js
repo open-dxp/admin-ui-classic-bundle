@@ -1,0 +1,56 @@
+/**
+ * OpenDXP
+ *
+ * This source file is licensed under the GNU General Public License version 3 (GPLv3).
+ *
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) Pimcore GmbH (https://pimcore.com)
+ * @copyright  Modification Copyright (c) OpenDXP (https://www.opendxp.ch)
+ * @license    https://www.gnu.org/licenses/gpl-3.0.html  GNU General Public License version 3 (GPLv3)
+ */
+
+
+
+opendxp.registerNS("opendxp.object.helpers.layout");
+/**
+ * @private
+ */
+opendxp.object.helpers.layout = {
+
+    /**
+     * specify which children a layout can have
+     * @param source
+    */
+    getRawAllowedTypes : function () {
+        return {
+            accordion: ["panel", "region", "tabpanel", "text", "iframe"],
+            fieldset: ["data", "text", "iframe"],
+            fieldcontainer: ["data", "text", "iframe"],
+            panel: ["data", "region", "tabpanel", "button", "accordion", "fieldset", "fieldcontainer", "panel", "text", "html", "iframe"],
+            region: ["panel", "accordion", "tabpanel", "text", "localizedfields", "iframe"],
+            tabpanel: ["panel", "region", "accordion", "text", "localizedfields", "iframe", "tabpabel"],
+            button: [],
+            text: [],
+            root: ["panel", "region", "tabpanel", "accordion", "text", "iframe", "button", "fieldcontainer", "fieldset"],
+            localizedfields: ["data", "panel", "tabpanel", "accordion", "fieldset", "fieldcontainer", "text", "region", "button", "iframe"],
+            block: ["data", "panel", "tabpanel", "accordion", "fieldset", "fieldcontainer", "text", "region", "button", "iframe"]
+        };
+    },
+
+    getAllowedTypes : function (source) {
+        const allowedTypes = this.getRawAllowedTypes();
+
+        const prepareClassLayoutContextMenu = new CustomEvent(opendxp.events.prepareClassLayoutContextMenu, {
+            detail: {
+                allowedTypes: allowedTypes,
+                source: source
+            }
+        });
+
+        document.dispatchEvent(prepareClassLayoutContextMenu);
+
+        return allowedTypes;
+    }
+};

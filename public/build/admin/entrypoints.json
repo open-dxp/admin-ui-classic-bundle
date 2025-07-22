@@ -1,0 +1,14 @@
+{
+  "entrypoints": {
+    "admin": {
+      "js": [
+        "/bundles/opendxpadmin/build/admin/runtime.js",
+        "/bundles/opendxpadmin/build/admin/213.js",
+        "/bundles/opendxpadmin/build/admin/admin.js"
+      ],
+      "css": [
+        "/bundles/opendxpadmin/build/admin/admin.css"
+      ]
+    }
+  }
+}
