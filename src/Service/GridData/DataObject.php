@@ -227,7 +227,7 @@ class DataObject extends Element
 
             return Session::useBag($session, function (AttributeBagInterface $session) {
                 return $session->get('helpercolumns', []);
-            }, 'pimcore_gridconfig');
+            }, 'opendxp_gridconfig');
         }
 
         return [];

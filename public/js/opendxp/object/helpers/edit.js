@@ -43,14 +43,14 @@ opendxp.object.helpers.edit = {
         var tabpanelCorrection = function (panel) {
             window.setTimeout(function () {
                 try {
-                    if(typeof panel["pimcoreLayoutCorrected"] == "undefined") {
+                    if(typeof panel["opendxpLayoutCorrected"] == "undefined") {
                         var parentEl = panel.body.findParent(".x-tab-panel");
                         if(parentEl && Ext.get(parentEl).getWidth()) {
                             panel.setWidth(Ext.get(parentEl).getWidth()-50);
                             //panel.getEl().applyStyles("position:relative;");
                             panel.ownerCt.updateLayout();
 
-                            panel["pimcoreLayoutCorrected"] = true;
+                            panel["opendxpLayoutCorrected"] = true;
                         }
                     }
                 } catch (e) {

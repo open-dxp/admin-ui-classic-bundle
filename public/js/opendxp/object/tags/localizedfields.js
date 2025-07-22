@@ -189,13 +189,13 @@ opendxp.object.tags.localizedfields = Class.create(opendxp.object.tags.abstract,
             }
 
             panelConf["left"].listeners = {
-                pimcoreGlobalLanguageChanged: function (language) {
+                opendxpGlobalLanguageChanged: function (language) {
                     this.getLanguageTabListener(this.tabPanelLeft, language, this.frontendLanguages);
                 }.bind(this)
             }
 
             panelConf["right"].listeners = {
-                pimcoreGlobalLanguageChanged: function (language) {
+                opendxpGlobalLanguageChanged: function (language) {
                     this.getLanguageTabListener(this.tabPanelRight, language, this.frontendLanguages);
                 }.bind(this)
             }
@@ -279,7 +279,7 @@ opendxp.object.tags.localizedfields = Class.create(opendxp.object.tags.abstract,
                             this.switchLocalizedPanels(oldLanguage, newLanguage);
 
                         }.bind(this),
-                        pimcoreGlobalLanguageChanged: function (language) {
+                        opendxpGlobalLanguageChanged: function (language) {
                             let globalLanguageIndex = 0;
                             if (this.frontendLanguages.includes(language)) {
                                 globalLanguageIndex = this.frontendLanguages.indexOf(language);
@@ -404,7 +404,7 @@ opendxp.object.tags.localizedfields = Class.create(opendxp.object.tags.abstract,
                     tbarItems.push(configureSplitViewButton);
                 }
                 panelConf.listeners = {
-                    pimcoreGlobalLanguageChanged: function (language) {
+                    opendxpGlobalLanguageChanged: function (language) {
                         this.getLanguageTabListener(this.tabPanel, language, this.frontendLanguages);
                     }.bind(this)
                 }
@@ -429,13 +429,13 @@ opendxp.object.tags.localizedfields = Class.create(opendxp.object.tags.abstract,
         if (this.toolbar) {
             this.toolbar.on(opendxp.events.globalLanguageChanged, function(language) {
                 if (isSplitViewEnabled && this.fieldConfig.provideSplitView) {
-                    this.tabPanelLeft.fireEvent('pimcoreGlobalLanguageChanged', language);
-                    this.tabPanelRight.fireEvent('pimcoreGlobalLanguageChanged', language);
+                    this.tabPanelLeft.fireEvent('opendxpGlobalLanguageChanged', language);
+                    this.tabPanelRight.fireEvent('opendxpGlobalLanguageChanged', language);
                 } else {
                     if (this.dropdownLayout) {
-                        this.countrySelect.fireEvent('pimcoreGlobalLanguageChanged', language);
+                        this.countrySelect.fireEvent('opendxpGlobalLanguageChanged', language);
                     } else {
-                        this.tabPanel.fireEvent('pimcoreGlobalLanguageChanged', language);
+                        this.tabPanel.fireEvent('opendxpGlobalLanguageChanged', language);
                     }
                 }
             }.bind(this));

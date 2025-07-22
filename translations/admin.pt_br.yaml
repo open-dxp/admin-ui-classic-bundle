@@ -229,7 +229,7 @@ batch_edit_field: "Edi\xE7\xE3o de campos em lote"
 published: Publicado
 all: Todos
 items_per_page: "Itens por p\xE1gina"
-reload_opendxp_changes: "Voc\xEA deve recarregar o PimCore para as mudan\xE7as serem
+reload_opendxp_changes: "Voc\xEA deve recarregar o OpenDXP para as mudan\xE7as serem
   efetivadas. Gostaria de fazer isso agora ?"
 info: "Informa\xE7\xF5es"
 or: ou

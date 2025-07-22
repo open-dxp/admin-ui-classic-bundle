@@ -37,7 +37,7 @@ final class Config
 
             self::$locationAwareConfigRepository = new LocationAwareConfigRepository(
                 $config,
-                'pimcore_custom_views',
+                'opendxp_custom_views',
                 $storageConfig
             );
         }

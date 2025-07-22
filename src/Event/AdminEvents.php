@@ -499,7 +499,7 @@ class AdminEvents
     const ASSET_METADATA_PRE_SET = 'opendxp.admin.asset.metadata.preSave';
 
     /**
-     * This event is fired after Pimcore generates the runtime Perspective
+     * This event is fired after OpenDXP generates the runtime Perspective
      *
      * Arguments:
      *  - result | The result array

@@ -208,7 +208,7 @@ opendxp.object.tags.classificationstore = Class.create(opendxp.object.tags.abstr
                 }
 
                 panelConf.listeners = {
-                    pimcoreGlobalLanguageChanged: function (language) {
+                    opendxpGlobalLanguageChanged: function (language) {
                         this.getLanguageTabListener(this.tabPanel, language, this.frontendLanguages);
                     }.bind(this)
                 }
@@ -226,7 +226,7 @@ opendxp.object.tags.classificationstore = Class.create(opendxp.object.tags.abstr
 
         if (this.toolbar) {
             this.toolbar.on(opendxp.events.globalLanguageChanged, function(language) {
-                this.tabPanel.fireEvent('pimcoreGlobalLanguageChanged', language);
+                this.tabPanel.fireEvent('opendxpGlobalLanguageChanged', language);
             }.bind(this));
         }
 

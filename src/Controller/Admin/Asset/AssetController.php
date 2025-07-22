@@ -1774,7 +1774,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
 
         Tool\Session::useBag($request->getSession(), function (AttributeBagInterface $session) use ($transactionId) {
             $session->set((string) $transactionId, []);
-        }, 'pimcore_copy');
+        }, 'opendxp_copy');
 
         if ($request->get('type') == 'recursive') {
             $asset = Asset::getById((int) $request->get('sourceId'));

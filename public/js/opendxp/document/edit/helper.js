@@ -18,7 +18,7 @@
 opendxp.edithelpers = {};
 
 // disable reload & links, this function is here because it has to be in the header (body attribute)
-function pimcoreOnUnload() {
+function opendxpOnUnload() {
     editWindow.protectLocation();
 }
 

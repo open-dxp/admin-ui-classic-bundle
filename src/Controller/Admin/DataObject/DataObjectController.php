@@ -1950,7 +1950,7 @@ class DataObjectController extends ElementControllerBase implements KernelContro
             $urlParts = parse_url($url);
 
             $redirectParameters = array_filter([
-                'pimcore_object_preview' => $id,
+                'opendxp_object_preview' => $id,
                 'site' => $request->query->getInt(PreviewGeneratorInterface::PARAMETER_SITE),
                 'dc' => time(),
             ]);
