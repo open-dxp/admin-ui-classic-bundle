@@ -12,7 +12,6 @@ on:
 
 env:
     OPENDXP_PROJECT_ROOT: ${{ github.workspace }}
-    PRIVATE_REPO: ${{ github.event.repository.private }}
 
 jobs:
     setup-matrix:
@@ -20,7 +19,6 @@ jobs:
         outputs:
             php_versions: ${{ steps.parse-php-versions.outputs.php_versions }}
             matrix: ${{ steps.set-matrix.outputs.matrix }}
-            private_repo: ${{ env.PRIVATE_REPO }}
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -80,7 +78,6 @@ jobs:
         with:
             APP_ENV: test
             OPENDXP_TEST: 1
-            PRIVATE_REPO: ${{ needs.setup-matrix.outputs.private_repo}}
             PHP_VERSION: ${{ matrix.matrix.php-version }}
             DATABASE: ${{ matrix.matrix.database }}
             SERVER_VERSION: ${{ matrix.matrix.server_version }}
