@@ -2489,8 +2489,8 @@ opendxp.helpers.showAbout = function () {
 
     html += '<br><b>Core Version: ' + opendxp.settings.version + '</b>';
 
-    html += '<br><br><a href="https://www.opendxp.ch/" target="_blank">opendxp.ch</a>';
-    html += '<br><br><a href="https://github.com/open-dxp/opendxp/blob/1.x/LICENSE.md" target="_blank">License</a> | ';
+    html += '<br><br><a href="https://www.opendxp.ch/" target="_blank">www.opendxp.ch</a>';
+    html += '<br><br><a href="https://github.com/open-dxp/opendxp/blob/1.x/LICENSE.md" target="_blank">License</a> | <a href="mailto:contact@opendxp.ch">Contact</a>';
     html += '</div>';
 
     var win = new Ext.Window({
