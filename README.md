@@ -1,4 +1,4 @@
-# OpenDXP Admin Classic Bundle
+# OpenDXP | Admin Classic Bundle
 
 The Admin Classic Bundle provides a Backend UI for OpenDXP.
 It is based on the [ExtJS](https://www.sencha.com/products/extjs/) framework.
