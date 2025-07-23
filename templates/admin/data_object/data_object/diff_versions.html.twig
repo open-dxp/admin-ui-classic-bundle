@@ -126,12 +126,12 @@
 
                 {% for activeGroupId, enabled in existingGroups %}
                     {% if activeGroups1[activeGroupId] is defined or activeGroups2[activeGroupId] is defined %}
-                        {% set groupDefinition = pimcore_object_classificationstore_group(activeGroupId) %}
+                        {% set groupDefinition = opendxp_object_classificationstore_group(activeGroupId) %}
                         {% if groupDefinition is not empty %}
                             {% set keyGroupRelations = groupDefinition.getRelations() %}
 
                             {% for keyGroupRelation in keyGroupRelations %}
-                                {% set keyDef = pimcore_object_classificationstore_get_field_definition_from_json(keyGroupRelation.getDefinition(), keyGroupRelation.getType())  %}
+                                {% set keyDef = opendxp_object_classificationstore_get_field_definition_from_json(keyGroupRelation.getDefinition(), keyGroupRelation.getType())  %}
 
                                 {% if keyDef is not empty %}
                                     {% for language in languages %}
@@ -159,7 +159,7 @@
             {% endif %}
         {% elseif definition is instanceof('\\OpenDxp\\Model\\DataObject\\ClassDefinition\\Data\\Objectbricks') %}
             {% for asAllowedType in definition.getAllowedTypes() %}
-                {% set collectionDef = pimcore_object_brick_definition_key(asAllowedType) %}
+                {% set collectionDef = opendxp_object_brick_definition_key(asAllowedType) %}
 
                 {% for lfd in collectionDef.getFieldDefinitions() %}
                     {% set value = null %}

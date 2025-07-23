@@ -122,7 +122,7 @@ class TranslationController extends AdminAbstractController
 
         Session::useBag($request->getSession(), function (AttributeBagInterface $session) use ($importFile) {
             $session->set('translation_import_file', $importFile);
-        }, 'pimcore_importconfig');
+        }, 'opendxp_importconfig');
 
         // determine csv settings
         $dialect = Tool\Admin::determineCsvDialect($importFile);

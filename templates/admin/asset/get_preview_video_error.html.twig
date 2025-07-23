@@ -35,14 +35,14 @@
         <td class="error" align="center" valign="center">
             {% if thumbnail is defined and thumbnail["status"] == "inprogress" %}
                 <style type="text/css">
-                    .pimcore_editable_video_progress {
+                    .opendxp_editable_video_progress {
                         position:relative;
                         background:#555 url("{{ asset.getImageThumbnail({"width": 640}) }}") no-repeat center center;
                         font-family:Arial,Verdana,sans-serif;
                         color:#fff;
                         text-shadow: 0 0 3px #000, 0 0 5px #000, 0 0 1px #000;
                     }
-                    .pimcore_editable_video_progress_status {
+                    .opendxp_editable_video_progress_status {
                         font-size:16px;
                         color:#555;
                         font-family:Arial,Verdana,sans-serif;
@@ -62,14 +62,14 @@
                         text-shadow: none;
                     }
                 </style>
-                <div class="pimcore_editable_video_progress" style="width:640px; height:380px;">
+                <div class="opendxp_editable_video_progress" style="width:640px; height:380px;">
 
                     <br />
                     {{ 'video_preview_in_progress'|trans([],'admin') }}
                     <br />
                     {{ 'please_wait'|trans([],'admin') }}
 
-                    <div class="pimcore_editable_video_progress_status"></div>
+                    <div class="opendxp_editable_video_progress_status"></div>
                 </div>
 
 
@@ -78,7 +78,7 @@
                         location.reload();
                     }, 5000);
                 </script>
-            {% elseif not pimcore_video_is_available() %}
+            {% elseif not opendxp_video_is_available() %}
                 {{ 'preview_not_available'|trans([],'admin') }}
                 <br />
                 {{ 'php_cli_binary_and_or_ffmpeg_binary_setting_is_missing'|trans([],'admin') }}

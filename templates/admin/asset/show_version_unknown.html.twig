@@ -28,7 +28,7 @@
         <td>
             {{ 'no_preview_available'|trans([], 'admin') }}<br>
             {% set tempFile = asset.getTemporaryFile() %}
-            {% set dataUri = pimcore_asset_version_preview(tempFile) %}
+            {% set dataUri = opendxp_asset_version_preview(tempFile) %}
 
             <a href="{{ dataUri }}" download="{{ asset.getFilename() }}" id="download-version-link">{{ 'download'|trans([],'admin') }}</a>
         </td>
