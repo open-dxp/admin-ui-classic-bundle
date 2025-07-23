@@ -1,4 +1,4 @@
-name: "Trigger POEditor Translations Export"
+name: POEditor Translations Export [centralised]
 
 on:
     workflow_dispatch:

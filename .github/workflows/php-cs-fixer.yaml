@@ -1,4 +1,4 @@
-name: "PHP-CS-Fixer"
+name: PHP-CS-Fixer [centralised]
 
 on:
     workflow_dispatch:
