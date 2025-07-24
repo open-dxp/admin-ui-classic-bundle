@@ -9,7 +9,7 @@
         }
     </style>
     <base href="/bundles/opendxpadmin/js/lib/minipaint/" />
-    {{ encore_entry_script_tags('imageEditor', null, 'pimcoreAdminImageEditor') }}
+    {{ encore_entry_script_tags('imageEditor', null, 'opendxpAdminImageEditor') }}
 </head>
 <body>
 <div class="wrapper">
@@ -87,11 +87,11 @@
 <div class="hidden" id="tmp"></div>
 <div id="popups"></div>
 
-{% set imageFileExtension = pimcore_file_extension(asset.getFilename()) %}
-{% set imageUrl = path('pimcore_admin_asset_getasset', {id: asset.getId()}) %}
+{% set imageFileExtension = opendxp_file_extension(asset.getFilename()) %}
+{% set imageUrl = path('opendxp_admin_asset_getasset', {id: asset.getId()}) %}
 
 {% if imageFileExtension not in ['png', 'jpg', 'jpeg'] %}
-    {% set imageUrl = path('pimcore_admin_asset_getimagethumbnail', {id: asset.getId(), format: 'png' }) %}
+    {% set imageUrl = path('opendxp_admin_asset_getimagethumbnail', {id: asset.getId(), format: 'png' }) %}
 {% endif %}
 
 <img style="visibility: hidden" id='image' src="{{ imageUrl }}" />
@@ -137,7 +137,7 @@
             var dataUri = tempCanvas.toDataURL('image/{{ imageFileExtension == "png" ? "png" : "jpeg" }}');
 
             parent.Ext.Ajax.request({
-                url: "{{ path('pimcore_admin_asset_imageeditorsave', {id: asset.getId()}) }}",
+                url: "{{ path('opendxp_admin_asset_imageeditorsave', {id: asset.getId()}) }}",
                 method: 'PUT',
                 params: {
                     dataUri: dataUri

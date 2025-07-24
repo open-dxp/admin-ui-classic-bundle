@@ -1,6 +1,6 @@
 # License
-Copyright (c) Pimcore GmbH (https://pimcore.com)
-Modification Copyright (c) OpenDXP (https://www.opendxp.ch)
+- Original Copyright (c) Pimcore GmbH (https://pimcore.com)
+- Modification Copyright (c) OpenDXP (https://www.opendxp.ch)
 
 This software is a fork of Pimcore Community Edition, originally licensed under the GNU General Public License version 3 (GPLv3).
 
@@ -22,11 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
 
-This fork is named "OpenDXP" and is not affiliated with Pimcore GmbH.  
+This fork is named "OpenDXP | admin-ui-classic-bundle" and is not affiliated with Pimcore GmbH.  
 For the original Pimcore project, visit https://pimcore.com
 
 ---
 
-Please see also (files in this directory):
-- [Licensing FAQ - license-faq.md](https://github.com/open-dxp/opendxp/blob/master/license-faq.md)
+See also:
 - [GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 - gpl-3.0.txt](gpl-3.0.txt)

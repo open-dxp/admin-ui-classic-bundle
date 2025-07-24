@@ -3526,7 +3526,7 @@ opendxp.helpers.getTabBar = function (attributes) {
     return new Ext.TabPanel(tabAttr);
 }
 
-// Sends an Ajax request, it is recommended to be used when doing simple calls or to third-party services, in contrast to Ext.Ajax.request which, by default, sends extra info (eg. custom headers) that are usually needed to be working within Pimcore interface.
+// Sends an Ajax request, it is recommended to be used when doing simple calls or to third-party services, in contrast to Ext.Ajax.request which, by default, sends extra info (eg. custom headers) that are usually needed to be working within OpenDXP interface.
 opendxp.helpers.sendRequest = function (
     method,
     url,
