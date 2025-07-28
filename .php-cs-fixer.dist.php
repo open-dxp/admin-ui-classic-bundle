@@ -12,7 +12,7 @@ $finder = PhpCsFixer\Finder::create()
     ])
 ;
 
-// do not enable self_accessor as it breaks pimcore models relying on get_called_class()
+// do not enable self_accessor as it breaks opendxp models relying on get_called_class()
 $config = new PhpCsFixer\Config();
 $config->setRules([
     '@PSR1'                  => true,
