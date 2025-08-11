@@ -906,7 +906,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
             $db = \OpenDxp\Db::get();
             $mappedData = [];
             $groupsData = $db->fetchAllAssociative('select * from classificationstore_groups g, classificationstore_collectionrelations c where colId IN (:ids) and g.id = c.groupId', [
-                'ids' => implode(',', array_filter($ids, 'intval')),
+                'ids' => implode(',', array_filter($ids, is_numeric(...))),
             ]);
 
             foreach ($groupsData as $groupData) {

@@ -48,9 +48,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -328,9 +328,9 @@ class LoginController extends AdminAbstractController implements KernelControlle
 
         if ($request->hasSession()) {
             $session = $request->getSession();
-            $authException = $session->get(Security::AUTHENTICATION_ERROR);
+            $authException = $session->get(SecurityRequestAttributes::AUTHENTICATION_ERROR);
             if ($authException instanceof AuthenticationException) {
-                $session->remove(Security::AUTHENTICATION_ERROR);
+                $session->remove(SecurityRequestAttributes::AUTHENTICATION_ERROR);
 
                 $params['error'] = $authException->getMessage();
             }
