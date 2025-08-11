@@ -32,21 +32,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @Route("/translation")
- *
  * @internal
  */
+#[Route("/translation")]
 class TranslationController extends AdminAbstractController
 {
     protected const PLACEHOLDER_NAME = 'placeHolder';
 
-    /**
-     * @Route("/import", name="opendxp_admin_translation_import", methods={"POST"})
-     */
+    #[Route("/import", name: "opendxp_admin_translation_import", methods: ["POST"])]
     public function importAction(Request $request, LocaleServiceInterface $localeService): JsonResponse
     {
         $domain = $request->get('domain', Translation::DOMAIN_DEFAULT);
@@ -108,9 +105,7 @@ class TranslationController extends AdminAbstractController
         return $response;
     }
 
-    /**
-     * @Route("/upload-import", name="opendxp_admin_translation_uploadimportfile", methods={"POST"})
-     */
+    #[Route("/upload-import", name: "opendxp_admin_translation_uploadimportfile", methods: ["POST"])]
     public function uploadImportFileAction(Request $request, Filesystem $filesystem): JsonResponse
     {
         $tmpData = file_get_contents($_FILES['Filedata']['tmp_name']);
@@ -140,9 +135,7 @@ class TranslationController extends AdminAbstractController
         ]);
     }
 
-    /**
-     * @Route("/export", name="opendxp_admin_translation_export", methods={"GET"})
-     */
+    #[Route("/export", name: "opendxp_admin_translation_export", methods: ["GET"])]
     public function exportAction(Request $request): Response
     {
         $domain = $request->get('domain', Translation::DOMAIN_DEFAULT);
@@ -267,15 +260,13 @@ class TranslationController extends AdminAbstractController
         $response = new Response("\xEF\xBB\xBF" . $csv);
         $response->headers->set('Content-Encoding', 'UTF-8');
         $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
-        $response->headers->set('Content-Disposition', 'attachment; filename="export_' . $domain . '_translations.csv"');
+        $response->headers->set('Content-Disposition', 'attachment; filename: "export_' . $domain . '_translations.csv"');
         ini_set('display_errors', '0'); //to prevent warning messages in csv
 
         return $response;
     }
 
-    /**
-     * @Route("/add-admin-translation-keys", name="opendxp_admin_translation_addadmintranslationkeys", methods={"POST"})
-     */
+    #[Route("/add-admin-translation-keys", name: "opendxp_admin_translation_addadmintranslationkeys", methods: ["POST"])]
     public function addAdminTranslationKeysAction(Request $request): JsonResponse
     {
         $keys = $request->get('keys');
@@ -314,10 +305,9 @@ class TranslationController extends AdminAbstractController
     }
 
     /**
-     * @Route("/translations", name="opendxp_admin_translation_translations", methods={"POST"})
-     *
      * @param Translator $translator
      */
+    #[Route("/translations", name: "opendxp_admin_translation_translations", methods: ["POST"])]
     public function translationsAction(Request $request, TranslatorInterface $translator): JsonResponse
     {
         $domain = $request->get('domain', Translation::DOMAIN_DEFAULT);
@@ -651,9 +641,7 @@ class TranslationController extends AdminAbstractController
         return $conditionFilters;
     }
 
-    /**
-     * @Route("/cleanup", name="opendxp_admin_translation_cleanup", methods={"DELETE"})
-     */
+    #[Route("/cleanup", name: "opendxp_admin_translation_cleanup", methods: ["DELETE"])]
     public function cleanupAction(Request $request): JsonResponse
     {
         $domain = $request->get('domain', Translation::DOMAIN_DEFAULT);
@@ -673,9 +661,7 @@ class TranslationController extends AdminAbstractController
      * -----------------------------------------------------------------------------------
      */
 
-    /**
-     * @Route("/content-export-jobs", name="opendxp_admin_translation_contentexportjobs", methods={"POST"})
-     */
+    #[Route("/content-export-jobs", name: "opendxp_admin_translation_contentexportjobs", methods: ["POST"])]
     public function contentExportJobsAction(Request $request): JsonResponse
     {
         $data = $this->decodeJson($request->get('data'));
@@ -785,9 +771,7 @@ class TranslationController extends AdminAbstractController
         );
     }
 
-    /**
-     * @Route("/merge-item", name="opendxp_admin_translation_mergeitem", methods={"PUT"})
-     */
+    #[Route("/merge-item", name: "opendxp_admin_translation_mergeitem", methods: ["PUT"])]
     public function mergeItemAction(Request $request): JsonResponse
     {
         $domain = $request->get('domain', Translation::DOMAIN_DEFAULT);
@@ -809,9 +793,7 @@ class TranslationController extends AdminAbstractController
         );
     }
 
-    /**
-     * @Route("/get-website-translation-languages", name="opendxp_admin_translation_getwebsitetranslationlanguages", methods={"GET"})
-     */
+    #[Route("/get-website-translation-languages", name: "opendxp_admin_translation_getwebsitetranslationlanguages", methods: ["GET"])]
     public function getWebsiteTranslationLanguagesAction(Request $request): JsonResponse
     {
         return $this->adminJson(
@@ -825,9 +807,7 @@ class TranslationController extends AdminAbstractController
         );
     }
 
-    /**
-     * @Route("/get-translation-domains", name="opendxp_admin_translation_gettranslationdomains", methods={"GET"})
-     */
+    #[Route("/get-translation-domains", name: "opendxp_admin_translation_gettranslationdomains", methods: ["GET"])]
     public function getTranslationDomainsAction(Request $request): JsonResponse
     {
         $translation = new Translation();

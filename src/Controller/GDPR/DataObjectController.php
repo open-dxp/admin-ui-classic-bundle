@@ -23,15 +23,14 @@ use OpenDxp\Model\DataObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class DataObjectController
  *
- * @Route("/data-object")
- *
  * @internal
  */
+#[Route("/data-object")]
 class DataObjectController extends AdminAbstractController implements KernelControllerEventInterface
 {
     public function onKernelControllerEvent(ControllerEvent $event): void
@@ -43,9 +42,7 @@ class DataObjectController extends AdminAbstractController implements KernelCont
         $this->checkActionPermission($event, 'gdpr_data_extractor');
     }
 
-    /**
-     * @Route("/search-data-objects", name="opendxp_admin_gdpr_dataobject_searchdataobjects", methods={"GET"})
-     */
+    #[Route("/search-data-objects", name: "opendxp_admin_gdpr_dataobject_searchdataobjects", methods: ["GET"])]
     public function searchDataObjectsAction(Request $request, DataObjects $service): JsonResponse
     {
         $allParams = array_merge($request->request->all(), $request->query->all());
@@ -64,10 +61,9 @@ class DataObjectController extends AdminAbstractController implements KernelCont
     }
 
     /**
-     * @Route("/export", name="opendxp_admin_gdpr_dataobject_exportdataobject", methods={"GET"})
-     *
      * @throws \Exception
      */
+    #[Route("/export", name: "opendxp_admin_gdpr_dataobject_exportdataobject", methods: ["GET"])]
     public function exportDataObjectAction(Request $request, DataObjects $service): JsonResponse
     {
         $object = DataObject::getById((int) $request->get('id'));
