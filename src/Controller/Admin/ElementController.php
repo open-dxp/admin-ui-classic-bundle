@@ -326,7 +326,7 @@ class ElementController extends AdminAbstractController
                     ->getRequiredByWithPath($queryOffset, $queryLimit, $orderBy, $orderDirection);
 
                 foreach ($elements as $el) {
-                    $item = Element\Service::getElementById($el['type'], $el['id']);
+                    $item = Element\Service::getElementById($el['type'], (int) $el['id']);
 
                     if ($item instanceof Element\ElementInterface) {
                         if ($item->isAllowed('list')) {

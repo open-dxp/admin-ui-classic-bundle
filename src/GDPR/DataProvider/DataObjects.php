@@ -148,7 +148,7 @@ class DataObjects extends Elements implements DataProviderInterface
         $elements = [];
         if ($query->rowCount() > 0) {
             foreach ($query->fetchAllAssociative() as $hit) {
-                $element = Element\Service::getElementById($hit['type'], $hit['id']);
+                $element = Element\Service::getElementById($hit['type'], (int) $hit['id']);
                 if ($element instanceof Concrete) {
                     $data = GridData\DataObject::getData($element);
                     $data['__gdprIsDeletable'] = $this->config['classes'][$element->getClassName()]['allowDelete'] ?? false;

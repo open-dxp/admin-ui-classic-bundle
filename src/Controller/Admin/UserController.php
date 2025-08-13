@@ -25,6 +25,7 @@ use OpenDxp\Model\Asset;
 use OpenDxp\Model\DataObject;
 use OpenDxp\Model\Element;
 use OpenDxp\Model\User;
+use OpenDxp\Model\User\Workspace;
 use OpenDxp\SystemSettingsConfig;
 use OpenDxp\Tool;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -383,6 +384,7 @@ class UserController extends AdminAbstractController implements KernelController
         // workspaces
         $types = ['asset', 'document', 'object'];
         foreach ($types as $type) {
+            /** @var Workspace\Document[]|Workspace\Asset[]|Workspace\DataObject $workspaces */
             $workspaces = $user->{'getWorkspaces' . ucfirst($type)}();
             foreach ($workspaces as $wKey => $workspace) {
                 $el = Element\Service::getElementById($type, $workspace->getCid());
@@ -686,6 +688,7 @@ class UserController extends AdminAbstractController implements KernelController
         // workspaces
         $types = ['asset', 'document', 'object'];
         foreach ($types as $type) {
+            /** @var Workspace\Document[]|Workspace\Asset[]|Workspace\DataObject $workspaces */
             $workspaces = $role->{'getWorkspaces' . ucfirst($type)}();
             foreach ($workspaces as $wKey => $workspace) {
                 $el = Element\Service::getElementById($type, $workspace->getCid());

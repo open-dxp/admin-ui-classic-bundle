@@ -880,7 +880,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         }
 
         $id = array_shift($idStore['rewrite-stack']);
-        $document = Document::getById($id);
+        $document = Document::getById((int) $id);
 
         if ($document) {
             // create rewriteIds() config parameter
@@ -922,7 +922,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
 
             // this is because the key can get the prefix "_copy" if the target does already exists
             if ($sessionBag['parentId']) {
-                $targetParent = Document::getById($sessionBag['parentId']);
+                $targetParent = Document::getById((int) $sessionBag['parentId']);
             } else {
                 $targetParent = Document::getById((int) $request->get('targetParentId'));
             }
@@ -1169,7 +1169,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
 
         foreach ($languages as $language) {
             if ($languageDocument = $translations[$language] ?? false) {
-                $languageDocument = Document::getById($languageDocument);
+                $languageDocument = Document::getById((int)$languageDocument);
                 $config[$language] = [
                     'text' => $languageDocument->getKey(),
                     'id' => $languageDocument->getId(),

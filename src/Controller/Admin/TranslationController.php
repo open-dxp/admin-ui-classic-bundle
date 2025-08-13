@@ -686,7 +686,7 @@ class TranslationController extends AdminAbstractController
                 $el = null;
 
                 if ($element['children']) {
-                    $el = Element\Service::getElementById($element['type'], $element['id']);
+                    $el = Element\Service::getElementById($element['type'], (int) $element['id']);
                     $baseClass = ELement\Service::getBaseClassNameForElement($element['type']);
                     $listClass = '\\OpenDxp\\Model\\' . $baseClass . '\\Listing';
                     $list = new $listClass();
@@ -725,7 +725,7 @@ class TranslationController extends AdminAbstractController
 
                 if (isset($element['relations']) && $element['relations']) {
                     if (!$el instanceof Element\ElementInterface) {
-                        $el = Element\Service::getElementById($element['type'], $element['id']);
+                        $el = Element\Service::getElementById($element['type'], (int) $element['id']);
                     }
 
                     $dependencies = $el->getDependencies()->getRequires();
