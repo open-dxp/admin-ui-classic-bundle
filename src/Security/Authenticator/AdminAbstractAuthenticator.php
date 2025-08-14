@@ -96,13 +96,6 @@ abstract class AdminAbstractAuthenticator extends AbstractAuthenticator implemen
         // set user on runtime cache for legacy compatibility
         RuntimeCache::set('opendxp_admin_user', $user);
 
-        if ($user->isAdmin()) {
-            if (Admin::isMaintenanceModeScheduledForLogin()) {
-                Admin::activateMaintenanceMode($request->getSession()->getId());
-                Admin::unscheduleMaintenanceModeOnLogin();
-            }
-        }
-
         // as we authenticate statelessly (short lived sessions) the authentication is called for
         // every request. therefore we only redirect if we're on the login page
         if (!in_array($request->attributes->get('_route'), [

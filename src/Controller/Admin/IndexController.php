@@ -364,7 +364,7 @@ class IndexController extends AdminAbstractController implements KernelResponseE
         }
 
         $settings['maintenance_active'] = $maintenance_active;
-        $settings['maintenance_mode'] = $maintenanceModeHelper->isActive() || Admin::isInMaintenanceMode();
+        $settings['maintenance_mode'] = $maintenanceModeHelper->isActive();
 
         return $this;
     }

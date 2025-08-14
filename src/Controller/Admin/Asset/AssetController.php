@@ -1799,7 +1799,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
 
             // this is because the key can get the prefix "_copy" if the target does already exists
             if ($sessionBag['parentId']) {
-                $targetParent = Asset::getById($sessionBag['parentId']);
+                $targetParent = Asset::getById((int) $sessionBag['parentId']);
             } else {
                 $targetParent = Asset::getById((int) $request->get('targetParentId'));
             }
@@ -2219,7 +2219,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
                     $data = $updateEvent->getArgument('data');
 
                     // save
-                    $asset = Asset::getById($data['id']);
+                    $asset = Asset::getById((int) $data['id']);
 
                     if (!$asset) {
                         throw $this->createNotFoundException('Asset not found');

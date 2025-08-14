@@ -65,7 +65,7 @@ class Assets extends Elements implements DataProviderInterface
         $zip->open($file, \ZipArchive::OVERWRITE);
 
         foreach (array_keys($this->exportIds) as $id) {
-            $theAsset = Asset::getById($id);
+            $theAsset = Asset::getById((int) $id);
 
             $resultItem = Exporter::exportAsset($theAsset);
             $resultItem = json_encode($resultItem);

@@ -384,7 +384,7 @@ class UserController extends AdminAbstractController implements KernelController
         // workspaces
         $types = ['asset', 'document', 'object'];
         foreach ($types as $type) {
-            /** @var Workspace\Document[]|Workspace\Asset[]|Workspace\DataObject $workspaces */
+            /** @var Workspace\Document[]|Workspace\Asset[]|Workspace\DataObject[] $workspaces */
             $workspaces = $user->{'getWorkspaces' . ucfirst($type)}();
             foreach ($workspaces as $wKey => $workspace) {
                 $el = Element\Service::getElementById($type, $workspace->getCid());
@@ -688,7 +688,7 @@ class UserController extends AdminAbstractController implements KernelController
         // workspaces
         $types = ['asset', 'document', 'object'];
         foreach ($types as $type) {
-            /** @var Workspace\Document[]|Workspace\Asset[]|Workspace\DataObject $workspaces */
+            /** @var Workspace\Document[]|Workspace\Asset[]|Workspace\DataObject[] $workspaces */
             $workspaces = $role->{'getWorkspaces' . ucfirst($type)}();
             foreach ($workspaces as $wKey => $workspace) {
                 $el = Element\Service::getElementById($type, $workspace->getCid());

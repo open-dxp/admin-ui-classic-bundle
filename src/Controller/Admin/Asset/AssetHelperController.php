@@ -383,7 +383,7 @@ class AssetHelperController extends AdminAbstractController
     public function gridMarkFavouriteColumnConfigAction(Request $request): JsonResponse
     {
         $classId = $request->get('classId');
-        $asset = Asset::getById($classId);
+        $asset = Asset::getById(is_numeric($classId) ? (int) $classId : 0);
 
         if ($asset->isAllowed('list')) {
             $gridConfigId = (int) $request->get('gridConfigId');
@@ -956,7 +956,7 @@ class AssetHelperController extends AdminAbstractController
                     $language = $data['language'] != 'default' ? $data['language'] : null;
                 }
 
-                $asset = Asset::getById($data['job']);
+                $asset = Asset::getById((int) $data['job']);
 
                 if ($asset) {
                     if (!$asset->isAllowed('publish')) {

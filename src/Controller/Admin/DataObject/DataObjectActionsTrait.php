@@ -73,7 +73,7 @@ trait DataObjectActionsTrait
         if ($action === 'update') {
             try {
                 $data = $this->decodeJson($allParams['data']);
-                $object = DataObject::getById($data['id']);
+                $object = DataObject::getById((int)$data['id']);
 
                 if (!$object instanceof DataObject\Concrete) {
                     throw $this->createNotFoundException('Object not found');
