@@ -154,6 +154,11 @@ opendxp.object.classes.data.countrymultiselect = Class.create(opendxp.object.cla
 
     applyData: function ($super) {
         $super();
+
+        if(this.isInCustomLayoutEditor()) {
+            return;
+        }
+
         delete this.datax.options;
     },
 

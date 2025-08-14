@@ -286,6 +286,10 @@ opendxp.object.classes.data.select = Class.create(opendxp.object.classes.data.da
 
         $super();
 
+        if(this.isInCustomLayoutEditor()) {
+            return;
+        }
+
         let options = [];
 
         let valueEditor = this.specificPanel.getComponent("valueeditor") ?? null;
