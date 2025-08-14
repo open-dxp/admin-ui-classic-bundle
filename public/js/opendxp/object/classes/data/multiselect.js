@@ -296,6 +296,10 @@ opendxp.object.classes.data.multiselect = Class.create(opendxp.object.classes.da
 
         $super();
 
+        if(this.isInCustomLayoutEditor()) {
+            return;
+        }
+
         var options = [];
 
         var valueEditor = this.specificPanel.getComponent("valueeditor");
