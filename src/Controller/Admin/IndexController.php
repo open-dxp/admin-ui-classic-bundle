@@ -233,7 +233,6 @@ class IndexController extends AdminAbstractController implements KernelResponseE
             'devmode'             => \OpenDxp::inDevMode(),
             'disableMinifyJs'     => \OpenDxp::disableMinifyJs(),
             'environment'         => $kernel->getEnvironment(),
-            'cached_environments' => Tool::getCachedSymfonyEnvironments(),
             'sessionId'           => htmlentities($request->getSession()->getId(), ENT_QUOTES, 'UTF-8'),
 
             // languages

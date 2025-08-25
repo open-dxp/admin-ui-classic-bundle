@@ -18,17 +18,17 @@ opendxp.registerNS("opendxp.layout.toolbar");
 opendxp.layout.toolbar = Class.create({
 
      initialize: function() {
- 
+
          var user = opendxp.globalmanager.get("user");
          this.toolbar = Ext.getCmp("opendxp_panel_toolbar");
- 
+
          var perspectiveCfg = opendxp.globalmanager.get("perspective");
 
          var menu = {};
 
          if (perspectiveCfg.inToolbar("file")) {
              var fileItems = [];
- 
+
              if (perspectiveCfg.inToolbar("file.perspectives")) {
 
                  if (opendxp.settings.availablePerspectives.length > 1) {
@@ -42,16 +42,16 @@ opendxp.layout.toolbar = Class.create({
                              itemId: 'opendxp_menu_file_perspective_' + perspective.name.replace(/[^a-z0-9\-_]+/ig, '-'),
                              handler: this.openPerspective.bind(this, perspective.name)
                          };
- 
+
                          if (perspective.icon) {
                              itemCfg.icon = perspective.icon;
                          } else if (perspective.iconCls) {
                              itemCfg.iconCls = perspective.iconCls;
                          }
- 
+
                          items.push(itemCfg);
                      }
- 
+
                      this.perspectivesMenu = {
                          text: t("perspectives"),
                          iconCls: "opendxp_nav_icon_perspective",
@@ -66,8 +66,8 @@ opendxp.layout.toolbar = Class.create({
                      fileItems.push(this.perspectivesMenu);
                  }
              }
- 
- 
+
+
              if (user.isAllowed("dashboards") && perspectiveCfg.inToolbar("file.dashboards")) {
                  this.dashboardMenu = {
                      text: t("dashboards"),
@@ -85,7 +85,7 @@ opendxp.layout.toolbar = Class.create({
                          }]
                      }
                  };
- 
+
                  Ext.Ajax.request({
                      url: Routing.generate('opendxp_admin_portal_dashboardlist'),
                      success: function (response) {
@@ -105,7 +105,7 @@ opendxp.layout.toolbar = Class.create({
                                  }.bind(this, data[i])
                              });
                          }
- 
+
                          this.dashboardMenu.menu.add(new Ext.menu.Separator({}));
                          this.dashboardMenu.menu.add({
                              text: t("add"),
@@ -156,11 +156,11 @@ opendxp.layout.toolbar = Class.create({
                          });
                      }.bind(this)
                  });
- 
+
                  fileItems.push(this.dashboardMenu);
              }
- 
- 
+
+
              if (user.isAllowed("documents") && perspectiveCfg.inToolbar("file.openDocument")) {
                  fileItems.push({
                      text: t("open_document_by_id"),
@@ -169,7 +169,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: opendxp.helpers.openElementByIdDialog.bind(this, "document")
                  });
              }
- 
+
              if (user.isAllowed("assets") && perspectiveCfg.inToolbar("file.openAsset")) {
                  fileItems.push({
                      text: t("open_asset_by_id"),
@@ -178,7 +178,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: opendxp.helpers.openElementByIdDialog.bind(this, "asset")
                  });
              }
- 
+
              if (user.isAllowed("objects") && perspectiveCfg.inToolbar("file.openObject")) {
                  fileItems.push({
                      text: t("open_data_object"),
@@ -187,7 +187,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: opendxp.helpers.openElementByIdDialog.bind(this, "object")
                  });
              }
- 
+
              if (perspectiveCfg.inToolbar("file.searchReplace") && (user.isAllowed("objects") || user.isAllowed("documents") || user.isAllowed("assets"))) {
                  fileItems.push({
                      text: t("search_replace_assignments"),
@@ -198,7 +198,7 @@ opendxp.layout.toolbar = Class.create({
                      }
                  });
              }
- 
+
              if (perspectiveCfg.inToolbar("file.schedule") && (user.isAllowed("objects") || user.isAllowed("documents") || user.isAllowed("assets"))) {
                  fileItems.push({
                      text: t('element_history'),
@@ -208,7 +208,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: this.showElementHistory.bind(this)
                  });
              }
- 
+
              if (user.isAllowed("seemode") && perspectiveCfg.inToolbar("file.seemode")) {
                  fileItems.push({
                      text: t("seemode"),
@@ -218,7 +218,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: opendxp.helpers.openSeemode
                  });
              }
- 
+
              if (perspectiveCfg.inToolbar("file.closeAll")) {
                  fileItems.push({
                      text: t("close_all_tabs"),
@@ -227,7 +227,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: this.closeAllTabs
                  });
              }
- 
+
              if (perspectiveCfg.inToolbar("file.help")) {
                  // link to docs as major.minor.x
                  var docsVersion = opendxp.settings.version.match(/^(\d+\.\d+)/);
@@ -236,7 +236,7 @@ opendxp.layout.toolbar = Class.create({
                  } else {
                      docsVersion = 'latest';
                  }
- 
+
                  fileItems.push({
                      text: t('help'),
                      iconCls: "opendxp_nav_icon_help",
@@ -266,8 +266,8 @@ opendxp.layout.toolbar = Class.create({
                      }
                  });
              }
- 
- 
+
+
              if (perspectiveCfg.inToolbar("file.about")) {
                  fileItems.push({
                      text: t("about_opendxp"),
@@ -287,9 +287,9 @@ opendxp.layout.toolbar = Class.create({
                  cls: "opendxp_navigation_flyout"
              };
          }
- 
+
          if (perspectiveCfg.inToolbar("extras")) {
- 
+
              var extrasItems = [];
 
              let translationItems = [];
@@ -315,7 +315,7 @@ opendxp.layout.toolbar = Class.create({
                      }
                  });
              }
- 
+
              if (user.isAllowed("recyclebin") && perspectiveCfg.inToolbar("extras.recyclebin")) {
                  extrasItems.push({
                      text: t("recyclebin"),
@@ -324,7 +324,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: this.recyclebin
                  });
              }
- 
+
              if (user.isAllowed("notes_events") && perspectiveCfg.inToolbar("extras.notesEvents")) {
                  extrasItems.push({
                      text: t('notes_events'),
@@ -344,11 +344,11 @@ opendxp.layout.toolbar = Class.create({
                      }
                  });
              }
- 
+
              if (extrasItems.length > 0) {
                  extrasItems.push("-");
              }
- 
+
              if (user.isAllowed("emails") && perspectiveCfg.inToolbar("extras.emails")) {
                  extrasItems.push({
                      text: t("email"),
@@ -377,7 +377,7 @@ opendxp.layout.toolbar = Class.create({
                      }
                  });
              }
- 
+
              if (user.admin) {
                  if (perspectiveCfg.inToolbar("extras.maintenance")) {
                      extrasItems.push({
@@ -438,11 +438,11 @@ opendxp.layout.toolbar = Class.create({
                  cls: "opendxp_navigation_flyout"
              };
          }
- 
+
          if (perspectiveCfg.inToolbar("settings")) {
              // settings menu
              var settingsItems = [];
- 
+
              if (user.isAllowed("document_types") && perspectiveCfg.inToolbar("settings.documentTypes")) {
                  settingsItems.push({
                      text: t("document_types"),
@@ -459,7 +459,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: this.editProperties
                  });
              }
- 
+
              if (user.isAllowed("predefined_properties") && perspectiveCfg.inToolbar("settings.predefinedMetadata")) {
                  settingsItems.push({
                      text: t("predefined_asset_metadata"),
@@ -468,7 +468,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: this.editPredefinedMetadata
                  });
              }
- 
+
              if (user.isAllowed("system_settings") && perspectiveCfg.inToolbar("settings.system")) {
                  settingsItems.push({
                      text: t("system_settings"),
@@ -486,7 +486,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: this.systemAppearanceSettings
                  });
              }
- 
+
              if (user.isAllowed("website_settings") && perspectiveCfg.inToolbar("settings.website")) {
                  settingsItems.push({
                      text: t("website_settings"),
@@ -498,7 +498,7 @@ opendxp.layout.toolbar = Class.create({
 
              if (user.isAllowed("users") && perspectiveCfg.inToolbar("settings.users")) {
                  var userItems = [];
- 
+
                  if (perspectiveCfg.inToolbar("settings.users.users")) {
                      userItems.push(
                          {
@@ -509,7 +509,7 @@ opendxp.layout.toolbar = Class.create({
                          }
                      );
                  }
- 
+
                  if (perspectiveCfg.inToolbar("settings.users.roles")) {
                      userItems.push(
                          {
@@ -520,7 +520,7 @@ opendxp.layout.toolbar = Class.create({
                          }
                      );
                  }
- 
+
                  if (user.isAllowed("users")) {
                      userItems.push(
                          {
@@ -534,7 +534,7 @@ opendxp.layout.toolbar = Class.create({
                          }
                      );
                  }
- 
+
                  if (userItems.length > 0) {
                      settingsItems.push({
                          text: t("users") + " / " + t("roles"),
@@ -549,7 +549,7 @@ opendxp.layout.toolbar = Class.create({
                      });
                  }
              }
- 
+
              if (user.isAllowed("thumbnails") && perspectiveCfg.inToolbar("settings.thumbnails")) {
                  settingsItems.push({
                      text: t("thumbnails"),
@@ -573,9 +573,9 @@ opendxp.layout.toolbar = Class.create({
                      }
                  });
              }
- 
+
              if (user.isAllowed("objects") && perspectiveCfg.inToolbar("settings.objects")) {
- 
+
                  var objectMenu = {
                      text: t("data_objects"),
                      iconCls: "opendxp_nav_icon_object",
@@ -675,21 +675,21 @@ opendxp.layout.toolbar = Class.create({
              }
 
              if (perspectiveCfg.inToolbar("settings.cache") && (user.isAllowed("clear_cache") || user.isAllowed("clear_temp_files") || user.isAllowed("clear_fullpage_cache"))) {
- 
+
                  var cacheItems = [];
                  var cacheSubItems = [];
- 
+
                  if (user.isAllowed("clear_cache")) {
- 
+
                      if (perspectiveCfg.inToolbar("settings.cache.clearAll")) {
                          cacheSubItems.push({
                              text: t("all_caches") + ' (Symfony + Data)',
                              iconCls: "opendxp_nav_icon_clear_cache",
                              itemId: 'opendxp_menu_settings_cache_all_caches',
-                             handler: this.clearCache.bind(this, {'env[]': opendxp.settings['cached_environments']})
+                             handler: this.clearCache.bind(this, {'env[]': opendxp.settings['environment']})
                          });
                      }
- 
+
                      if (perspectiveCfg.inToolbar("settings.cache.clearData")) {
                          cacheSubItems.push({
                              text: t("data_cache"),
@@ -698,29 +698,16 @@ opendxp.layout.toolbar = Class.create({
                              handler: this.clearCache.bind(this, {'only_opendxp_cache': true})
                          });
                      }
- 
+
                      if (perspectiveCfg.inToolbar("settings.cache.clearSymfony")) {
- 
-                         opendxp.settings['cached_environments'].forEach(function(environment) {
-                             cacheSubItems.push({
-                                 text: 'Symfony ' + t('environment') + ": " + environment  + ' (' + t('deprecated') + ')',
-                                 iconCls: "opendxp_nav_icon_clear_cache",
-                                 itemId: 'opendxp_menu_settings_cache_symfony_' + environment,
-                                 handler: this.clearCache.bind(this, {
-                                     'only_symfony_cache': true,
-                                     'env[]': environment
-                                 })
-                             });
-                         }.bind(this));
- 
                          cacheSubItems.push({
-                             text: 'Symfony ' + t('environment') + ": " + t('all')  + ' (' + t('deprecated') + ')',
+                             text: t('symfony_cache'),
                              iconCls: "opendxp_nav_icon_clear_cache",
                              itemId: 'opendxp_menu_settings_cache_symfony',
-                             handler: this.clearCache.bind(this, {'only_symfony_cache': true, 'env[]': opendxp.settings['cached_environments']})
+                             handler: this.clearCache.bind(this, {'only_symfony_cache': true, 'env[]': opendxp.settings['environment']})
                          });
                      }
- 
+
                      cacheItems.push({
                          text: t("clear_cache"),
                          iconCls: "opendxp_nav_icon_clear_cache",
@@ -733,7 +720,7 @@ opendxp.layout.toolbar = Class.create({
                          }
                      });
                  }
- 
+
                  if (perspectiveCfg.inToolbar("settings.cache.clearOutput")) {
                      if (user.isAllowed("clear_fullpage_cache")) {
                          cacheItems.push({
@@ -744,7 +731,7 @@ opendxp.layout.toolbar = Class.create({
                          });
                      }
                  }
- 
+
                  if (perspectiveCfg.inToolbar("settings.cache.clearTemp")) {
                      if (user.isAllowed("clear_temp_files")) {
                          cacheItems.push({
@@ -755,7 +742,7 @@ opendxp.layout.toolbar = Class.create({
                          });
                      }
                  }
- 
+
                  if (perspectiveCfg.inToolbar("settings.cache.generatePreviews")) {
                      if (opendxp.settings.document_generatepreviews && (opendxp.settings.chromium || opendxp.settings.gotenberg)) {
                          cacheItems.push({
@@ -766,8 +753,8 @@ opendxp.layout.toolbar = Class.create({
                          });
                      }
                  }
- 
- 
+
+
                  if (cacheItems.length > 0) {
                      var cacheMenu = {
                          text: t("cache"),
@@ -780,11 +767,11 @@ opendxp.layout.toolbar = Class.create({
                              items: cacheItems
                          }
                      };
- 
+
                      settingsItems.push(cacheMenu);
                  }
              }
- 
+
              // admin translations only for admins
              if (user.isAllowed('admin_translations')) {
                  if (perspectiveCfg.inToolbar("settings.adminTranslations")) {
@@ -796,7 +783,7 @@ opendxp.layout.toolbar = Class.create({
                      });
                  }
              }
- 
+
              // tags for elements
              if (user.isAllowed("tags_configuration") && perspectiveCfg.inToolbar("settings.tagConfiguration")) {
                  settingsItems.push({
@@ -806,7 +793,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: this.showTagConfiguration
                  });
              }
- 
+
              if (user.admin) {
                  settingsItems.push({
                      iconCls: "opendxp_nav_icon_icons",
@@ -815,7 +802,7 @@ opendxp.layout.toolbar = Class.create({
                      handler: this.showIconLibrary.bind(this)
                  });
              }
- 
+
              // help menu
             menu.settings = {
                 label: t('settings'),
@@ -853,7 +840,7 @@ opendxp.layout.toolbar = Class.create({
                  itemId: 'opendxp_menu_notifications_notifications',
                  handler: this.showNotificationTab.bind(this)
              }];
- 
+
              if(user.isAllowed('notifications_send')) {
                  notificationItems.push({
                      text: t("notifications_send"),
@@ -863,9 +850,9 @@ opendxp.layout.toolbar = Class.create({
                      handler: this.showNotificationModal.bind(this)
                  });
              }
- 
+
              notificationItems.push('-');
- 
+
              // check for devmode
              if (opendxp.settings.devmode) {
                  notificationItems.push({
@@ -875,7 +862,7 @@ opendxp.layout.toolbar = Class.create({
                  });
                  opendxp.notification.helper.incrementCount();
              }
- 
+
              // check for debug
              if (opendxp.settings.debug) {
                  notificationItems.push({
@@ -885,7 +872,7 @@ opendxp.layout.toolbar = Class.create({
                  });
                  opendxp.notification.helper.incrementCount();
              }
- 
+
              // check for maintenance
              if (!opendxp.settings.maintenance_active) {
                  notificationItems.push({
@@ -899,7 +886,7 @@ opendxp.layout.toolbar = Class.create({
 
                  opendxp.notification.helper.incrementCount();
              }
- 
+
              //check for mail settings
              if (!opendxp.settings.mail) {
                  notificationItems.push({
@@ -1001,10 +988,10 @@ opendxp.layout.toolbar = Class.create({
              Ext.get("opendxp_notification").on("mousedown", this.showSubMenu.bind(this.notificationMenu));
              opendxp.notification.helper.updateFromServer();
          }
- 
+
          Ext.each(Ext.query(".opendxp_menu_item"), function (el) {
              el = Ext.get(el);
- 
+
              if (el) {
                  var menuVariable = el.id.replace(/opendxp_menu_/, "") + "Menu";
                  if (el.hasCls("opendxp_menu_needs_children")) {
@@ -1012,7 +999,7 @@ opendxp.layout.toolbar = Class.create({
                          el.setStyle("display", "none");
                      }
                  }
- 
+
                  el.on("mouseenter", function () {
                      if (Ext.menu.MenuMgr.hideAll()) {
                          var offsets = el.getOffsetsTo(Ext.getBody());
@@ -1036,10 +1023,10 @@ opendxp.layout.toolbar = Class.create({
          });
 
          document.dispatchEvent(postMenuBuild);
- 
+
          return;
      },
- 
+
      showSubMenu: function (e) {
          if(this.hidden) {
              e.stopEvent();
@@ -1051,13 +1038,13 @@ opendxp.layout.toolbar = Class.create({
              this.hide();
          }
      },
- 
+
      closeAllTabs: function () {
          opendxp.helpers.closeAllTabs();
      },
- 
+
      editDocumentTypes: function () {
- 
+
          try {
              opendxp.globalmanager.get("document_types").activate();
          }
@@ -1065,9 +1052,9 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("document_types", new opendxp.settings.document.doctypes());
          }
      },
- 
+
      editProperties: function () {
- 
+
          try {
              opendxp.globalmanager.get("predefined_properties").activate();
          }
@@ -1075,10 +1062,10 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("predefined_properties", new opendxp.settings.properties.predefined());
          }
      },
- 
- 
+
+
      editPredefinedMetadata: function () {
- 
+
          try {
              opendxp.globalmanager.get("predefined_metadata").activate();
          }
@@ -1086,7 +1073,7 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("predefined_metadata", new opendxp.settings.metadata.predefined());
          }
      },
- 
+
      recyclebin: function () {
          try {
              opendxp.globalmanager.get("recyclebin").activate();
@@ -1095,13 +1082,13 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("recyclebin", new opendxp.settings.recyclebin());
          }
      },
- 
+
      editUsers: function () {
          opendxp.helpers.showUser();
      },
- 
+
      editRoles: function () {
- 
+
          try {
              opendxp.globalmanager.get("roles").activate();
          }
@@ -1109,7 +1096,7 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("roles", new opendxp.settings.user.role.panel());
          }
      },
- 
+
      editThumbnails: function () {
          try {
              opendxp.globalmanager.get("thumbnails").activate();
@@ -1118,7 +1105,7 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("thumbnails", new opendxp.settings.thumbnail.panel());
          }
      },
- 
+
      editVideoThumbnails: function () {
          try {
              opendxp.globalmanager.get("videothumbnails").activate();
@@ -1127,7 +1114,7 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("videothumbnails", new opendxp.settings.videothumbnail.panel());
          }
      },
- 
+
      editTranslations: function (domain) {
          const preEditTranslations = new CustomEvent(opendxp.events.preEditTranslations, {
              detail: {
@@ -1136,12 +1123,12 @@ opendxp.layout.toolbar = Class.create({
              },
              cancelable: true
          });
- 
+
          const isAllowed = document.dispatchEvent(preEditTranslations);
          if (!isAllowed){
              return;
          }
- 
+
          try {
              opendxp.globalmanager.get("translationdomainmanager").activate();
          }
@@ -1149,11 +1136,11 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("translationdomainmanager", new opendxp.settings.translation.domain(domain));
          }
      },
- 
+
      openPerspective: function(name) {
          location.href = Routing.generate('opendxp_admin_index', {perspective: name});
      },
- 
+
      generatePagePreviews: function ()  {
          Ext.Ajax.request({
              url: Routing.generate('opendxp_admin_document_page_generatepreviews'),
@@ -1168,7 +1155,7 @@ opendxp.layout.toolbar = Class.create({
              }
          });
      },
- 
+
      sendTestEmail: function () {
          opendxp.helpers.sendTestEmail(opendxp.settings.mailDefaultAddress);
      },
@@ -1183,7 +1170,7 @@ opendxp.layout.toolbar = Class.create({
      },
 
      systemSettings: function () {
- 
+
          try {
              opendxp.globalmanager.get("settings_system").activate();
          }
@@ -1200,9 +1187,9 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("settings_system_appearance", new opendxp.settings.appearance());
          }
      },
- 
+
      websiteSettings: function () {
- 
+
          try {
              opendxp.globalmanager.get("settings_website").activate();
          }
@@ -1218,7 +1205,7 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("classificationstore_config", new opendxp.object.classificationstore.storeTree());
          }
      },
- 
+
      editClasses: function () {
          try {
              opendxp.globalmanager.get("classes").activate();
@@ -1227,7 +1214,7 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("classes", new opendxp.object.klass());
          }
      },
- 
+
      editFieldcollections: function () {
          try {
              opendxp.globalmanager.get("fieldcollections").activate();
@@ -1236,7 +1223,7 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("fieldcollections", new opendxp.object.fieldcollection());
          }
      },
- 
+
      editObjectBricks: function () {
          try {
              opendxp.globalmanager.get("objectbricks").activate();
@@ -1265,14 +1252,14 @@ opendxp.layout.toolbar = Class.create({
              }
          });
      },
- 
+
      clearOutputCache: function () {
          Ext.Ajax.request({
              url: Routing.generate('opendxp_admin_settings_clearoutputcache'),
              method: 'DELETE'
          });
      },
- 
+
      clearTemporaryFiles: function () {
          Ext.Msg.confirm(t('warning'), t('system_performance_stability_warning'), function(btn){
              if (btn == 'yes'){
@@ -1300,7 +1287,7 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("element_history", new opendxp.element.history());
          }
      },
- 
+
      sentEmailsLog: function () {
          try {
              opendxp.globalmanager.get("sent_emails").activate();
@@ -1309,7 +1296,7 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("sent_emails", new opendxp.settings.email.log());
          }
      },
- 
+
      emailBlocklist: function () {
          try {
              opendxp.globalmanager.get("email_blocklist").activate();
@@ -1318,7 +1305,7 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("email_blocklist", new opendxp.settings.email.blocklist());
          }
      },
- 
+
      showTagConfiguration: function() {
          try {
              opendxp.globalmanager.get("element_tag_configuration").activate();
@@ -1327,28 +1314,28 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("element_tag_configuration", new opendxp.element.tag.configuration());
          }
      },
- 
- 
+
+
      bulkImport: function() {
- 
+
          Ext.Msg.confirm(t('warning'), t('warning_bulk_import'), function(btn){
              if (btn == 'yes'){
                  this.doBulkImport();
              }
          }.bind(this));
      },
- 
- 
+
+
      doBulkImport: function() {
          var importer = new opendxp.object.bulkimport;
          importer.upload();
      },
- 
+
      bulkExport: function() {
          var exporter = new opendxp.object.bulkexport();
          exporter.export();
      },
- 
+
      showNotificationTab: function () {
          try {
              opendxp.globalmanager.get("notifications").activate();
@@ -1357,12 +1344,12 @@ opendxp.layout.toolbar = Class.create({
              opendxp.globalmanager.add("notifications", new opendxp.notification.panel());
          }
      },
- 
+
      showNotificationModal: function () {
          if (opendxp.globalmanager.get("new_notifications")) {
              opendxp.globalmanager.get("new_notifications").getWindow().destroy();
          }
- 
+
          opendxp.globalmanager.add("new_notifications", new opendxp.notification.modal());
      },
 
@@ -1376,4 +1363,4 @@ opendxp.layout.toolbar = Class.create({
         }
     }
  });
- 
+
