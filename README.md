@@ -39,7 +39,7 @@ Following topics are short-cuts into the documentation for admin interface:
 ## Copyright and License 
 Copyright: OpenDXP
 
-This project is a fork of [Pimcore admin-ui-classic-bundle 1.7.8](https://github.com/pimcore/admin-ui-classic-bundle/tree/cb6d097f2437ea7a242e2fcba6712ee2b0ce5b69),
+This project is a fork of [Pimcore admin-ui-classic-bundle (88fc2d7 / v1.7.10)](https://github.com/pimcore/admin-ui-classic-bundle/tree/88fc2d76ee0cd754f96ae89030bb54a4feb0e956),
 which is © Pimcore GmbH and licensed under the GPLv3.
 
 For licensing details please visit [LICENSE.md](LICENSE.md)

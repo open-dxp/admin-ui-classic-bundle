@@ -548,7 +548,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         }
         $list->setOffset($start);
         $list->setOrder($order);
-        $list->setOrderKey($orderKey);
+        $list->setOrderKey($mapping[$orderKey] ?? $orderKey);
         $condition = '';
 
         if ($request->get('filter')) {
@@ -797,7 +797,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         $sortingSettings = \OpenDxp\Bundle\AdminBundle\Helper\QueryParams::extractSortingSettings($allParams);
 
         if ($sortingSettings['orderKey'] && $sortingSettings['order']) {
-            $orderKey = $sortingSettings['orderKey'];
+            $orderKey = $mapping[$sortingSettings['orderKey']] ?? $sortingSettings['orderKey'];
             $order = $sortingSettings['order'];
         }
 
