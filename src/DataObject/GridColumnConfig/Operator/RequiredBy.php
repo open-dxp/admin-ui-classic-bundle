@@ -69,7 +69,7 @@ final class RequiredBy extends AbstractOperator
             foreach ($dependencies as $dependency) {
                 $sourceType = $dependency['sourcetype'];
                 $sourceId = $dependency['sourceid'];
-                $element = Service::getElementById($sourceType, $sourceId);
+                $element = Service::getElementById($sourceType, (int) $sourceId);
                 $resultList[] = $element;
             }
             $result->value = $resultList;

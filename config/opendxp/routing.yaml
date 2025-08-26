@@ -1,13 +1,13 @@
 _opendxp_admin:
     resource: "../../src/Controller/Admin/"
-    type:     annotation
+    type:     attribute
     prefix:   /admin
     options:
         expose: true
 
 _opendxp_gdpr:
     resource: "../../src/Controller/GDPR/"
-    type:     annotation
+    type:     attribute
     prefix:   /admin/gdpr
     options:
         expose: true

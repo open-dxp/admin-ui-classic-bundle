@@ -23,7 +23,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 /**
  * @internal
  *
- * @deprecated Use elementService instead.
+ * @todo Needs to be replaced by ElementService. Note: Has an optional dependency in the OpenDxpSeoBundle (Needs to be adopted before removing/deprecating this).
  */
 trait DocumentTreeConfigTrait
 {

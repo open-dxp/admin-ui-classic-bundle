@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace OpenDxp\Bundle\AdminBundle\Controller;
 
-use OpenDxp\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @internal
  */
-class PublicServicesController extends Controller
+class PublicServicesController extends AbstractController
 {
     public function customAdminEntryPointAction(Request $request): RedirectResponse
     {

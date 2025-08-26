@@ -23,7 +23,7 @@
     top:0;
     left: 0;
     width: 60px;
-    height: 100%;
+    height: 100vh;
 }
 
 #opendxp_navigation {
@@ -150,9 +150,9 @@
 
 #opendxp_loading.loaded {
     position: absolute;
-    z-index: 15;
+    z-index: 999999;
     left: 8px;
-    bottom: 200px;
+    bottom: 235px;
     width:44px;
     height: 25px;
     padding:0;
@@ -2340,16 +2340,18 @@ ul.leaflet-draw-actions.leaflet-draw-actions-top.leaflet-draw-actions-bottom li:
 
 /** END notifications **/
 
-.x-body .sf-minitoolbar {
+.x-body .sf-toolbar-toggle-button {
     left:12px;
-    right:auto;
+    /*right: auto;*/
     bottom: 195px;
-    background: #0C0F12;
-    text-align: center;
+    background: #0C0F12 !important;
+    /*text-align: center;*/
     z-index: 12;
+    top: auto !important;
+    border-top: none !important;
 }
 
-.x-body .sf-minitoolbar a {
+.x-body .sf-toolbar-toggle-button a {
     width: 48px;
 }
 

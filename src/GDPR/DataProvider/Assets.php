@@ -65,7 +65,7 @@ class Assets extends Elements implements DataProviderInterface
         $zip->open($file, \ZipArchive::OVERWRITE);
 
         foreach (array_keys($this->exportIds) as $id) {
-            $theAsset = Asset::getById($id);
+            $theAsset = Asset::getById((int) $id);
 
             $resultItem = Exporter::exportAsset($theAsset);
             $resultItem = json_encode($resultItem);
@@ -158,7 +158,7 @@ class Assets extends Elements implements DataProviderInterface
         $elements = [];
         if ($query->rowCount() > 0) {
             foreach ($query->fetchAllAssociative() as $hit) {
-                $element = Element\Service::getElementById('asset', $hit['id']);
+                $element = Element\Service::getElementById('asset', (int) $hit['id']);
 
                 if ($element instanceof Asset) {
                     $data = GridData\Asset::getData($element);

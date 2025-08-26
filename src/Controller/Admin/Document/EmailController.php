@@ -20,20 +20,20 @@ use OpenDxp\Model\Document;
 use OpenDxp\Model\Element;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * @Route("/email", name="opendxp_admin_document_email_")
  *
  * @internal
  */
+
+#[Route("/email", name: "opendxp_admin_document_email_")]
 class EmailController extends DocumentControllerBase
 {
     /**
-     * @Route("/get-data-by-id", name="getdatabyid", methods={"GET"})
-     *
      * @throws \Exception
      */
+    #[Route("/get-data-by-id", name: "getdatabyid", methods: ["GET"])]
     public function getDataByIdAction(Request $request): JsonResponse
     {
         $email = Document\Email::getById((int)$request->get('id'));
@@ -71,10 +71,9 @@ class EmailController extends DocumentControllerBase
     }
 
     /**
-     * @Route("/save", name="save", methods={"PUT", "POST"})
-     *
      * @throws \Exception
      */
+    #[Route("/save", name: "save", methods: ["PUT", "POST"])]
     public function saveAction(Request $request): JsonResponse
     {
         $page = Document\Email::getById((int) $request->get('id'));

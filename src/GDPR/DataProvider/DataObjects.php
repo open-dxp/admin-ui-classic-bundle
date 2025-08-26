@@ -64,13 +64,13 @@ class DataObjects extends Elements implements DataProviderInterface
 
         if (!empty($this->exportIds['object'])) {
             foreach (array_keys($this->exportIds['object']) as $id) {
-                $object = AbstractObject::getById($id);
+                $object = AbstractObject::getById((int)$id);
                 $exportResult[] = Exporter::exportObject($object);
             }
         }
         if (!empty($this->exportIds['image'])) {
             foreach (array_keys($this->exportIds['image']) as $id) {
-                $theAsset = Asset::getById($id);
+                $theAsset = Asset::getById((int) $id);
                 $exportResult[] = Exporter::exportAsset($theAsset);
             }
         }
@@ -148,7 +148,7 @@ class DataObjects extends Elements implements DataProviderInterface
         $elements = [];
         if ($query->rowCount() > 0) {
             foreach ($query->fetchAllAssociative() as $hit) {
-                $element = Element\Service::getElementById($hit['type'], $hit['id']);
+                $element = Element\Service::getElementById($hit['type'], (int) $hit['id']);
                 if ($element instanceof Concrete) {
                     $data = GridData\DataObject::getData($element);
                     $data['__gdprIsDeletable'] = $this->config['classes'][$element->getClassName()]['allowDelete'] ?? false;

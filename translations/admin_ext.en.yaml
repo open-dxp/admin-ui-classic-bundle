@@ -651,6 +651,7 @@ unlock: Unlock
 lock_and_propagate_to_children: Lock and propagate to children
 unlock_and_propagate_to_children: Unlock and propagate to children
 data_cache: Data Cache
+symfony_cache: Symfony Cache
 listing_use_traits: Listing Use (traits)
 listing_parent_php_class: Listing Parent PHP Class
 expand_cs_group: There are empty features not displayed here. Click to show them
