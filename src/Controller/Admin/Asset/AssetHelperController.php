@@ -87,7 +87,7 @@ class AssetHelperController extends AdminAbstractController
         return $configData;
     }
 
-    public function getSharedGridColumnConfigs(User $user, string $classId, string $searchType = null): array
+    public function getSharedGridColumnConfigs(User $user, string $classId, ?string $searchType = null): array
     {
         $db = Db::get();
 
@@ -269,7 +269,7 @@ class AssetHelperController extends AdminAbstractController
         ];
     }
 
-    protected function getFieldGridConfig(array $field, string $language = '', string $keyPrefix = null): ?array
+    protected function getFieldGridConfig(array $field, string $language = '', ?string $keyPrefix = null): ?array
     {
         $defaulMetadataFields = ['copyright', 'alt', 'title'];
         $predefined = null;

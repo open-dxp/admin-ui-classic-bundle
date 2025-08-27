@@ -1,6 +1,4 @@
 security:
-    enable_authenticator_manager: true
-
     providers:
         opendxp_admin:
             id: OpenDxp\Bundle\AdminBundle\Security\User\UserProvider
