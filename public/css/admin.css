@@ -181,7 +181,7 @@
     font-size: 0;
     cursor: pointer;
     background-color: #0B4559;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMSIgaGVpZ2h0PSIyMS45Ij4NCiAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgaWQ9IlN2Z2pzU3ZnMTAwNyIgd2lkdGg9IjIxIiBoZWlnaHQ9IjIxLjkiDQogICAgICAgICB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyMSAyMS45Ij4NCiAgICAgICAgPHBhdGggZD0iTTIuNzA1IDEwLjk1YzAtNC43IDMuMjA3LTguMTMgNy43OTUtOC4xM3M3Ljc5NSAzLjQzIDcuNzk1IDguMTNjMCA0LjctMy4yMDcgOC4xMy03Ljc5NSA4LjEzcy03Ljc5NS0zLjQzMS03Ljc5NS04LjEzem0xMy4zNCAwYzAtMy41MTktMi4xMzgtNi4wNTgtNS41NDUtNi4wNThTNC45NTQgNy40MyA0Ljk1NCAxMC45NWMwIDMuNTE5IDIuMTM4IDYuMDU4IDUuNTQ2IDYuMDU4IDMuNDA4IDAgNS41NDUtMi41MzkgNS41NDUtNi4wNTh6Ig0KICAgICAgICAgICAgICBzdHlsZT0iZmlsbDojNzljMzAwO3N0cm9rZS13aWR0aDowO2ZpbGwtb3BhY2l0eToxIi8+DQogICAgPC9zdmc+DQo8L3N2Zz4=);
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDEyMDEuMDAwMDAwIDEyMDEuMDAwMDAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0Ij4NCiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwxMjAxLjAwMDAwMCkgc2NhbGUoMC4xMDAwMDAsLTAuMTAwMDAwKSIgZmlsbD0iI2U2ZmYyYSIgc3Ryb2tlPSJub25lIj4NCiAgICAgICAgPHBhdGggZD0iTTU3NjUgODg3MyBjLTEyMzYgLTExMSAtMjI1MiAtOTczIC0yNTU1IC0yMTY4IC02NSAtMjU2IC04NCAtNDIwIC04NCAtNzEwIDEgLTI4NCAxOCAtNDMwIDgwIC02ODQgMjAyIC04MjMgNzYwIC0xNTE4IDE1MTkgLTE4OTEgMjM4IC0xMTcgNDY0IC0xOTUgNzA1IC0yNDMgMjI1IC00NSAzMDEgLTUyIDU4MCAtNTEgMjIzIDAgMjg4IDQgNDA3IDIyIDUyMyA4MiA5ODQgMjgzIDEzOTMgNjA4IDExOSA5NSAzNTIgMzMwIDQ0OCA0NTEgMzE5IDQwNCA1MTYgODYyIDU5OSAxMzkzIDI2IDE2NSAyNiA2MzUgMCA4MDAgLTEwMCA2NDAgLTM1OSAxMTY1IC03OTcgMTYxMyAtNDcyIDQ4NSAtMTA4MiA3ODAgLTE3NTggODUyIC0xMjIgMTMgLTQzMCAxOCAtNTM3IDh6Ii8+DQogICAgPC9nPg0KPC9zdmc+DQo=);
     background-repeat: no-repeat;
     background-size: 40px 40px;
     background-position: 10px 4px;
@@ -2310,7 +2310,7 @@ ul.leaflet-draw-actions.leaflet-draw-actions-top.leaflet-draw-actions-bottom li:
     position: absolute;
     width: 60px;
     height: 48px;
-    background: #79c300;
+    background: #e6ff2a;
     bottom: 144px;
     display: none;
 }
@@ -2321,6 +2321,7 @@ ul.leaflet-draw-actions.leaflet-draw-actions-top.leaflet-draw-actions-bottom li:
     height: 24px;
     top: 11px;
     left: 18px;
+    filter: invert(80%);
 }
 
 #notification_value {
@@ -2340,18 +2341,18 @@ ul.leaflet-draw-actions.leaflet-draw-actions-top.leaflet-draw-actions-bottom li:
 
 /** END notifications **/
 
-.x-body .sf-toolbar-toggle-button {
+.x-body .sf-toolbar-closed .sf-toolbar-toggle-button {
     left:12px;
-    /*right: auto;*/
+    right: auto;
     bottom: 195px;
     background: #0C0F12 !important;
-    /*text-align: center;*/
+    text-align: center;
     z-index: 12;
     top: auto !important;
     border-top: none !important;
 }
 
-.x-body .sf-toolbar-toggle-button a {
+.x-body .sf-toolbar-closed .sf-toolbar-toggle-button a {
     width: 48px;
 }
 
