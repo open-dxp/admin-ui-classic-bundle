@@ -40,7 +40,7 @@ final class DefaultValue extends AbstractValue
     /**
      * @throws \Exception
      */
-    private function getValueForObject(Concrete $object, string $key, string $brickType = null, string $brickKey = null): \stdClass
+    private function getValueForObject(Concrete $object, string $key, ?string $brickType = null, ?string $brickKey = null): \stdClass
     {
         if (!$key) {
             throw new \Exception('Empty key');

@@ -27,7 +27,7 @@ use OpenDxp\Model\Exception\UnsupportedException;
  */
 class Asset extends Element
 {
-    public static function getData(Model\Asset $asset, array $fields = null, string $requestedLanguage = null, array $params = []): array
+    public static function getData(Model\Asset $asset, ?array $fields = null, ?string $requestedLanguage = null, array $params = []): array
     {
         $data = self::gridElementData($asset);
         $loader = null;

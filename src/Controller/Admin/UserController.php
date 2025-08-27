@@ -390,7 +390,7 @@ class UserController extends AdminAbstractController implements KernelController
                 $el = Element\Service::getElementById($type, $workspace->getCid());
                 if ($el) {
                     // direct injection => not nice but in this case ok ;-)
-                    $workspace->path = $el->getRealFullPath();
+                    $workspace->path = $el->getRealFullPath(); // @phpstan-ignore-line
                     $workspaces[$wKey] = $workspace->getObjectVars();
                 }
             }
@@ -694,7 +694,7 @@ class UserController extends AdminAbstractController implements KernelController
                 $el = Element\Service::getElementById($type, $workspace->getCid());
                 if ($el) {
                     // direct injection => not nice but in this case ok ;-)
-                    $workspace->path = $el->getRealFullPath();
+                    $workspace->path = $el->getRealFullPath(); // @phpstan-ignore-line
                     $workspaces[$wKey] = $workspace->getObjectVars();
                 }
             }
