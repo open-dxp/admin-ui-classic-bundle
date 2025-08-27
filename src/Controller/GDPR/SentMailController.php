@@ -29,7 +29,7 @@ use Symfony\Component\Routing\Attribute\Route;
  *
  * @internal
  */
-#[Route("/sent-mail")]
+#[Route('/sent-mail')]
 class SentMailController extends AdminAbstractController implements KernelControllerEventInterface
 {
     public function onKernelControllerEvent(ControllerEvent $event): void
@@ -41,7 +41,7 @@ class SentMailController extends AdminAbstractController implements KernelContro
         $this->checkActionPermission($event, 'gdpr_data_extractor');
     }
 
-    #[Route("/export", name: "opendxp_admin_gdpr_sentmail_exportdataobject", methods: ["GET"])]
+    #[Route('/export', name: 'opendxp_admin_gdpr_sentmail_exportdataobject', methods: ['GET'])]
     public function exportDataObjectAction(Request $request): JsonResponse
     {
         $this->checkPermission('emails');

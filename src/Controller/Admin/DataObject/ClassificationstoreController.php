@@ -35,11 +35,11 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * @internal
  */
-#[Route("/classificationstore", name: "opendxp_admin_dataobject_classificationstore_")]
+#[Route('/classificationstore', name: 'opendxp_admin_dataobject_classificationstore_')]
 class ClassificationstoreController extends AdminAbstractController implements KernelControllerEventInterface
 {
-    #[Route("/delete-collection", name: "deletecollection", methods: ["DELETE"])]
-    function deleteCollectionAction(Request $request): JsonResponse
+    #[Route('/delete-collection', name: 'deletecollection', methods: ['DELETE'])]
+    public function deleteCollectionAction(Request $request): JsonResponse
     {
         $this->checkPermission('classificationstore');
 
@@ -58,7 +58,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/delete-collection-relation", name: "deletecollectionrelation", methods: ["DELETE"])]
+    #[Route('/delete-collection-relation', name: 'deletecollectionrelation', methods: ['DELETE'])]
     public function deleteCollectionRelationAction(Request $request): JsonResponse
     {
         $this->checkPermission('classificationstore');
@@ -75,7 +75,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/delete-relation", name: "deleterelation", methods: ["DELETE"])]
+    #[Route('/delete-relation', name: 'deleterelation', methods: ['DELETE'])]
     public function deleteRelationAction(Request $request): JsonResponse
     {
         $this->checkPermission('classificationstore');
@@ -92,7 +92,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/delete-group", name: "deletegroup", methods: ["DELETE"])]
+    #[Route('/delete-group', name: 'deletegroup', methods: ['DELETE'])]
     public function deleteGroupAction(Request $request): JsonResponse
     {
         $this->checkPermission('classificationstore');
@@ -108,7 +108,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
     /**
      * @throws \Exception
      */
-    #[Route("/create-group", name: "creategroup", methods: ["POST"])]
+    #[Route('/create-group', name: 'creategroup', methods: ['POST'])]
     public function createGroupAction(Request $request): JsonResponse
     {
         $this->checkPermission('classificationstore');
@@ -132,7 +132,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
     /**
      * @throws \Exception
      */
-    #[Route("/create-store", name: "createstore", methods: ["POST"])]
+    #[Route('/create-store', name: 'createstore', methods: ['POST'])]
     public function createStoreAction(Request $request): JsonResponse
     {
         $this->checkPermission('classificationstore');
@@ -155,7 +155,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
     /**
      * @throws \Exception
      */
-    #[Route("/create-collection", name: "createcollection", methods: ["POST"])]
+    #[Route('/create-collection', name: 'createcollection', methods: ['POST'])]
     public function createCollectionAction(Request $request): JsonResponse
     {
         $this->checkPermission('classificationstore');
@@ -174,7 +174,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson(['success' => true, 'id' => $config->getName()]);
     }
 
-    #[Route("/collections", name: "collectionsactionget", methods: ["GET"])]
+    #[Route('/collections', name: 'collectionsactionget', methods: ['GET'])]
     public function collectionsActionGet(Request $request): JsonResponse
     {
         $this->checkPermission('objects');
@@ -311,7 +311,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson($rootElement);
     }
 
-    #[Route("/collections", name: "collections", methods: ["POST", "PUT"])]
+    #[Route('/collections', name: 'collections', methods: ['POST', 'PUT'])]
     public function collectionsAction(Request $request): JsonResponse
     {
         if ($request->get('data')) {
@@ -336,7 +336,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson(['success' => false]);
     }
 
-    #[Route("/groups", name: "groupsactionget", methods: ["GET"])]
+    #[Route('/groups', name: 'groupsactionget', methods: ['GET'])]
     public function groupsActionGet(Request $request): JsonResponse
     {
         $this->checkPermission('objects');
@@ -461,7 +461,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson($rootElement);
     }
 
-    #[Route("/groups", name: "groupsaction", methods: ["POST", "PUT"])]
+    #[Route('/groups', name: 'groupsaction', methods: ['POST', 'PUT'])]
     public function groupsAction(Request $request): JsonResponse
     {
         if ($request->get('data')) {
@@ -486,7 +486,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson(['success' => false]);
     }
 
-    #[Route("/collection-relations", name: "collectionrelationsget", methods: ["GET"])]
+    #[Route('/collection-relations', name: 'collectionrelationsget', methods: ['GET'])]
     public function collectionRelationsGetAction(Request $request): JsonResponse
     {
         $mapping = ['groupName' => 'name', 'groupDescription' => 'description'];
@@ -581,7 +581,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson($rootElement);
     }
 
-    #[Route("/collection-relations", name: "collectionrelations", methods: ["POST", "PUT"])]
+    #[Route('/collection-relations', name: 'collectionrelations', methods: ['POST', 'PUT'])]
     public function collectionRelationsAction(Request $request): JsonResponse
     {
         if ($request->get('data')) {
@@ -613,7 +613,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson(['success' => false]);
     }
 
-    #[Route("/list-stores", name: "liststores", methods: ["GET"])]
+    #[Route('/list-stores', name: 'liststores', methods: ['GET'])]
     public function listStoresAction(): JsonResponse
     {
         $storeConfigs = [];
@@ -627,7 +627,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson($storeConfigs);
     }
 
-    #[Route("/search-relations", name: "searchrelations", methods: ["GET"])]
+    #[Route('/search-relations', name: 'searchrelations', methods: ['GET'])]
     public function searchRelationsAction(Request $request): JsonResponse
     {
         $db = Db::get();
@@ -744,7 +744,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson($rootElement);
     }
 
-    #[Route("/relations", name: "relationsactionget", methods: ["GET"])]
+    #[Route('/relations', name: 'relationsactionget', methods: ['GET'])]
     public function relationsActionGet(Request $request): JsonResponse
     {
         $mapping = ['keyName' => 'name', 'keyDescription' => 'description'];
@@ -864,7 +864,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson($rootElement);
     }
 
-    #[Route("/relations", name: "relations", methods: ["POST", "PUT"])]
+    #[Route('/relations', name: 'relations', methods: ['POST', 'PUT'])]
     public function relationsAction(Request $request): JsonResponse
     {
         if ($request->get('data')) {
@@ -894,7 +894,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
     /**
      * @throws \Exception
      */
-    #[Route("/add-collections", name: "addcollections", methods: ["POST"])]
+    #[Route('/add-collections', name: 'addcollections', methods: ['POST'])]
     public function addCollectionsAction(Request $request): JsonResponse
     {
         $this->checkPermission('objects');
@@ -1002,7 +1002,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
     /**
      * @throws \Exception
      */
-    #[Route("/add-groups", name: "addgroups", methods: ["POST"])]
+    #[Route('/add-groups', name: 'addgroups', methods: ['POST'])]
     public function addGroupsAction(Request $request): JsonResponse
     {
         $this->checkPermission('objects');
@@ -1078,7 +1078,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
     /**
      * @throws \Exception
      */
-    #[Route("/properties", name: "propertiesget", methods: ["GET"])]
+    #[Route('/properties', name: 'propertiesget', methods: ['GET'])]
     public function propertiesGetAction(Request $request): JsonResponse
     {
         $storeId = (int) $request->get('storeId');
@@ -1222,7 +1222,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson($rootElement);
     }
 
-    #[Route("/properties", name: "properties", methods: ["POST", "PUT"])]
+    #[Route('/properties', name: 'properties', methods: ['POST', 'PUT'])]
     public function propertiesAction(Request $request): JsonResponse
     {
         if ($request->get('data')) {
@@ -1289,7 +1289,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $item;
     }
 
-    #[Route("/add-property", name: "addproperty", methods: ["POST"])]
+    #[Route('/add-property', name: 'addproperty', methods: ['POST'])]
     public function addPropertyAction(Request $request): JsonResponse
     {
         $name = $request->get('name');
@@ -1313,7 +1313,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson(['success' => true, 'id' => $config->getName()]);
     }
 
-    #[Route("/delete-property", name: "deleteproperty", methods: ["DELETE"])]
+    #[Route('/delete-property', name: 'deleteproperty', methods: ['DELETE'])]
     public function deletePropertyAction(Request $request): JsonResponse
     {
         $id = $request->request->getInt('id');
@@ -1329,7 +1329,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
     /**
      * @throws \Exception
      */
-    #[Route("/edit-store", name: "editstore", methods: ["PUT"])]
+    #[Route('/edit-store', name: 'editstore', methods: ['PUT'])]
     public function editStoreAction(Request $request): JsonResponse
     {
         $id = $request->request->getInt('id');
@@ -1359,7 +1359,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/storetree", name: "storetree", methods: ["GET"])]
+    #[Route('/storetree', name: 'storetree', methods: ['GET'])]
     public function storetreeAction(Request $request): JsonResponse
     {
         $result = [];
@@ -1387,7 +1387,7 @@ class ClassificationstoreController extends AdminAbstractController implements K
         return $this->adminJson($result);
     }
 
-    #[Route("/get-page", name: "getpage", methods: ["GET"])]
+    #[Route('/get-page', name: 'getpage', methods: ['GET'])]
     public function getPageAction(Request $request): JsonResponse
     {
         $tableSuffix = $request->get('table');

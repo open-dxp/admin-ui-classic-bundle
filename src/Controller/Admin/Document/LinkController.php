@@ -29,13 +29,13 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * @internal
  */
-#[Route("/link", name: "opendxp_admin_document_link_")]
+#[Route('/link', name: 'opendxp_admin_document_link_')]
 class LinkController extends DocumentControllerBase
 {
     /**
      * @throws \Exception
      */
-    #[Route("/get-data-by-id", name: "getdatabyid", methods: ["GET"])]
+    #[Route('/get-data-by-id', name: 'getdatabyid', methods: ['GET'])]
     public function getDataByIdAction(Request $request, SerializerInterface $serializer): JsonResponse
     {
         $link = Document\Link::getById((int)$request->get('id'));
@@ -74,7 +74,7 @@ class LinkController extends DocumentControllerBase
     /**
      * @throws \Exception
      */
-    #[Route("/save", name: "save", methods: ["POST", "PUT"])]
+    #[Route('/save', name: 'save', methods: ['POST', 'PUT'])]
     public function saveAction(Request $request): JsonResponse
     {
         $link = Document\Link::getById((int) $request->get('id'));

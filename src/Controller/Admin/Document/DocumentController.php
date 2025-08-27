@@ -65,7 +65,7 @@ use function unlink;
 /**
  * @internal
  */
-#[Route("/document")]
+#[Route('/document')]
 class DocumentController extends ElementControllerBase implements KernelControllerEventInterface
 {
     use AdminStyleTrait;
@@ -74,19 +74,19 @@ class DocumentController extends ElementControllerBase implements KernelControll
 
     protected Document\Service $_documentService;
 
-    #[Route("/tree-get-root", name: "opendxp_admin_document_document_treegetroot", methods: ["GET"])]
+    #[Route('/tree-get-root', name: 'opendxp_admin_document_document_treegetroot', methods: ['GET'])]
     public function treeGetRootAction(Request $request): JsonResponse
     {
         return parent::treeGetRootAction($request);
     }
 
-    #[Route("/delete-info", name: "opendxp_admin_document_document_deleteinfo", methods: ["GET"])]
+    #[Route('/delete-info', name: 'opendxp_admin_document_document_deleteinfo', methods: ['GET'])]
     public function deleteInfoAction(Request $request, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
         return parent::deleteInfoAction($request, $eventDispatcher);
     }
 
-    #[Route("/get-data-by-id", name: "opendxp_admin_document_document_getdatabyid", methods: ["GET"])]
+    #[Route('/get-data-by-id', name: 'opendxp_admin_document_document_getdatabyid', methods: ['GET'])]
     public function getDataByIdAction(Request $request, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
         $document = Document::getById((int) $request->get('id'));
@@ -127,7 +127,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         throw $this->createAccessDeniedHttpException();
     }
 
-    #[Route("/tree-get-children-by-id", name: "opendxp_admin_document_document_treegetchildrenbyid", methods: ["GET"])]
+    #[Route('/tree-get-children-by-id', name: 'opendxp_admin_document_document_treegetchildrenbyid', methods: ['GET'])]
     public function treeGetChildrenByIdAction(Request $request, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
         $allParams = array_merge($request->request->all(), $request->query->all());
@@ -232,7 +232,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         }
     }
 
-    #[Route("/add", name: "opendxp_admin_document_document_add", methods: ["POST"])]
+    #[Route('/add', name: 'opendxp_admin_document_document_add', methods: ['POST'])]
     public function addAction(Request $request): JsonResponse
     {
         $success = false;
@@ -371,7 +371,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         ]);
     }
 
-    #[Route("/delete", name: "opendxp_admin_document_document_delete", methods: ["DELETE"])]
+    #[Route('/delete', name: 'opendxp_admin_document_document_delete', methods: ['DELETE'])]
     public function deleteAction(Request $request): JsonResponse
     {
         $type = $request->get('type');
@@ -422,7 +422,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
      * @throws Exception
      * @throws RuntimeException
      */
-    #[Route("/update", name: "opendxp_admin_document_document_update", methods: ["PUT"])]
+    #[Route('/update', name: 'opendxp_admin_document_document_update', methods: ['PUT'])]
     public function updateAction(Request $request): JsonResponse
     {
         $data = ['success' => false];
@@ -584,7 +584,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         }
     }
 
-    #[Route("/doc-types", name: "opendxp_admin_document_document_doctypesget", methods: ["GET"])]
+    #[Route('/doc-types', name: 'opendxp_admin_document_document_doctypesget', methods: ['GET'])]
     public function docTypesGetAction(Request $request): JsonResponse
     {
         // get list of types
@@ -602,7 +602,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         return $this->adminJson(['data' => $docTypes, 'success' => true, 'total' => count($docTypes)]);
     }
 
-    #[Route("/doc-types", name: "opendxp_admin_document_document_doctypes", methods: ["PUT", "POST", "DELETE"])]
+    #[Route('/doc-types', name: 'opendxp_admin_document_document_doctypes', methods: ['PUT', 'POST', 'DELETE'])]
     public function docTypesAction(Request $request): JsonResponse
     {
         if ($request->get('data')) {
@@ -659,7 +659,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
     /**
      * @throws BadRequestHttpException If type is invalid
      */
-    #[Route("/get-doc-types", name: "opendxp_admin_document_document_getdoctypes", methods: ["GET"])]
+    #[Route('/get-doc-types', name: 'opendxp_admin_document_document_getdoctypes', methods: ['GET'])]
     public function getDocTypesAction(Request $request): JsonResponse
     {
         $list = new DocType\Listing();
@@ -680,7 +680,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         return $this->adminJson(['docTypes' => $docTypes]);
     }
 
-    #[Route("/version-to-session", name: "opendxp_admin_document_document_versiontosession", methods: ["POST"])]
+    #[Route('/version-to-session', name: 'opendxp_admin_document_document_versiontosession', methods: ['POST'])]
     public function versionToSessionAction(Request $request): Response
     {
         $id = (int)$request->get('id');
@@ -694,7 +694,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         return new Response();
     }
 
-    #[Route("/publish-version", name: "opendxp_admin_document_document_publishversion", methods: ["POST"])]
+    #[Route('/publish-version', name: 'opendxp_admin_document_document_publishversion', methods: ['POST'])]
     public function publishVersionAction(Request $request): JsonResponse
     {
         $this->versionToSessionAction($request);
@@ -727,7 +727,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         return $this->adminJson(['success' => true, 'treeData' => $treeData]);
     }
 
-    #[Route("/update-site", name: "opendxp_admin_document_document_updatesite", methods: ["PUT"])]
+    #[Route('/update-site', name: 'opendxp_admin_document_document_updatesite', methods: ['PUT'])]
     public function updateSiteAction(Request $request): JsonResponse
     {
         $domains = $request->request->getString('domains');
@@ -764,7 +764,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         return $this->adminJson($site->getObjectVars());
     }
 
-    #[Route("/remove-site", name: "opendxp_admin_document_document_removesite", methods: ["DELETE"])]
+    #[Route('/remove-site', name: 'opendxp_admin_document_document_removesite', methods: ['DELETE'])]
     public function removeSiteAction(Request $request): JsonResponse
     {
         $site = Site::getByRootId((int)$request->get('id'));
@@ -773,7 +773,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/copy-info", name: "opendxp_admin_document_document_copyinfo", methods: ["GET"])]
+    #[Route('/copy-info', name: 'opendxp_admin_document_document_copyinfo', methods: ['GET'])]
     public function copyInfoAction(Request $request): JsonResponse
     {
         $transactionId = time();
@@ -866,7 +866,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         ]);
     }
 
-    #[Route("/copy-rewrite-ids", name: "opendxp_admin_document_document_copyrewriteids", methods: ["PUT"])]
+    #[Route('/copy-rewrite-ids', name: 'opendxp_admin_document_document_copyrewriteids', methods: ['PUT'])]
     public function copyRewriteIdsAction(Request $request): JsonResponse
     {
         $transactionId = $request->get('transactionId');
@@ -905,7 +905,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         ]);
     }
 
-    #[Route("/copy", name: "opendxp_admin_document_document_copy", methods: ["POST"])]
+    #[Route('/copy', name: 'opendxp_admin_document_document_copy', methods: ['POST'])]
     public function copyAction(Request $request): JsonResponse
     {
         $success = false;
@@ -978,7 +978,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         return $this->adminJson(['success' => $success]);
     }
 
-    #[Route("/diff-versions/from/{from}/to/{to}", name: "opendxp_admin_document_document_diffversions", requirements: ["from" => "\d+", "to" => "\d+"], methods: ["GET"])]
+    #[Route('/diff-versions/from/{from}/to/{to}', name: 'opendxp_admin_document_document_diffversions', requirements: ['from' => "\d+", 'to' => "\d+"], methods: ['GET'])]
     public function diffVersionsAction(Request $request, int $from, int $to, DocumentRenderer $documentRenderer, RouterInterface $router): Response
     {
         // return with error if prerequisites do not match
@@ -1069,7 +1069,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         throw $this->createNotFoundException('Version diff file not found');
     }
 
-    #[Route("/get-id-for-path", name: "opendxp_admin_document_document_getidforpath", methods: ["GET"])]
+    #[Route('/get-id-for-path', name: 'opendxp_admin_document_document_getidforpath', methods: ['GET'])]
     public function getIdForPathAction(Request $request): JsonResponse
     {
         if ($doc = Document::getByPath($request->get('path'))) {
@@ -1082,7 +1082,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         }
     }
 
-    #[Route("/language-tree", name: "opendxp_admin_document_document_languagetree", methods: ["GET"])]
+    #[Route('/language-tree', name: 'opendxp_admin_document_document_languagetree', methods: ['GET'])]
     public function languageTreeAction(Request $request): JsonResponse
     {
         $document = Document::getById((int) $request->query->get('node'));
@@ -1100,7 +1100,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
     /**
      * @throws Exception
      */
-    #[Route("/language-tree-root", name: "opendxp_admin_document_document_languagetreeroot", methods: ["GET"])]
+    #[Route('/language-tree-root', name: 'opendxp_admin_document_document_languagetreeroot', methods: ['GET'])]
     public function languageTreeRootAction(Request $request): JsonResponse
     {
         $document = Document::getById((int) $request->query->get('id'));
@@ -1190,7 +1190,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         return $config;
     }
 
-    #[Route("/convert", name: "opendxp_admin_document_document_convert", methods: ["PUT"])]
+    #[Route('/convert', name: 'opendxp_admin_document_document_convert', methods: ['PUT'])]
     public function convertAction(Request $request): JsonResponse
     {
         $document = Document::getById((int) $request->get('id'));
@@ -1228,7 +1228,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/translation-determine-parent", name: "opendxp_admin_document_document_translationdetermineparent", methods: ["GET"])]
+    #[Route('/translation-determine-parent', name: 'opendxp_admin_document_document_translationdetermineparent', methods: ['GET'])]
     public function translationDetermineParentAction(Request $request): JsonResponse
     {
         $success = false;
@@ -1253,7 +1253,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         ]);
     }
 
-    #[Route("/translation-add", name: "opendxp_admin_document_document_translationadd", methods: ["POST"])]
+    #[Route('/translation-add', name: 'opendxp_admin_document_document_translationadd', methods: ['POST'])]
     public function translationAddAction(Request $request): JsonResponse
     {
         $sourceDocument = Document::getById((int) $request->get('sourceId'));
@@ -1280,7 +1280,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         ]);
     }
 
-    #[Route("/translation-remove", name: "opendxp_admin_document_document_translationremove", methods: ["DELETE"])]
+    #[Route('/translation-remove', name: 'opendxp_admin_document_document_translationremove', methods: ['DELETE'])]
     public function translationRemoveAction(Request $request): JsonResponse
     {
         $sourceDocument = Document::getById((int) $request->get('sourceId'));
@@ -1295,7 +1295,7 @@ class DocumentController extends ElementControllerBase implements KernelControll
         ]);
     }
 
-    #[Route("/translation-check-language", name: "opendxp_admin_document_document_translationchecklanguage", methods: ["GET"])]
+    #[Route('/translation-check-language', name: 'opendxp_admin_document_document_translationchecklanguage', methods: ['GET'])]
     public function translationCheckLanguageAction(Request $request): JsonResponse
     {
         $success = false;

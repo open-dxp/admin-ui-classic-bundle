@@ -26,14 +26,13 @@ use Symfony\Component\Routing\Attribute\Route;
  *
  * @internal
  */
-
-#[Route("/email", name: "opendxp_admin_document_email_")]
+#[Route('/email', name: 'opendxp_admin_document_email_')]
 class EmailController extends DocumentControllerBase
 {
     /**
      * @throws \Exception
      */
-    #[Route("/get-data-by-id", name: "getdatabyid", methods: ["GET"])]
+    #[Route('/get-data-by-id', name: 'getdatabyid', methods: ['GET'])]
     public function getDataByIdAction(Request $request): JsonResponse
     {
         $email = Document\Email::getById((int)$request->get('id'));
@@ -73,7 +72,7 @@ class EmailController extends DocumentControllerBase
     /**
      * @throws \Exception
      */
-    #[Route("/save", name: "save", methods: ["PUT", "POST"])]
+    #[Route('/save', name: 'save', methods: ['PUT', 'POST'])]
     public function saveAction(Request $request): JsonResponse
     {
         $page = Document\Email::getById((int) $request->get('id'));

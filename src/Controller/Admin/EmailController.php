@@ -32,13 +32,13 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * @internal
  */
-#[Route("/email")]
+#[Route('/email')]
 class EmailController extends AdminAbstractController
 {
     /**
      * @throws \Exception
      */
-    #[Route("/email-logs", name: "opendxp_admin_email_emaillogs", methods: ["GET", "POST"])]
+    #[Route('/email-logs', name: 'opendxp_admin_email_emaillogs', methods: ['GET', 'POST'])]
     public function emailLogsAction(Request $request): JsonResponse
     {
         if (!$this->getAdminUser()->isAllowed('emails') && !$this->getAdminUser()->isAllowed('gdpr_data_extractor')) {
@@ -111,7 +111,7 @@ class EmailController extends AdminAbstractController
     /**
      * @throws \Exception
      */
-    #[Route("/show-email-log", name: "opendxp_admin_email_showemaillog", methods: ["GET"])]
+    #[Route('/show-email-log', name: 'opendxp_admin_email_showemaillog', methods: ['GET'])]
     public function showEmailLogAction(Request $request, ?Profiler $profiler): JsonResponse|Response
     {
         if ($profiler) {
@@ -239,7 +239,7 @@ class EmailController extends AdminAbstractController
     /**
      * @throws \Exception
      */
-    #[Route("/delete-email-log", name: "opendxp_admin_email_deleteemaillog", methods: ["DELETE"])]
+    #[Route('/delete-email-log', name: 'opendxp_admin_email_deleteemaillog', methods: ['DELETE'])]
     public function deleteEmailLogAction(Request $request): JsonResponse
     {
         if (!$this->getAdminUser()->isAllowed('emails')) {
@@ -261,7 +261,7 @@ class EmailController extends AdminAbstractController
     /**
      * @throws \Exception
      */
-    #[Route("/resend-email", name: "opendxp_admin_email_resendemail", methods: ["POST"])]
+    #[Route('/resend-email', name: 'opendxp_admin_email_resendemail', methods: ['POST'])]
     public function resendEmailAction(Request $request): JsonResponse
     {
         if (!$this->getAdminUser()->isAllowed('emails')) {
@@ -351,7 +351,7 @@ class EmailController extends AdminAbstractController
     /**
      * @throws \Exception
      */
-    #[Route("/send-test-email", name: "opendxp_admin_email_sendtestemail", methods: ["POST"])]
+    #[Route('/send-test-email', name: 'opendxp_admin_email_sendtestemail', methods: ['POST'])]
     public function sendTestEmailAction(Request $request): JsonResponse
     {
         if (!$this->getAdminUser()->isAllowed('emails')) {
@@ -414,7 +414,7 @@ class EmailController extends AdminAbstractController
     /**
      * @throws \Exception
      */
-    #[Route("/blocklist", name: "opendxp_admin_email_blocklist", methods: ["POST"])]
+    #[Route('/blocklist', name: 'opendxp_admin_email_blocklist', methods: ['POST'])]
     public function blocklistAction(Request $request): JsonResponse
     {
         if (!$this->getAdminUser()->isAllowed('emails')) {

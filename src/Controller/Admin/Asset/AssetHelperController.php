@@ -50,8 +50,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * @internal
  */
-
-#[Route("/asset-helper")]
+#[Route('/asset-helper')]
 class AssetHelperController extends AdminAbstractController
 {
     public function __construct(
@@ -123,7 +122,7 @@ class AssetHelperController extends AdminAbstractController
         return $configData;
     }
 
-    #[Route("/grid-delete-column-config", name: "opendxp_admin_asset_assethelper_griddeletecolumnconfig", methods: ["DELETE"])]
+    #[Route('/grid-delete-column-config', name: 'opendxp_admin_asset_assethelper_griddeletecolumnconfig', methods: ['DELETE'])]
     public function gridDeleteColumnConfigAction(Request $request): JsonResponse
     {
         $gridConfigId = (int) $request->get('gridConfigId');
@@ -144,7 +143,7 @@ class AssetHelperController extends AdminAbstractController
         return $this->adminJson($newGridConfig);
     }
 
-    #[Route("/grid-get-column-config", name: "opendxp_admin_asset_assethelper_gridgetcolumnconfig", methods: ["GET"])]
+    #[Route('/grid-get-column-config', name: 'opendxp_admin_asset_assethelper_gridgetcolumnconfig', methods: ['GET'])]
     public function gridGetColumnConfigAction(Request $request): JsonResponse
     {
         $result = $this->doGetGridColumnConfig($request);
@@ -351,7 +350,7 @@ class AssetHelperController extends AdminAbstractController
         return $availableFields;
     }
 
-    #[Route("/prepare-helper-column-configs", name: "opendxp_admin_asset_assethelper_preparehelpercolumnconfigs", methods: ["POST"])]
+    #[Route('/prepare-helper-column-configs', name: 'opendxp_admin_asset_assethelper_preparehelpercolumnconfigs', methods: ['POST'])]
     public function prepareHelperColumnConfigs(Request $request): JsonResponse
     {
         $helperColumns = [];
@@ -379,7 +378,7 @@ class AssetHelperController extends AdminAbstractController
         return $this->adminJson(['success' => true, 'columns' => $newData]);
     }
 
-    #[Route("/grid-mark-favourite-column-config", name: "opendxp_admin_asset_assethelper_gridmarkfavouritecolumnconfig", methods: ["POST"])]
+    #[Route('/grid-mark-favourite-column-config', name: 'opendxp_admin_asset_assethelper_gridmarkfavouritecolumnconfig', methods: ['POST'])]
     public function gridMarkFavouriteColumnConfigAction(Request $request): JsonResponse
     {
         $classId = $request->get('classId');
@@ -443,7 +442,7 @@ class AssetHelperController extends AdminAbstractController
         return $result;
     }
 
-    #[Route("/grid-save-column-config", name: "opendxp_admin_asset_assethelper_gridsavecolumnconfig", methods: ["POST"])]
+    #[Route('/grid-save-column-config', name: 'opendxp_admin_asset_assethelper_gridsavecolumnconfig', methods: ['POST'])]
     public function gridSaveColumnConfigAction(Request $request): JsonResponse
     {
         $asset = Asset::getById((int) $request->get('id'));
@@ -643,7 +642,7 @@ class AssetHelperController extends AdminAbstractController
         }
     }
 
-    #[Route("/get-export-jobs", name: "opendxp_admin_asset_assethelper_getexportjobs", methods: ["POST"])]
+    #[Route('/get-export-jobs', name: 'opendxp_admin_asset_assethelper_getexportjobs', methods: ['POST'])]
     public function getExportJobsAction(Request $request, GridHelperService $gridHelperService): JsonResponse
     {
         $allParams = array_merge($request->request->all(), $request->query->all());
@@ -665,8 +664,7 @@ class AssetHelperController extends AdminAbstractController
     /**
      * @throws FilesystemException
      */
-
-    #[Route("/do-export", name: "opendxp_admin_asset_assethelper_doexport", methods: ["POST"])]
+    #[Route('/do-export', name: 'opendxp_admin_asset_assethelper_doexport', methods: ['POST'])]
     public function doExportAction(Request $request): JsonResponse
     {
         $fileHandle = File::getValidFilename($request->get('fileHandle'));
@@ -820,7 +818,7 @@ class AssetHelperController extends AdminAbstractController
         return $fileHandle . '.csv';
     }
 
-    #[Route("/download-csv-file", name: "opendxp_admin_asset_assethelper_downloadcsvfile", methods: ["GET"])]
+    #[Route('/download-csv-file', name: 'opendxp_admin_asset_assethelper_downloadcsvfile', methods: ['GET'])]
     public function downloadCsvFileAction(Request $request): Response
     {
         $storage = Storage::get('temp');
@@ -846,7 +844,7 @@ class AssetHelperController extends AdminAbstractController
         }
     }
 
-    #[Route("/download-xlsx-file", name: "opendxp_admin_asset_assethelper_downloadxlsxfile", methods: ["GET"])]
+    #[Route('/download-xlsx-file', name: 'opendxp_admin_asset_assethelper_downloadxlsxfile', methods: ['GET'])]
     public function downloadXlsxFileAction(Request $request, GridHelperService $gridHelperService): BinaryFileResponse
     {
         $storage = Storage::get('temp');
@@ -861,7 +859,7 @@ class AssetHelperController extends AdminAbstractController
         }
     }
 
-    #[Route("/get-metadata-for-column-config", name: "opendxp_admin_asset_assethelper_getmetadataforcolumnconfig", methods: ["GET"])]
+    #[Route('/get-metadata-for-column-config', name: 'opendxp_admin_asset_assethelper_getmetadataforcolumnconfig', methods: ['GET'])]
     public function getMetadataForColumnConfigAction(Request $request): JsonResponse
     {
         $result = [];
@@ -914,7 +912,7 @@ class AssetHelperController extends AdminAbstractController
         return $this->adminJson($result);
     }
 
-    #[Route("/get-batch-jobs", name: "opendxp_admin_asset_assethelper_getbatchjobs", methods: ["POST"])]
+    #[Route('/get-batch-jobs', name: 'opendxp_admin_asset_assethelper_getbatchjobs', methods: ['POST'])]
     public function getBatchJobsAction(Request $request, GridHelperService $gridHelperService): JsonResponse
     {
         if ($request->get('language')) {
@@ -929,7 +927,7 @@ class AssetHelperController extends AdminAbstractController
         return $this->adminJson(['success' => true, 'jobs' => $jobs]);
     }
 
-    #[Route("/batch", name: "opendxp_admin_asset_assethelper_batch", methods: ["PUT"])]
+    #[Route('/batch', name: 'opendxp_admin_asset_assethelper_batch', methods: ['PUT'])]
     public function batchAction(Request $request, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
         try {

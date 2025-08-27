@@ -43,7 +43,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * @internal
  */
-#[Route("/workflow")]
+#[Route('/workflow')]
 class WorkflowController extends AdminAbstractController implements KernelControllerEventInterface
 {
     private ConcreteObject|Document|Asset|null $element;
@@ -55,7 +55,7 @@ class WorkflowController extends AdminAbstractController implements KernelContro
     /**
      * Returns a JSON of the available workflow actions to the admin panel
      */
-    #[Route("/get-workflow-form", name: "opendxp_admin_workflow_getworkflowform")]
+    #[Route('/get-workflow-form', name: 'opendxp_admin_workflow_getworkflowform')]
     public function getWorkflowFormAction(Request $request, Manager $workflowManager): JsonResponse
     {
         try {
@@ -96,7 +96,7 @@ class WorkflowController extends AdminAbstractController implements KernelContro
         return $this->adminJson($wfConfig);
     }
 
-    #[Route("/submit-workflow-transition", name: "opendxp_admin_workflow_submitworkflowtransition", methods: ["POST"])]
+    #[Route('/submit-workflow-transition', name: 'opendxp_admin_workflow_submitworkflowtransition', methods: ['POST'])]
     public function submitWorkflowTransitionAction(Request $request, Registry $workflowRegistry, Manager $workflowManager): JsonResponse
     {
         $workflowOptions = $request->get('workflow', []);
@@ -148,7 +148,7 @@ class WorkflowController extends AdminAbstractController implements KernelContro
         return $this->adminJson($data);
     }
 
-    #[Route("/submit-global-action", name: "opendxp_admin_workflow_submitglobal", methods: ["POST"])]
+    #[Route('/submit-global-action', name: 'opendxp_admin_workflow_submitglobal', methods: ['POST'])]
     public function submitGlobalAction(
         Request $request,
         Registry $workflowRegistry,
@@ -204,7 +204,7 @@ class WorkflowController extends AdminAbstractController implements KernelContro
      *
      * @throws \Exception
      */
-    #[Route("/get-workflow-details", name: "opendxp_admin_workflow_getworkflowdetailsstore")]
+    #[Route('/get-workflow-details', name: 'opendxp_admin_workflow_getworkflowdetailsstore')]
     public function getWorkflowDetailsStore(Request $request, Manager $workflowManager, StatusInfo $placeStatusInfo, RouterInterface $router, ActionsButtonService $actionsButtonService): JsonResponse
     {
         $data = [];
@@ -254,7 +254,7 @@ class WorkflowController extends AdminAbstractController implements KernelContro
      *
      * @throws \Exception
      */
-    #[Route("/show-graph", name: "opendxp_admin_workflow_show_graph")]
+    #[Route('/show-graph', name: 'opendxp_admin_workflow_show_graph')]
     public function showGraph(Request $request, Manager $workflowManager): Response
     {
         $workflow = $workflowManager->getWorkflowByName($request->get('workflow'));
@@ -270,7 +270,7 @@ class WorkflowController extends AdminAbstractController implements KernelContro
      *
      * @throws \Exception
      */
-    #[Route("/modal-custom-html", name: "opendxp_admin_workflow_modal_custom_html", methods: ["POST"])]
+    #[Route('/modal-custom-html', name: 'opendxp_admin_workflow_modal_custom_html', methods: ['POST'])]
     public function getModalCustomHtml(Request $request, Registry $workflowRegistry, Manager $manager): JsonResponse
     {
         $workflow = $workflowRegistry->get($this->element, $request->get('workflowName'));

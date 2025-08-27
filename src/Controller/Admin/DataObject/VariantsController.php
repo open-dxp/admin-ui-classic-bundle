@@ -29,12 +29,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * @internal
  */
-#[Route("/variants", name: "opendxp_admin_dataobject_variants_")]
+#[Route('/variants', name: 'opendxp_admin_dataobject_variants_')]
 class VariantsController extends AdminAbstractController
 {
     use DataObjectActionsTrait;
 
-    #[Route("/update-key", name: "updatekey", methods: ["PUT"])]
+    #[Route('/update-key', name: 'updatekey', methods: ['PUT'])]
     public function updateKeyAction(Request $request): JsonResponse
     {
         $id = $request->request->getInt('id');
@@ -47,7 +47,7 @@ class VariantsController extends AdminAbstractController
     /**
      * @throws \Exception
      */
-    #[Route("/get-variants", name: "getvariants", methods: ["GET", "POST"])]
+    #[Route('/get-variants', name: 'getvariants', methods: ['GET', 'POST'])]
     public function getVariantsAction(
         Request $request,
         EventDispatcherInterface $eventDispatcher,

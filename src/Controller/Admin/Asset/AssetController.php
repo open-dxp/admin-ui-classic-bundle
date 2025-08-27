@@ -68,7 +68,7 @@ use Twig\Extension\CoreExtension;
 /**
  * @internal
  */
-#[Route("/asset")]
+#[Route('/asset')]
 class AssetController extends ElementControllerBase implements KernelControllerEventInterface
 {
     use AdminStyleTrait;
@@ -80,19 +80,19 @@ class AssetController extends ElementControllerBase implements KernelControllerE
 
     protected Asset\Service $_assetService;
 
-    #[Route("/tree-get-root", name: "opendxp_admin_asset_treegetroot", methods: ["GET"])]
+    #[Route('/tree-get-root', name: 'opendxp_admin_asset_treegetroot', methods: ['GET'])]
     public function treeGetRootAction(Request $request): JsonResponse
     {
         return parent::treeGetRootAction($request);
     }
 
-    #[Route("/delete-info", name: "opendxp_admin_asset_deleteinfo", methods: ["GET"])]
+    #[Route('/delete-info', name: 'opendxp_admin_asset_deleteinfo', methods: ['GET'])]
     public function deleteInfoAction(Request $request, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
         return parent::deleteInfoAction($request, $eventDispatcher);
     }
 
-    #[Route("/get-data-by-id", name: "opendxp_admin_asset_getdatabyid", methods: ["GET"])]
+    #[Route('/get-data-by-id', name: 'opendxp_admin_asset_getdatabyid', methods: ['GET'])]
     public function getDataByIdAction(Request $request, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
         $assetId = $request->query->getInt('id');
@@ -239,7 +239,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         throw $this->createAccessDeniedHttpException();
     }
 
-    #[Route("/tree-get-children-by-id", name: "opendxp_admin_asset_treegetchildrenbyid", methods: ["GET"])]
+    #[Route('/tree-get-children-by-id', name: 'opendxp_admin_asset_treegetchildrenbyid', methods: ['GET'])]
     public function treeGetChildrenByIdAction(Request $request, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
         $allParams = array_merge($request->request->all(), $request->query->all());
@@ -328,7 +328,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         }
     }
 
-    #[Route("/add-asset", name: "opendxp_admin_asset_addasset", methods: ["POST"])]
+    #[Route('/add-asset', name: 'opendxp_admin_asset_addasset', methods: ['POST'])]
     public function addAssetAction(Request $request, Config $config): JsonResponse
     {
         try {
@@ -355,7 +355,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         }
     }
 
-    #[Route("/add-asset-compatibility", name: "opendxp_admin_asset_addassetcompatibility", methods: ["POST"])]
+    #[Route('/add-asset-compatibility', name: 'opendxp_admin_asset_addassetcompatibility', methods: ['POST'])]
     public function addAssetCompatibilityAction(Request $request, Config $config): JsonResponse
     {
         try {
@@ -383,7 +383,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
     /**
      * @throws \Exception
      */
-    #[Route("/exists", name: "opendxp_admin_asset_exists", methods: ["GET"])]
+    #[Route('/exists', name: 'opendxp_admin_asset_exists', methods: ['GET'])]
     public function existsAction(Request $request): JsonResponse
     {
         $parentAsset = \OpenDxp\Model\Asset::getById((int)$request->get('parentId'));
@@ -569,7 +569,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
     /**
      * @throws \Exception
      */
-    #[Route("/replace-asset", name: "opendxp_admin_asset_replaceasset", methods: ["POST", "PUT"])]
+    #[Route('/replace-asset', name: 'opendxp_admin_asset_replaceasset', methods: ['POST', 'PUT'])]
     public function replaceAssetAction(Request $request, TranslatorInterface $translator): JsonResponse
     {
         $asset = Asset::getById((int) $request->get('id'));
@@ -620,7 +620,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         }
     }
 
-    #[Route("/add-folder", name: "opendxp_admin_asset_addfolder", methods: ["POST"])]
+    #[Route('/add-folder', name: 'opendxp_admin_asset_addfolder', methods: ['POST'])]
     public function addFolderAction(Request $request): JsonResponse
     {
         $success = false;
@@ -644,7 +644,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $this->adminJson(['success' => $success]);
     }
 
-    #[Route("/delete", name: "opendxp_admin_asset_delete", methods: ["DELETE"])]
+    #[Route('/delete', name: 'opendxp_admin_asset_delete', methods: ['DELETE'])]
     public function deleteAction(Request $request): JsonResponse
     {
         $type = $request->get('type');
@@ -699,7 +699,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
      * @throws \Exception
      * @throws RuntimeException
      */
-    #[Route("/update", name: "opendxp_admin_asset_update", methods: ["PUT"])]
+    #[Route('/update', name: 'opendxp_admin_asset_update', methods: ['PUT'])]
     public function updateAction(Request $request): JsonResponse
     {
         $data = ['success' => false];
@@ -785,7 +785,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
     /**
      * @throws \Exception
      */
-    #[Route("/save", name: "opendxp_admin_asset_save", methods: ["PUT","POST"])]
+    #[Route('/save', name: 'opendxp_admin_asset_save', methods: ['PUT', 'POST'])]
     public function saveAction(Request $request, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
         $asset = Asset::getById((int) $request->get('id'));
@@ -883,7 +883,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         }
     }
 
-    #[Route("/publish-version", name: "opendxp_admin_asset_publishversion", methods: ["POST"])]
+    #[Route('/publish-version', name: 'opendxp_admin_asset_publishversion', methods: ['POST'])]
     public function publishVersionAction(Request $request): JsonResponse
     {
         $id = (int)$request->get('id');
@@ -911,7 +911,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         throw $this->createAccessDeniedHttpException();
     }
 
-    #[Route("/show-version", name: "opendxp_admin_asset_showversion", methods: ["GET"])]
+    #[Route('/show-version', name: 'opendxp_admin_asset_showversion', methods: ['GET'])]
     public function showVersionAction(Request $request, Environment $twig): Response
     {
         $id = (int)$request->get('id');
@@ -953,7 +953,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         );
     }
 
-    #[Route("/download", name: "opendxp_admin_asset_download", methods: ["GET"])]
+    #[Route('/download', name: 'opendxp_admin_asset_download', methods: ['GET'])]
     public function downloadAction(Request $request): StreamedResponse
     {
         $asset = Asset::getById((int) $request->get('id'));
@@ -981,7 +981,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         ]);
     }
 
-    #[Route("/download-image-thumbnail", name: "opendxp_admin_asset_downloadimagethumbnail", methods: ["GET"])]
+    #[Route('/download-image-thumbnail', name: 'opendxp_admin_asset_downloadimagethumbnail', methods: ['GET'])]
     public function downloadImageThumbnailAction(Request $request): BinaryFileResponse
     {
         $image = Asset\Image::getById((int) $request->get('id'));
@@ -1110,7 +1110,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         throw $this->createNotFoundException('Thumbnail not found');
     }
 
-    #[Route("/get-asset", name: "opendxp_admin_asset_getasset", methods: ["GET"])]
+    #[Route('/get-asset', name: 'opendxp_admin_asset_getasset', methods: ['GET'])]
     public function getAssetAction(Request $request): StreamedResponse
     {
         $image = Asset::getById((int)$request->get('id'));
@@ -1140,7 +1140,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $response;
     }
 
-    #[Route("/get-image-thumbnail", name: "opendxp_admin_asset_getimagethumbnail", methods: ["GET"])]
+    #[Route('/get-image-thumbnail', name: 'opendxp_admin_asset_getimagethumbnail', methods: ['GET'])]
     public function getImageThumbnailAction(Request $request): BinaryFileResponse|JsonResponse|StreamedResponse
     {
         $fileinfo = $request->get('fileinfo');
@@ -1227,7 +1227,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $response;
     }
 
-    #[Route("/get-folder-thumbnail", name: "opendxp_admin_asset_getfolderthumbnail", methods: ["GET"])]
+    #[Route('/get-folder-thumbnail', name: 'opendxp_admin_asset_getfolderthumbnail', methods: ['GET'])]
     public function getFolderThumbnailAction(Request $request): StreamedResponse
     {
         $folder = null;
@@ -1259,7 +1259,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         throw $this->createNotFoundException('could not load asset folder');
     }
 
-    #[Route("/get-video-thumbnail", name: "opendxp_admin_asset_getvideothumbnail", methods: ["GET"])]
+    #[Route('/get-video-thumbnail', name: 'opendxp_admin_asset_getvideothumbnail', methods: ['GET'])]
     public function getVideoThumbnailAction(Request $request): StreamedResponse
     {
         $video = null;
@@ -1332,7 +1332,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $response;
     }
 
-    #[Route("/get-document-thumbnail", name: "opendxp_admin_asset_getdocumentthumbnail", methods: ["GET"])]
+    #[Route('/get-document-thumbnail', name: 'opendxp_admin_asset_getdocumentthumbnail', methods: ['GET'])]
     public function getDocumentThumbnailAction(Request $request): BinaryFileResponse|StreamedResponse
     {
         $document = Asset\Document::getById((int)$request->get('id'));
@@ -1399,7 +1399,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         $response->headers->set('Pragma', '');
     }
 
-    #[Route("/get-preview-document", name: "opendxp_admin_asset_getpreviewdocument", methods: ["GET"])]
+    #[Route('/get-preview-document', name: 'opendxp_admin_asset_getpreviewdocument', methods: ['GET'])]
     public function getPreviewDocumentAction(
         Request $request,
         TranslatorInterface $translator
@@ -1496,7 +1496,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $stream;
     }
 
-    #[Route("/get-preview-video", name: "opendxp_admin_asset_getpreviewvideo", methods: ["GET"])]
+    #[Route('/get-preview-video', name: 'opendxp_admin_asset_getpreviewvideo', methods: ['GET'])]
     public function getPreviewVideoAction(Request $request): Response
     {
         $asset = Asset\Video::getById((int) $request->get('id'));
@@ -1544,7 +1544,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         }
     }
 
-    #[Route("/serve-video-preview", name: "opendxp_admin_asset_servevideopreview", methods: ["GET"])]
+    #[Route('/serve-video-preview', name: 'opendxp_admin_asset_servevideopreview', methods: ['GET'])]
     public function serveVideoPreviewAction(Request $request): StreamedResponse
     {
         $asset = Asset\Video::getById((int) $request->get('id'));
@@ -1584,7 +1584,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         }
     }
 
-    #[Route("/image-editor", name: "opendxp_admin_asset_imageeditor", methods: ["GET"])]
+    #[Route('/image-editor', name: 'opendxp_admin_asset_imageeditor', methods: ['GET'])]
     public function imageEditorAction(Request $request): Response
     {
         $asset = Asset::getById((int) $request->get('id'));
@@ -1599,7 +1599,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         );
     }
 
-    #[Route("/image-editor-save", name: "opendxp_admin_asset_imageeditorsave", methods: ["PUT"])]
+    #[Route('/image-editor-save', name: 'opendxp_admin_asset_imageeditorsave', methods: ['PUT'])]
     public function imageEditorSaveAction(Request $request): JsonResponse
     {
         $asset = Asset::getById((int) $request->get('id'));
@@ -1622,7 +1622,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/get-folder-content-preview", name: "opendxp_admin_asset_getfoldercontentpreview", methods: ["GET"])]
+    #[Route('/get-folder-content-preview', name: 'opendxp_admin_asset_getfoldercontentpreview', methods: ['GET'])]
     public function getFolderContentPreviewAction(Request $request,
         EventDispatcherInterface $eventDispatcher,
         GridHelperService $gridHelperService): JsonResponse
@@ -1710,7 +1710,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $this->adminJson(['assets' => $result['data'], 'success' => $result['success'], 'total' => $result['total']]);
     }
 
-    #[Route("/copy-info", name: "opendxp_admin_asset_copyinfo", methods: ["GET"])]
+    #[Route('/copy-info', name: 'opendxp_admin_asset_copyinfo', methods: ['GET'])]
     public function copyInfoAction(Request $request): JsonResponse
     {
         $transactionId = time();
@@ -1783,7 +1783,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         ]);
     }
 
-    #[Route("/copy", name: "opendxp_admin_asset_copy", methods: ["POST"])]
+    #[Route('/copy', name: 'opendxp_admin_asset_copy', methods: ['POST'])]
     public function copyAction(Request $request): JsonResponse
     {
         $success = false;
@@ -1843,7 +1843,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $this->adminJson(['success' => $success]);
     }
 
-    #[Route("/download-as-zip-jobs", name: "opendxp_admin_asset_downloadaszipjobs", methods: ["GET"])]
+    #[Route('/download-as-zip-jobs', name: 'opendxp_admin_asset_downloadaszipjobs', methods: ['GET'])]
     public function downloadAsZipJobsAction(Request $request): JsonResponse
     {
         $jobId = uniqid();
@@ -1914,7 +1914,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         ]);
     }
 
-    #[Route("/download-as-zip-add-files", name: "opendxp_admin_asset_downloadaszipaddfiles", methods: ["GET"])]
+    #[Route('/download-as-zip-add-files', name: 'opendxp_admin_asset_downloadaszipaddfiles', methods: ['GET'])]
     public function downloadAsZipAddFilesAction(Request $request): JsonResponse
     {
         $zipFile = OPENDXP_SYSTEM_TEMP_DIRECTORY . '/download-zip-' . $request->get('jobId') . '.zip';
@@ -1997,7 +1997,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
      * Download all assets contained in the folder with parameter id as ZIP file.
      * The suggested filename is either [folder name].zip or assets.zip for the root folder.
      */
-    #[Route("/download-as-zip", name: "opendxp_admin_asset_downloadaszip", methods: ["GET"])]
+    #[Route('/download-as-zip', name: 'opendxp_admin_asset_downloadaszip', methods: ['GET'])]
     public function downloadAsZipAction(Request $request): BinaryFileResponse
     {
         $asset = Asset::getById((int) $request->get('id'));
@@ -2018,7 +2018,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $response;
     }
 
-    #[Route("/import-zip", name: "opendxp_admin_asset_importzip", methods: ["POST"])]
+    #[Route('/import-zip', name: 'opendxp_admin_asset_importzip', methods: ['POST'])]
     public function importZipAction(Request $request, TranslatorInterface $translator): Response
     {
         $jobId = uniqid();
@@ -2083,7 +2083,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         }
     }
 
-    #[Route("/import-zip-files", name: "opendxp_admin_asset_importzipfiles", methods: ["POST"])]
+    #[Route('/import-zip-files', name: 'opendxp_admin_asset_importzipfiles', methods: ['POST'])]
     public function importZipFilesAction(Request $request, Filesystem $filesystem): JsonResponse
     {
         $jobId = $request->get('jobId');
@@ -2159,7 +2159,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         ]);
     }
 
-    #[Route("/clear-thumbnail", name: "opendxp_admin_asset_clearthumbnail", methods: ["POST"])]
+    #[Route('/clear-thumbnail', name: 'opendxp_admin_asset_clearthumbnail', methods: ['POST'])]
     public function clearThumbnailAction(Request $request): JsonResponse
     {
         $success = false;
@@ -2180,7 +2180,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $this->adminJson(['success' => $success]);
     }
 
-    #[Route("/grid-proxy", name: "opendxp_admin_asset_gridproxy", methods: ["GET", "POST", "PUT"])]
+    #[Route('/grid-proxy', name: 'opendxp_admin_asset_gridproxy', methods: ['GET', 'POST', 'PUT'])]
     public function gridProxyAction(Request $request, EventDispatcherInterface $eventDispatcher, GridHelperService $gridHelperService, CsrfProtectionHandler $csrfProtection): JsonResponse
     {
         $allParams = array_merge($request->request->all(), $request->query->all());
@@ -2357,7 +2357,7 @@ class AssetController extends ElementControllerBase implements KernelControllerE
         return $this->adminJson(['success' => false]);
     }
 
-    #[Route("/get-text", name: "opendxp_admin_asset_gettext", methods: ["GET"])]
+    #[Route('/get-text', name: 'opendxp_admin_asset_gettext', methods: ['GET'])]
     public function getTextAction(Request $request): JsonResponse
     {
         $asset = Asset::getById((int) $request->get('id'));

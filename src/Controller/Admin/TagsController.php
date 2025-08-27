@@ -28,10 +28,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * @internal
  */
-#[Route("/tags")]
+#[Route('/tags')]
 class TagsController extends AdminAbstractController
 {
-    #[Route("/add", name: "opendxp_admin_tags_add", methods: ["POST"])]
+    #[Route('/add', name: 'opendxp_admin_tags_add', methods: ['POST'])]
     public function addAction(Request $request): JsonResponse
     {
         $this->checkPermission('tags_configuration');
@@ -51,7 +51,7 @@ class TagsController extends AdminAbstractController
     /**
      * @throws \Exception
      */
-    #[Route("/delete", name: "opendxp_admin_tags_delete", methods: ["DELETE"])]
+    #[Route('/delete', name: 'opendxp_admin_tags_delete', methods: ['DELETE'])]
     public function deleteAction(Request $request): JsonResponse
     {
         $this->checkPermission('tags_configuration');
@@ -69,7 +69,7 @@ class TagsController extends AdminAbstractController
     /**
      * @throws \Exception
      */
-    #[Route("/update", name: "opendxp_admin_tags_update", methods: ["PUT"])]
+    #[Route('/update', name: 'opendxp_admin_tags_update', methods: ['PUT'])]
     public function updateAction(Request $request): JsonResponse
     {
         $this->checkPermission('tags_configuration');
@@ -92,7 +92,7 @@ class TagsController extends AdminAbstractController
         }
     }
 
-    #[Route("/tree-get-children-by-id", name: "opendxp_admin_tags_treegetchildrenbyid", methods: ["GET"])]
+    #[Route('/tree-get-children-by-id', name: 'opendxp_admin_tags_treegetchildrenbyid', methods: ['GET'])]
     public function treeGetChildrenByIdAction(Request $request): JsonResponse
     {
         $showSelection = $request->get('showSelection') == 'true';
@@ -176,7 +176,7 @@ class TagsController extends AdminAbstractController
         return $tagArray;
     }
 
-    #[Route("/load-tags-for-element", name: "opendxp_admin_tags_loadtagsforelement", methods: ["GET"])]
+    #[Route('/load-tags-for-element', name: 'opendxp_admin_tags_loadtagsforelement', methods: ['GET'])]
     public function loadTagsForElementAction(Request $request): JsonResponse
     {
         $assginmentCId = (int)$request->get('assignmentCId');
@@ -194,7 +194,7 @@ class TagsController extends AdminAbstractController
         return $this->adminJson($assignedTagArray);
     }
 
-    #[Route("/add-tag-to-element", name: "opendxp_admin_tags_addtagtoelement", methods: ["PUT"])]
+    #[Route('/add-tag-to-element', name: 'opendxp_admin_tags_addtagtoelement', methods: ['PUT'])]
     public function addTagToElementAction(Request $request): JsonResponse
     {
         $assginmentCId = (int)$request->get('assignmentElementId');
@@ -211,7 +211,7 @@ class TagsController extends AdminAbstractController
         }
     }
 
-    #[Route("/remove-tag-from-element", name: "opendxp_admin_tags_removetagfromelement", methods: ["DELETE"])]
+    #[Route('/remove-tag-from-element', name: 'opendxp_admin_tags_removetagfromelement', methods: ['DELETE'])]
     public function removeTagFromElementAction(Request $request): JsonResponse
     {
         $assginmentCId = (int)$request->get('assignmentElementId');
@@ -228,7 +228,7 @@ class TagsController extends AdminAbstractController
         }
     }
 
-    #[Route("/get-batch-assignment-jobs", name: "opendxp_admin_tags_getbatchassignmentjobs", methods: ["GET"])]
+    #[Route('/get-batch-assignment-jobs', name: 'opendxp_admin_tags_getbatchassignmentjobs', methods: ['GET'])]
     public function getBatchAssignmentJobsAction(Request $request, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
         $elementId = (int)$request->get('elementId');
@@ -360,7 +360,7 @@ class TagsController extends AdminAbstractController
         return $childrenList->loadIdList();
     }
 
-    #[Route("/do-batch-assignment", name: "opendxp_admin_tags_dobatchassignment", methods: ["PUT"])]
+    #[Route('/do-batch-assignment', name: 'opendxp_admin_tags_dobatchassignment', methods: ['PUT'])]
     public function doBatchAssignmentAction(Request $request): JsonResponse
     {
         $cType = strip_tags($request->get('elementType', ''));

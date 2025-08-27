@@ -26,13 +26,13 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * @internal
  */
-#[Route("/snippet", name: "opendxp_admin_document_snippet_")]
+#[Route('/snippet', name: 'opendxp_admin_document_snippet_')]
 class SnippetController extends DocumentControllerBase
 {
     /**
      * @throws \Exception
      */
-    #[Route("/get-data-by-id", name: "getdatabyid", methods: ["GET"])]
+    #[Route('/get-data-by-id', name: 'getdatabyid', methods: ['GET'])]
     public function getDataByIdAction(Request $request): JsonResponse
     {
         $snippet = Document\Snippet::getById((int)$request->get('id'));
@@ -81,7 +81,7 @@ class SnippetController extends DocumentControllerBase
     /**
      * @throws \Exception
      */
-    #[Route("/save", name: "save", methods: ["POST","PUT"])]
+    #[Route('/save', name: 'save', methods: ['POST', 'PUT'])]
     public function saveAction(Request $request): JsonResponse
     {
         $snippet = Document\Snippet::getById((int) $request->get('id'));

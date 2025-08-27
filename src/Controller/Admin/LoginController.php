@@ -94,8 +94,8 @@ class LoginController extends AdminAbstractController implements KernelControlle
         $this->responseHelper->disableCache($response, true);
     }
 
-    #[Route("/login", name: "opendxp_admin_login")]
-    #[Route("/login/", name: "opendxp_admin_login_fallback")]
+    #[Route('/login', name: 'opendxp_admin_login')]
+    #[Route('/login/', name: 'opendxp_admin_login_fallback')]
     public function loginAction(
         Request $request,
         AuthenticationUtils $authenticationUtils,
@@ -162,7 +162,7 @@ class LoginController extends AdminAbstractController implements KernelControlle
         return $this->render('@OpenDxpAdmin/admin/login/login.html.twig', $params);
     }
 
-    #[Route("/login/csrf-token", name: "opendxp_admin_login_csrf_token")]
+    #[Route('/login/csrf-token', name: 'opendxp_admin_login_csrf_token')]
     public function csrfTokenAction(Request $request, CsrfProtectionHandler $csrfProtection): \Symfony\Component\HttpFoundation\JsonResponse
     {
         if (!$this->getAdminUser()) {
@@ -174,7 +174,7 @@ class LoginController extends AdminAbstractController implements KernelControlle
         ]);
     }
 
-    #[Route("/logout", name: "opendxp_admin_logout" , methods: ["POST"])]
+    #[Route('/logout', name: 'opendxp_admin_logout', methods: ['POST'])]
     public function logoutAction(): void
     {
         // this route will never be matched, but will be handled by the logout handler
@@ -183,14 +183,14 @@ class LoginController extends AdminAbstractController implements KernelControlle
     /**
      * Dummy route used to check authentication
      */
-    #[Route("/login/login", name: "opendxp_admin_login_check")]
+    #[Route('/login/login', name: 'opendxp_admin_login_check')]
     public function loginCheckAction(Request $request): RedirectResponse
     {
         // just in case the authenticator didn't redirect
         return new RedirectResponse($this->generateUrl('opendxp_admin_login', ['perspective' => strip_tags($request->get('perspective', ''))]));
     }
 
-    #[Route("/login/lostpassword", name: "opendxp_admin_login_lostpassword")]
+    #[Route('/login/lostpassword', name: 'opendxp_admin_login_lostpassword')]
     public function lostpasswordAction(
         Request $request,
         CsrfProtectionHandler $csrfProtection,
@@ -275,7 +275,7 @@ class LoginController extends AdminAbstractController implements KernelControlle
         return $this->render('@OpenDxpAdmin/admin/login/lost_password.html.twig', $params);
     }
 
-    #[Route("/login/deeplink", name: "opendxp_admin_login_deeplink")]
+    #[Route('/login/deeplink', name: 'opendxp_admin_login_deeplink')]
     public function deeplinkAction(Request $request): Response
     {
         // check for deeplink
@@ -321,7 +321,7 @@ class LoginController extends AdminAbstractController implements KernelControlle
         ];
     }
 
-    #[Route("/login/2fa", name: "opendxp_admin_2fa")]
+    #[Route('/login/2fa', name: 'opendxp_admin_2fa')]
     public function twoFactorAuthenticationAction(Request $request, Config $config): Response
     {
         $params = $this->buildLoginPageViewParams($config);
@@ -341,7 +341,7 @@ class LoginController extends AdminAbstractController implements KernelControlle
         return $this->render('@OpenDxpAdmin/admin/login/two_factor_authentication.html.twig', $params);
     }
 
-    #[Route("/login/2fa-setup", name: "opendxp_admin_2fa_setup")]
+    #[Route('/login/2fa-setup', name: 'opendxp_admin_2fa_setup')]
     public function twoFactorSetupAuthenticationAction(
         Request $request,
         Config $config,
@@ -398,7 +398,7 @@ class LoginController extends AdminAbstractController implements KernelControlle
         return $this->render('@OpenDxpAdmin/admin/login/two_factor_setup.html.twig', $params);
     }
 
-    #[Route("/login/2fa-verify", name: "opendxp_admin_2fa-verify")]
+    #[Route('/login/2fa-verify', name: 'opendxp_admin_2fa-verify')]
     public function twoFactorAuthenticationVerifyAction(Request $request): void
     {
     }

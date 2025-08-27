@@ -40,7 +40,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class ElementController extends AdminAbstractController
 {
-    #[Route("/element/lock-element", name: "opendxp_admin_element_lockelement", methods: ["PUT"])]
+    #[Route('/element/lock-element', name: 'opendxp_admin_element_lockelement', methods: ['PUT'])]
     public function lockElementAction(Request $request): Response
     {
         Element\Editlock::lock($request->request->getInt('id'), $request->request->get('type'), $request->getSession()->getId());
@@ -48,7 +48,7 @@ class ElementController extends AdminAbstractController
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/element/unlock-element", name: "opendxp_admin_element_unlockelement", methods: ["PUT"])]
+    #[Route('/element/unlock-element', name: 'opendxp_admin_element_unlockelement', methods: ['PUT'])]
     public function unlockElementAction(Request $request): Response
     {
         Element\Editlock::unlock((int)$request->get('id'), $request->get('type'));
@@ -56,7 +56,7 @@ class ElementController extends AdminAbstractController
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/element/unlock-elements", name: "opendxp_admin_element_unlockelements", methods: ["POST"])]
+    #[Route('/element/unlock-elements', name: 'opendxp_admin_element_unlockelements', methods: ['POST'])]
     public function unlockElementsAction(Request $request): Response
     {
         $request = json_decode($request->getContent(), true) ?? [];
@@ -70,7 +70,7 @@ class ElementController extends AdminAbstractController
     /**
      * Returns the element data denoted by the given type and ID or path.
      */
-    #[Route("/element/get-subtype", name: "opendxp_admin_element_getsubtype", methods: ["GET"])]
+    #[Route('/element/get-subtype', name: 'opendxp_admin_element_getsubtype', methods: ['GET'])]
     public function getSubtypeAction(Request $request): JsonResponse
     {
         $idOrPath = trim($request->query->get('id', ''));
@@ -127,7 +127,7 @@ class ElementController extends AdminAbstractController
         return $this->adminJson(['noteTypes' => $result]);
     }
 
-    #[Route("/element/note-types", name: "opendxp_admin_element_notetypes", methods: ["GET"])]
+    #[Route('/element/note-types', name: 'opendxp_admin_element_notetypes', methods: ['GET'])]
     public function noteTypes(Request $request): JsonResponse
     {
         switch ($request->get('ctype')) {
@@ -142,7 +142,7 @@ class ElementController extends AdminAbstractController
         }
     }
 
-    #[Route("/element/note-list", name: "opendxp_admin_element_notelist", methods: ["POST"])]
+    #[Route('/element/note-list', name: 'opendxp_admin_element_notelist', methods: ['POST'])]
     public function noteListAction(Request $request): JsonResponse
     {
         $this->checkPermission('notes_events');
@@ -269,7 +269,7 @@ class ElementController extends AdminAbstractController
         ]);
     }
 
-    #[Route("/element/note-add", name: "opendxp_admin_element_noteadd", methods: ["POST"])]
+    #[Route('/element/note-add', name: 'opendxp_admin_element_noteadd', methods: ['POST'])]
     public function noteAddAction(Request $request): JsonResponse
     {
         $this->checkPermission('notes_events');
@@ -289,7 +289,7 @@ class ElementController extends AdminAbstractController
         ]);
     }
 
-    #[Route("/element/find-usages", name: "opendxp_admin_element_findusages", methods: ["GET"])]
+    #[Route('/element/find-usages', name: 'opendxp_admin_element_findusages', methods: ['GET'])]
     public function findUsagesAction(Request $request): JsonResponse
     {
         $element = null;
@@ -352,7 +352,7 @@ class ElementController extends AdminAbstractController
         ]);
     }
 
-    #[Route("/element/get-replace-assignments-batch-jobs", name: "opendxp_admin_element_getreplaceassignmentsbatchjobs", methods: ["GET"])]
+    #[Route('/element/get-replace-assignments-batch-jobs', name: 'opendxp_admin_element_getreplaceassignmentsbatchjobs', methods: ['GET'])]
     public function getReplaceAssignmentsBatchJobsAction(Request $request): JsonResponse
     {
         $element = null;
@@ -373,7 +373,7 @@ class ElementController extends AdminAbstractController
         }
     }
 
-    #[Route("/element/replace-assignments", name: "opendxp_admin_element_replaceassignments", methods: ["POST"])]
+    #[Route('/element/replace-assignments', name: 'opendxp_admin_element_replaceassignments', methods: ['POST'])]
     public function replaceAssignmentsAction(Request $request): JsonResponse
     {
         $success = false;
@@ -415,7 +415,7 @@ class ElementController extends AdminAbstractController
         ]);
     }
 
-    #[Route("/element/unlock-propagate", name: "opendxp_admin_element_unlockpropagate", methods: ["PUT"])]
+    #[Route('/element/unlock-propagate', name: 'opendxp_admin_element_unlockpropagate', methods: ['PUT'])]
     public function unlockPropagateAction(Request $request): JsonResponse
     {
         $success = false;
@@ -431,7 +431,7 @@ class ElementController extends AdminAbstractController
         ]);
     }
 
-    #[Route("/element/type-path", name: "opendxp_admin_element_typepath", methods: ["GET"])]
+    #[Route('/element/type-path', name: 'opendxp_admin_element_typepath', methods: ['GET'])]
     public function typePathAction(Request $request): JsonResponse
     {
         $id = $request->query->getInt('id');
@@ -468,7 +468,7 @@ class ElementController extends AdminAbstractController
         return $this->adminJson($data);
     }
 
-    #[Route("/element/version-update", name: "opendxp_admin_element_versionupdate", methods: ["PUT"])]
+    #[Route('/element/version-update', name: 'opendxp_admin_element_versionupdate', methods: ['PUT'])]
     public function versionUpdateAction(Request $request): JsonResponse
     {
         $data = $this->decodeJson($request->get('data'));
@@ -487,7 +487,7 @@ class ElementController extends AdminAbstractController
     /**
      * @throws \Exception
      */
-    #[Route("/element/get-nice-path", name: "opendxp_admin_element_getnicepath", methods: ["POST"])]
+    #[Route('/element/get-nice-path', name: 'opendxp_admin_element_getnicepath', methods: ['POST'])]
     public function getNicePathAction(Request $request): JsonResponse
     {
         $source = $this->decodeJson($request->get('source'));
@@ -541,7 +541,7 @@ class ElementController extends AdminAbstractController
     /**
      * @throws \Exception
      */
-    #[Route("/element/get-versions", name: "opendxp_admin_element_getversions", methods: ["GET"])]
+    #[Route('/element/get-versions', name: 'opendxp_admin_element_getversions', methods: ['GET'])]
     public function getVersionsAction(Request $request): JsonResponse
     {
         $id = (int)$request->get('id');
@@ -594,7 +594,7 @@ class ElementController extends AdminAbstractController
         throw $this->createNotFoundException('Element type not found');
     }
 
-    #[Route("/element/delete-draft", name: "opendxp_admin_element_deletedraft", methods: ["DELETE"])]
+    #[Route('/element/delete-draft', name: 'opendxp_admin_element_deletedraft', methods: ['DELETE'])]
     public function deleteDraftAction(Request $request): JsonResponse
     {
         $version = Version::getById((int) $request->get('id'));
@@ -605,7 +605,7 @@ class ElementController extends AdminAbstractController
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/element/delete-version", name: "opendxp_admin_element_deleteversion", methods: ["DELETE"])]
+    #[Route('/element/delete-version', name: 'opendxp_admin_element_deleteversion', methods: ['DELETE'])]
     public function deleteVersionAction(Request $request): JsonResponse
     {
         $version = Model\Version::getById((int) $request->get('id'));
@@ -614,7 +614,7 @@ class ElementController extends AdminAbstractController
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/element/delete-all-versions", name: "opendxp_admin_element_deleteallversion", methods: ["DELETE"])]
+    #[Route('/element/delete-all-versions', name: 'opendxp_admin_element_deleteallversion', methods: ['DELETE'])]
     public function deleteAllVersionAction(Request $request): JsonResponse
     {
         $elementId = $request->request->getInt('id');
@@ -633,7 +633,7 @@ class ElementController extends AdminAbstractController
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/element/get-requires-dependencies", name: "opendxp_admin_element_getrequiresdependencies", methods: ["GET"])]
+    #[Route('/element/get-requires-dependencies', name: 'opendxp_admin_element_getrequiresdependencies', methods: ['GET'])]
     public function getRequiresDependenciesAction(Request $request): JsonResponse
     {
         $id = $request->query->getInt('id');
@@ -693,7 +693,7 @@ class ElementController extends AdminAbstractController
         return $this->adminJson(false);
     }
 
-    #[Route("/element/get-required-by-dependencies", name: "opendxp_admin_element_getrequiredbydependencies", methods: ["GET"])]
+    #[Route('/element/get-required-by-dependencies', name: 'opendxp_admin_element_getrequiredbydependencies', methods: ['GET'])]
     public function getRequiredByDependenciesAction(Request $request): JsonResponse
     {
         $id = $request->query->getInt('id');
@@ -753,7 +753,7 @@ class ElementController extends AdminAbstractController
         return $this->adminJson(false);
     }
 
-    #[Route("/element/get-predefined-properties", name: "opendxp_admin_element_getpredefinedproperties", methods: ["GET"])]
+    #[Route('/element/get-predefined-properties', name: 'opendxp_admin_element_getpredefinedproperties', methods: ['GET'])]
     public function getPredefinedPropertiesAction(Request $request, TranslatorInterface $translator): JsonResponse
     {
         $properties = [];
@@ -782,7 +782,7 @@ class ElementController extends AdminAbstractController
         return $this->adminJson(['properties' => $properties]);
     }
 
-    #[Route("/element/analyze-permissions", name: "opendxp_admin_element_analyzepermissions", methods: ["POST"])]
+    #[Route('/element/analyze-permissions', name: 'opendxp_admin_element_analyzepermissions', methods: ['POST'])]
     public function analyzePermissionsAction(Request $request): Response
     {
         $userId = $request->request->getInt('userId');

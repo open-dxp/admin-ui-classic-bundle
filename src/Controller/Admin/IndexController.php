@@ -70,7 +70,7 @@ class IndexController extends AdminAbstractController implements KernelResponseE
     /**
      * @throws \Exception
      */
-    #[Route("/", name: "opendxp_admin_index", methods: ["GET"])]
+    #[Route('/', name: 'opendxp_admin_index', methods: ['GET'])]
     public function indexAction(
         Request $request,
         KernelInterface $kernel,
@@ -119,7 +119,7 @@ class IndexController extends AdminAbstractController implements KernelResponseE
     /**
      * @throws \Exception
      */
-    #[Route("/index/statistics", name: "opendxp_admin_index_statistics", methods: ["GET"])]
+    #[Route('/index/statistics', name: 'opendxp_admin_index_statistics', methods: ['GET'])]
     public function statisticsAction(Request $request, Connection $db, KernelInterface $kernel): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {

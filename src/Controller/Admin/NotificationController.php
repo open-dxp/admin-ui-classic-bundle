@@ -32,11 +32,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @internal
  */
-
-#[Route("/notification")]
+#[Route('/notification')]
 class NotificationController extends AdminAbstractController
 {
-    #[Route("/recipients", name: "opendxp_admin_notification_recipients", methods: ["GET"])]
+    #[Route('/recipients', name: 'opendxp_admin_notification_recipients', methods: ['GET'])]
     public function recipientsAction(UserService $service, TranslatorInterface $translator): JsonResponse
     {
         $this->checkPermission('notifications_send');
@@ -56,7 +55,7 @@ class NotificationController extends AdminAbstractController
         return $this->adminJson($data);
     }
 
-    #[Route("/send", name: "opendxp_admin_notification_send", methods: ["POST"])]
+    #[Route('/send', name: 'opendxp_admin_notification_send', methods: ['POST'])]
     public function sendAction(Request $request, NotificationService $service): JsonResponse
     {
         $this->checkPermission('notifications_send');
@@ -82,7 +81,7 @@ class NotificationController extends AdminAbstractController
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/find", name: "opendxp_admin_notification_find", methods: ["GET"])]
+    #[Route('/find', name: 'opendxp_admin_notification_find', methods: ['GET'])]
     public function findAction(Request $request, NotificationService $service): JsonResponse
     {
         $this->checkPermission('notifications');
@@ -107,7 +106,7 @@ class NotificationController extends AdminAbstractController
         ]);
     }
 
-    #[Route("/find-all", name: "opendxp_admin_notification_findall", methods: ["POST"])]
+    #[Route('/find-all', name: 'opendxp_admin_notification_findall', methods: ['POST'])]
     public function findAllAction(Request $request, NotificationService $service): JsonResponse
     {
         $this->checkPermission('notifications');
@@ -139,7 +138,7 @@ class NotificationController extends AdminAbstractController
         ]);
     }
 
-    #[Route("/find-last-unread", name: "opendxp_admin_notification_findlastunread", methods: ["GET"])]
+    #[Route('/find-last-unread', name: 'opendxp_admin_notification_findlastunread', methods: ['GET'])]
     public function findLastUnreadAction(Request $request, NotificationService $service): JsonResponse
     {
         $this->checkPermission('notifications');
@@ -163,7 +162,7 @@ class NotificationController extends AdminAbstractController
         ]);
     }
 
-    #[Route("/mark-as-read", name: "opendxp_admin_notification_markasread", methods: ["PUT"])]
+    #[Route('/mark-as-read', name: 'opendxp_admin_notification_markasread', methods: ['PUT'])]
     public function markAsReadAction(Request $request, NotificationService $service): JsonResponse
     {
         $this->checkPermission('notifications');
@@ -174,7 +173,7 @@ class NotificationController extends AdminAbstractController
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/delete", name: "opendxp_admin_notification_delete", methods: ["DELETE"])]
+    #[Route('/delete', name: 'opendxp_admin_notification_delete', methods: ['DELETE'])]
     public function deleteAction(Request $request, NotificationService $service): JsonResponse
     {
         $this->checkPermission('notifications');
@@ -185,7 +184,7 @@ class NotificationController extends AdminAbstractController
         return $this->adminJson(['success' => true]);
     }
 
-    #[Route("/delete-all", name: "opendxp_admin_notification_deleteall", methods: ["DELETE"])]
+    #[Route('/delete-all', name: 'opendxp_admin_notification_deleteall', methods: ['DELETE'])]
     public function deleteAllAction(NotificationService $service): JsonResponse
     {
         $this->checkPermission('notifications');

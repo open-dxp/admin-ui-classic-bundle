@@ -27,10 +27,10 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * @internal
  */
-#[Route("/install")]
+#[Route('/install')]
 class InstallController extends AdminAbstractController
 {
-    #[Route("/check", name: "opendxp_admin_install_check", methods: ["GET", "POST"])]
+    #[Route('/check', name: 'opendxp_admin_install_check', methods: ['GET', 'POST'])]
     public function checkAction(Request $request, Connection $db, ?Profiler $profiler): Response
     {
         if ($profiler) {

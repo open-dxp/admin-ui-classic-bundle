@@ -29,8 +29,7 @@ use Symfony\Component\Routing\Attribute\Route;
  *
  * @internal
  */
-
-#[Route("/opendxp-users")]
+#[Route('/opendxp-users')]
 class OpenDxpUsersController extends AdminAbstractController implements KernelControllerEventInterface
 {
     public function onKernelControllerEvent(ControllerEvent $event): void
@@ -42,7 +41,7 @@ class OpenDxpUsersController extends AdminAbstractController implements KernelCo
         $this->checkActionPermission($event, 'gdpr_data_extractor');
     }
 
-    #[Route("/search-users", name: "opendxp_admin_gdpr_opendxpusers_searchusers", methods: ["GET"])]
+    #[Route('/search-users', name: 'opendxp_admin_gdpr_opendxpusers_searchusers', methods: ['GET'])]
     public function searchUsersAction(Request $request, OpenDxpUsers $openDxpUsers): JsonResponse
     {
         $allParams = array_merge($request->request->all(), $request->query->all());
@@ -60,7 +59,7 @@ class OpenDxpUsersController extends AdminAbstractController implements KernelCo
         return $this->adminJson($result);
     }
 
-    #[Route("/export-user-data", name: "opendxp_admin_gdpr_opendxpusers_exportuserdata", methods: ["GET"])]
+    #[Route('/export-user-data', name: 'opendxp_admin_gdpr_opendxpusers_exportuserdata', methods: ['GET'])]
     public function exportUserDataAction(Request $request, OpenDxpUsers $openDxpUsers): JsonResponse
     {
         $this->checkPermission('users');

@@ -24,13 +24,13 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * @internal
  */
-#[Route("/folder", name: "opendxp_admin_document_folder_")]
+#[Route('/folder', name: 'opendxp_admin_document_folder_')]
 class FolderController extends DocumentControllerBase
 {
     /**
      * @throws \Exception
      */
-    #[Route("/get-data-by-id", name: "getdatabyid", methods: ["GET"])]
+    #[Route('/get-data-by-id', name: 'getdatabyid', methods: ['GET'])]
     public function getDataByIdAction(Request $request): JsonResponse
     {
         $folder = Document\Folder::getById((int)$request->get('id'));
@@ -54,7 +54,7 @@ class FolderController extends DocumentControllerBase
     /**
      * @throws \Exception
      */
-    #[Route("/save", name: "save", methods: ["PUT", "POST"])]
+    #[Route('/save', name: 'save', methods: ['PUT', 'POST'])]
     public function saveAction(Request $request): JsonResponse
     {
         $folder = Document\Folder::getById((int) $request->get('id'));

@@ -33,7 +33,7 @@ use Symfony\Component\Routing\Attribute\Route;
  *
  * @internal
  */
-#[Route("/asset")]
+#[Route('/asset')]
 class AssetController extends AdminAbstractController implements KernelControllerEventInterface
 {
     public function onKernelControllerEvent(ControllerEvent $event): void
@@ -45,7 +45,7 @@ class AssetController extends AdminAbstractController implements KernelControlle
         $this->checkActionPermission($event, 'gdpr_data_extractor');
     }
 
-    #[Route("/search-assets", name: "opendxp_admin_gdpr_asset_searchasset", methods: ["GET"])]
+    #[Route('/search-assets', name: 'opendxp_admin_gdpr_asset_searchasset', methods: ['GET'])]
     public function searchAssetAction(Request $request, Assets $service): JsonResponse
     {
         $allParams = array_merge($request->request->all(), $request->query->all());
@@ -66,7 +66,7 @@ class AssetController extends AdminAbstractController implements KernelControlle
     /**
      * @throws \Exception
      */
-    #[Route("/export", name: "opendxp_admin_gdpr_asset_exportassets", methods: ["GET"])]
+    #[Route('/export', name: 'opendxp_admin_gdpr_asset_exportassets', methods: ['GET'])]
     public function exportAssetsAction(Request $request, Assets $service): Response
     {
         $asset = Asset::getById((int) $request->get('id'));

@@ -20,7 +20,6 @@ use OpenDxp\Bundle\AdminBundle\Security\Authentication\Token\TwoFactorRequiredTo
 use OpenDxp\Cache\RuntimeCache;
 use OpenDxp\Model\User as UserModel;
 use OpenDxp\Security\User\User;
-use OpenDxp\Tool\Admin;
 use OpenDxp\Tool\Authentication;
 use OpenDxp\Tool\Session;
 use Psr\Log\LoggerAwareInterface;
