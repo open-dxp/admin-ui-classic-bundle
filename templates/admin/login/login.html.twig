@@ -47,7 +47,7 @@
 <script {{ opendxp_csp.getNonceHtmlAttribute()|raw }}>
     {% if deeplink is not defined %}
     // clear opened tabs store
-    localStorage.removeItem("opendxp_opentabs");
+    localStorage.removeItem('opendxp_opentabs');
     {% endif %}
 
     // hide symfony toolbar by default
@@ -56,10 +56,10 @@
         window.localStorage.setItem(symfonyToolbarKey, 'none');
     }
 
-
     // CSRF token refresh
     let formElement = document.getElementById('form-element');
     let csrfRefreshInProgress = false;
+
     function refreshCsrfToken() {
         csrfRefreshInProgress = true;
         formElement.style.opacity = '0.3';
@@ -75,11 +75,13 @@
         };
         request.send();
     }
+
     document.addEventListener('visibilitychange', function(ev) {
         if(document.visibilityState === 'visible') {
             refreshCsrfToken();
         }
     });
+
     window.setInterval(refreshCsrfToken, {{ csrfTokenRefreshInterval }});
     formElement.addEventListener("submit", function(evt) {
         if(csrfRefreshInProgress) {
