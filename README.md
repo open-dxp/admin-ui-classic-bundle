@@ -7,7 +7,7 @@ It is based on the [ExtJS](https://www.sencha.com/products/extjs/) framework.
 
 ## Disclaimer
 
-> The open future of Pimcore CE. A community-driven fork based on Pimcore Community Edition (GPLv3), created to keep Open Source open!  
+> A community-driven fork based on Pimcore Community Edition (GPLv3), created to keep Open Source open!  
 > Original credits: [Pimcore GmbH](https://www.pimcore.com)
 
 OpenDXP Admin Classic Bundle is an independent, community-maintained fork of Pimcore Admin Classic Bundle.
