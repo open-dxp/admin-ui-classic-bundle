@@ -77,13 +77,13 @@ opendxp.layout.treepanelmanager = {
             }
         }
 
-        const openDxpReady = new CustomEvent(opendxp.events.opendxpReady, {
+        const opendxpReady = new CustomEvent(opendxp.events.opendxpReady, {
             detail: {
                 viewport: opendxp.viewport,
             }
         });
 
-        document.dispatchEvent(openDxpReady);
+        document.dispatchEvent(opendxpReady);
     },
 
     addOnReadyCallback: function (event) {
