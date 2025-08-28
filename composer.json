@@ -16,7 +16,7 @@
         "cbschuld/browser.php": "^1.9.6",
         "endroid/qr-code": "^4 || ^5.1",
         "phpoffice/phpspreadsheet": "^2.2 || ^3.3",
-        "open-dxp/opendxp": "^1.1.0",
+        "open-dxp/opendxp": "^1.0",
         "symfony/webpack-encore-bundle": "^2.1.1"
     },
     "require-dev": {
@@ -42,6 +42,9 @@
         ]
     },
     "extra": {
+        "branch-alias": {
+          "dev-1.x": "1.1.x-dev"
+        },
         "opendxp": {
             "bundles": [
                 "OpenDxp\\Bundle\\AdminBundle\\OpenDxpAdminBundle"
