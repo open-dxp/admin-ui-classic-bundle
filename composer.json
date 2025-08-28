@@ -1,5 +1,5 @@
 {
-    "name": "open-dxp/admin-ui-classic-bundle",
+    "name": "open-dxp/admin-bundle",
     "license": "GPL-3.0+",
     "type": "opendxp-bundle",
     "config": {
