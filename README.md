@@ -1,6 +1,6 @@
-# OpenDXP | Admin Classic Bundle
+# OpenDXP | Admin Bundle
 
-The Admin Classic Bundle provides a Backend UI for OpenDXP.
+The Admin Bundle provides a Backend UI for OpenDXP.
 It is based on the [ExtJS](https://www.sencha.com/products/extjs/) framework.
 
 ***
@@ -10,7 +10,7 @@ It is based on the [ExtJS](https://www.sencha.com/products/extjs/) framework.
 > A community-driven fork based on Pimcore Community Edition (GPLv3), created to keep Open Source open!  
 > Original credits: [Pimcore GmbH](https://www.pimcore.com)
 
-OpenDXP Admin Classic Bundle is an independent, community-maintained fork of Pimcore Admin Classic Bundle.
+OpenDXP Admin Bundle is an independent, community-maintained fork of Pimcore Admin Classic Bundle.
 It is not affiliated with or endorsed by Pimcore GmbH.
 
 ***
