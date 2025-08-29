@@ -37,7 +37,7 @@ class OpenDxpAdminBundle extends AbstractOpenDxpBundle implements DependentBundl
 
     public function getComposerPackageName(): string
     {
-        return 'open-dxp/admin-ui-classic-bundle';
+        return 'open-dxp/admin-bundle';
     }
 
     public function getContainerExtension(): ?ExtensionInterface
