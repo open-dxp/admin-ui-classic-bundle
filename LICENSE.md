@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
 
-This fork is named "OpenDXP | admin-ui-classic-bundle" and is not affiliated with Pimcore GmbH.  
+This fork is named "OpenDXP | admin-bundle" and is not affiliated with Pimcore GmbH.  
 For the original Pimcore project, visit https://pimcore.com
 
 ---
